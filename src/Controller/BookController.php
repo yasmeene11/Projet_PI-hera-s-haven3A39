@@ -25,7 +25,7 @@ class BookController extends AbstractController
     #[Route('/affiche', name: 'affiche')]
     public function affiche(BookRepository $repo): Response
     {
-        $result = $repo->findBy(['published' => true]); // Query the repository to get published books
+        $result = $repo->findBy(['published' => true]); 
 
         return $this->render('book/index.html.twig', [
             'result' => $result,
@@ -44,16 +44,16 @@ class BookController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $mr->getManager();
             
-            // Set the 'published' attribute to true
+         
             $book->setPublished(true);
             
-            // Get the author associated with this book
+          
             $author = $book->getAuthor();
             
-            // Increment the 'nb_books' attribute of the author
+            
             $author->setNbBooks($author->getNbBooks() + 1);
             
-            // Persist both the book and the author
+            
             $em->persist($book);
             $em->persist($author);
             
@@ -71,7 +71,7 @@ public function updatef(ManagerRegistry $mr, Request $req, $ref): Response
 {
     $em = $mr->getManager();
     
-    // Find the book you want to update by its ID
+   
     $book = $em->getRepository(Book::class)->find($ref);
     
     
@@ -81,15 +81,9 @@ public function updatef(ManagerRegistry $mr, Request $req, $ref): Response
     $form->handleRequest($req);
     
     if ($form->isSubmitted() && $form->isValid()) {
-        // In this case, you don't need to change the 'published' attribute
-        // because you are updating the existing book.
-        
-        // Get the author associated with this book
+      
         $author = $book->getAuthor();
-        
-        // No need to increment 'nb_books' since you are updating, not creating
-        
-        // Persist the updated book and author
+    
         $em->persist($book);
         $em->persist($author);
         

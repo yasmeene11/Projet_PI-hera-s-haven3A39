@@ -89,17 +89,17 @@ public function removea(AuthorRepository $repo, $id, ManagerRegistry $mr): Respo
 #[Route('/deleteauthors', name: 'deleteauthors')]
 public function deleteauthors(AuthorRepository $authorRepository, EntityManagerInterface $entityManager): Response
 {
-    // Récupérez la liste des auteurs dont "nb_books" est égal à zéro
+    
     $authorsToDelete = $authorRepository->findBy(['nb_books' => 0]);
 
-    // Supprimez les auteurs un par un
+   
     foreach ($authorsToDelete as $author) {
         $entityManager->removea($author);
     }
 
     $entityManager->flush();
 
-    // Redirigez vers une page de confirmation ou ailleurs
+   
     return $this->redirectToRoute('fetch');
 }
 }
