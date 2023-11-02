@@ -24,9 +24,9 @@ class AuthorController extends AbstractController
     #[Route('/fetch', name: 'fetch')]
     public function fetch(AuthorRepository $repo): Response
     {
-        $result=$repo->findAll();
+        $authors=$repo->findAll();
         return $this->render('author/index.html.twig', [
-            'result' => $result,
+            'authors' => $authors,
         ]);
     }
     #[Route('/adda', name: 'adda')]
@@ -102,5 +102,15 @@ public function deleteauthors(AuthorRepository $authorRepository, EntityManagerI
    
     return $this->redirectToRoute('fetch');
 }
+#[Route('/listByEmail', name: 'listByEmail')]
+public function listByEmail(AuthorRepository $authorRepo)
+{
+  $authors = $authorRepo->listAuthorsByEmail();
+
+  return $this->render('author/index.html.twig', [
+    'authors' => $authors
+  ]);
+}
+
 }
 

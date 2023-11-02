@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+{% extends 'base.html.twig' %}
+
+{% block body %}
 <html>
 <head>
 
@@ -44,7 +46,8 @@
     </style>
 </head>
 <body>
-    <h1>Book List</h1>
+   <h1>Book List</h1>
+   
     <table>
         <tr>
             <th>Title</th>
@@ -55,7 +58,11 @@
         </tr>
         {% set publishedCount = 0 %}
         {% set unpublishedCount = 0 %}
-        {% for t in result %}
+        {% for t in books %}
+        <form method="GET" action="{{ path('listBooks', {'ref': t.ref}) }}">
+                <input type="text" name="search" placeholder="Rechercher par Référence">
+             <button type="submit">Rechercher</button>
+              </form>
             <tr>
                 <td>{{ t.title }}</td>
                 <td>{{ t.Publisheddate|date('Y-m-d') }}</td>
@@ -80,6 +87,7 @@
                 </a>
             </td>
             </tr>
+             
         {% endfor %}
     </table>
     <tr>
@@ -89,8 +97,18 @@
                 <button>Create new</button>
             </a>
         </td>
+        <td>
+            <a class="button-link" href="{{ path('listByAuthor') }}">
+                <button>List by Author</button>
+            </a>
+        </td>
+        <td>
+            <a class="button-link" href="{{ path('listBook') }}">
+                <button>List by books by year and author</button>
+            </a>
+        </td>
     </tr>
-    {% if result is empty %}
+    {% if books is empty %}
         <p>No Books found</p>
     {% else %}
         <p>Number of Published Books: {{ publishedCount }}</p>
@@ -98,3 +116,4 @@
     {% endif %}
 </body>
 </html>
+{% endblock %}

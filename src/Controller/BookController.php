@@ -25,10 +25,10 @@ class BookController extends AbstractController
     #[Route('/affiche', name: 'affiche')]
     public function affiche(BookRepository $repo): Response
     {
-        $result = $repo->findBy(['published' => true]); 
+        $books = $repo->findBy(['published' => true]); 
 
         return $this->render('book/index.html.twig', [
-            'result' => $result,
+            'books' => $books,
         ]);
         
     }
@@ -116,4 +116,74 @@ public function show(BookRepository $repo, int $ref): Response
     'book' => $book
   ]);
 }
+#[Route('/listBooks/{ref}', name: 'listBooks')]
+public function listBooks(Request $request, BookRepository $bookRepo)
+{
+    $searchTerm = $request->query->get('search');
+    $refValue = $request->attributes->get('ref'); 
+
+    if ($searchTerm) {
+        $books = $bookRepo->searchBookByRef($searchTerm);
+    } else {
+        $books = $bookRepo->findAll();
+    }
+
+    return $this->render('book/index.html.twig', [
+        'books' => $books,
+        
+    ]);
+}
+
+#[Route('/listByAuthor', name: 'listByAuthor')]
+public function listByAuthor(BookRepository $bookRepo)
+{
+  $books = $bookRepo->listBooksByAuthors();
+
+  return $this->render('book/index.html.twig', [
+    'books' => $books
+  ]);
+}
+#[Route('/listBook', name: 'listBook')]
+public function listBooksPublished(Request $request, BookRepository $bookRepo)
+{
+    $year = '2023'; // Année de référence
+    $minBookCount = 10; // Nombre minimal de livres pour l'auteur
+
+    $books = $bookRepo->showBooksByDateAndNbBooks($minBookCount, $year);
+
+    return $this->render('book/index.html.twig', [
+        'books' => $books,
+    ]);
+}
+#[Route('/book/list/author/update/{category}', name: 'app_book_list_author_update', methods: ['GET'])]
+public function updateCategoryAction(BookRepository $bookRepo)
+{
+    
+    $result = $bookRepo->updateBooksCategoryByAuthor('Science-Fiction');
+
+  
+    return $this->render('book/listBookAuthor.html.twig', [
+        'books' => $bookRepo->findAll(),
+    ]);
+}
+
+  #[Route('/NbrCategory', name: 'book_Count')]
+    function NbrCategory(BookRepository $repo)
+    {
+        $nbr = $repo->NbBookCategory();
+        return $this->render('book/showNbrCategory.html.twig', [
+            'nbr' => $nbr,
+        ]);
+    }
+
+    
+    #[Route('/showBookTitle', name: 'book_showBookByTitle')]
+    function showTitleBook(BookRepository $repo)
+    {
+        $books = $repo->findBookByPublicationDate();
+        return $this->render('book/showBooks.html.twig', [
+            'books' => $books,
+        ]);
+    }
+
 }

@@ -1,6 +1,10 @@
-<!DOCTYPE html>
+{% extends 'base.html.twig' %}
+
+{% block body %}
 <html>
 <head>
+
+<title>Author List</title>
     <style>
         table {
             border-collapse: collapse;
@@ -47,36 +51,39 @@
             <th>username</th>
             <th>Email</th>
             <th>Actions</th>
-           
-            
         </tr>
-        {% for t in result %}
+        {% for author in authors %}
         <tr>
-            <td>{{ t.id }}</td>
-            <td>{{ t.username }}</td>
-            <td>{{ t.email }}</td>
+            <td>{{ author.id }}</td>
+            <td>{{ author.username }}</td>
+            <td>{{ author.email }}</td>
             <td>
-               <a class="button-link" href="{{ path('updatea', {'id': t.id}) }}">
+                <a class="button-link" href="{{ path('updatea', {'id': author.id}) }}">
                     <button>Update</button>
                 </a>
-            
-                <a class="button-link" href="{{ path('removea', {'id': t.id}) }}">
+                <a class="button-link" href="{{ path('removea', {'id': author.id}) }}">
                     <button>Remove</button>
                 </a>
             </td>
-            
-            
         </tr>
         {% endfor %}
-        
     </table>
     <tr>
-            <td colspan="4"></td>
-            <td>
-                <a class="button-link" href="{{ path('adda') }}">
-                    <button>Add</button>
-                </a>
-            </td>
-        </tr>
+        <td colspan="4"></td>
+        <td>
+            <a class="button-link" href="{{ path('adda') }}">
+                <button>Add</button>
+            </a>
+        </td>
+        <td>
+            <a class="button-link" href="{{ path('listByEmail') }}">
+                <button>List by Email</button>
+            </a>
+        </td>
+        <td>
+            <button>List by Author</button>
+        </td>
+    </tr>
 </body>
 </html>
+{% endblock %}

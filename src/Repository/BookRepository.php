@@ -13,12 +13,75 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Book|null findOneBy(array $criteria, array $orderBy = null)
  * @method Book[]    findAll()
  * @method Book[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *@Method("listBooksByAuthors")
  */
 class BookRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Book::class);
+    }
+    public function searchBookByRef($ref)
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.ref = :ref')
+            ->setParameter('ref', $ref)
+            ->getQuery()
+            ->getResult();
+    }
+    public function listBooksByAuthors()
+    {
+      return $this->createQueryBuilder('b')
+           ->join('b.author', 'a')
+           ->orderBy('a.username', 'ASC')  
+           ->getQuery()
+           ->getResult();
+    }
+
+    public function showBooksByDateAndNbBooks($nbooks, $year)
+    {
+        return $this->createQueryBuilder('b')
+            ->join('b.author', 'a')
+            ->addSelect('a')
+            ->where('a.nb_books > :nbooks')
+            ->andWhere("b.Publisheddate < :year")
+            ->setParameter('nbooks', $nbooks)
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getResult();
+    }
+    public function updateBooksCategoryByAuthor($c)
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->update('App\Entity\Book', 'b')
+            ->set('b.category', '?1')
+            ->setParameter(1, 'Romance')
+            ->where('b.category LIKE ?2')
+            ->setParameter(2, $c)
+            ->getQuery()
+            ->getResult();
+    }
+    function NbBookCategory()
+    {
+        $em = $this->getEntityManager();
+        return $em->createQuery('select count(b) from App\Entity\Book b WHERE b.category=:category')
+            ->setParameter('category', 'Romance')->getSingleScalarResult();
+    }
+  
+    function findBookByPublicationDate()
+    {
+        $em = $this->getEntityManager();
+        return $em->createQuery('select b from App\Entity\Book b WHERE 
+    b.Publisheddate BETWEEN ?1 AND ?2')
+            ->setParameter(1, '2014-01-01')
+            ->setParameter(2, '2018-01-01')->getResult();
+    }
+    function UpdateQB()
+    {
+        return $this->createQueryBuilder('b')
+            ->update()->set('b.category', '?1')->setParameter(1, 'Romance')
+            ->where('b.category=?2')->setParameter(2, 'Science Fiction ')
+            ->getQuery()->getResult();
     }
 
 //    /**
