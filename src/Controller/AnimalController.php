@@ -59,7 +59,7 @@ class AnimalController extends AbstractController
             return $this->redirectToRoute('app_listA');
         }
 
-        return $this->render('/Back/Animal/AddA.html.twig', [
+        return $this->render('/Back/Animal/UpdateA.html.twig', [
             'formAnimal' => $form->createView(),
             'animalId' => $animalId,
         ]);

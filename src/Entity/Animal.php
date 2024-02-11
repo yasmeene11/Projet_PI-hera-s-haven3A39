@@ -13,7 +13,7 @@ class Animal
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:'animalId')]
+    #[ORM\Column(name: 'animalId')]
     private ?int $animalId = null;
 
     #[ORM\Column(length: 255)]
@@ -37,13 +37,19 @@ class Animal
     #[ORM\OneToMany(mappedBy: 'Animal_Key', targetEntity: Appointment::class)]
     private Collection $appointments;
 
+    #[ORM\OneToMany(mappedBy: 'Animal_Key', targetEntity: Adoption::class)]
+    private Collection $adoptions;
 
     public function __construct()
     {
         $this->appointments = new ArrayCollection();
+        $this->adoptions = new ArrayCollection();
     }
 
-    
+    public function __toString(): string
+    {
+        return $this->Animal_Name;
+    }
 
     public function getanimalId(): ?int
     {
@@ -55,7 +61,7 @@ class Animal
         return $this->Animal_Name;
     }
 
-    public function setAnimalName(string $Animal_Name): static
+    public function setAnimalName(?string $Animal_Name): static
     {
         $this->Animal_Name = $Animal_Name;
 
@@ -67,7 +73,7 @@ class Animal
         return $this->Animal_Breed;
     }
 
-    public function setAnimalBreed(string $Animal_Breed): static
+    public function setAnimalBreed(?string $Animal_Breed): static
     {
         $this->Animal_Breed = $Animal_Breed;
 
@@ -79,7 +85,7 @@ class Animal
         return $this->Animal_Status;
     }
 
-    public function setAnimalStatus(string $Animal_Status): static
+    public function setAnimalStatus(?string $Animal_Status): static
     {
         $this->Animal_Status = $Animal_Status;
 
@@ -91,7 +97,7 @@ class Animal
         return $this->Animal_Type;
     }
 
-    public function setAnimalType(string $Animal_Type): static
+    public function setAnimalType(?string $Animal_Type): static
     {
         $this->Animal_Type = $Animal_Type;
 
@@ -103,7 +109,7 @@ class Animal
         return $this->Age;
     }
 
-    public function setAge(int $Age): static
+    public function setAge(?int $Age): static
     {
         $this->Age = $Age;
 
@@ -115,7 +121,7 @@ class Animal
         return $this->Enrollement_Date;
     }
 
-    public function setEnrollementDate(\DateTimeInterface $Enrollement_Date): static
+    public function setEnrollementDate(?\DateTimeInterface $Enrollement_Date): static
     {
         $this->Enrollement_Date = $Enrollement_Date;
 
@@ -152,5 +158,33 @@ class Animal
         return $this;
     }
 
-    
+    /**
+     * @return Collection<int, Adoption>
+     */
+    public function getAdoptions(): Collection
+    {
+        return $this->adoptions;
+    }
+
+    public function addAdoption(Adoption $adoption): static
+    {
+        if (!$this->adoptions->contains($adoption)) {
+            $this->adoptions->add($adoption);
+            $adoption->setAnimalKey($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdoption(Adoption $adoption): static
+    {
+        if ($this->adoptions->removeElement($adoption)) {
+            // set the owning side to null (unless already changed)
+            if ($adoption->getAnimalKey() === $this) {
+                $adoption->setAnimalKey(null);
+            }
+        }
+
+        return $this;
+    }
 }

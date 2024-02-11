@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html
@@ -105,12 +106,12 @@
                     <div data-i18n="Users">Users</div>
                   </a>
                     </li>
-                  <li class="menu-item ">
+                  <li class="menu-item active">
                   <a href="{{ path('app_listA') }}" class="menu-link">
                     <div data-i18n="Animals">Animals</div>
                   </a>
                     </li>
-                  <li class="menu-item active">
+                  <li class="menu-item">
                   <a href="{{ path('app_listAd') }}" class="menu-link">
                     <div data-i18n="Adoptions">Adoptions</div>
                   </a>
@@ -443,7 +444,7 @@
             </div>
           </nav>
 
-          {% block content %}
+{% block content %}
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row invoice-add">
             <!-- Invoice Add-->
@@ -458,10 +459,9 @@
                                         <span style="color: var(--bs-primary)">
                                         </span>
                                     </span>
-                                    <span class="h4 mb-0 app-brand-text fw-bold">Add Adoption</span>
+                                    <span class="h4 mb-0 app-brand-text fw-bold">Update Adoption</span>
                                 </div>
                             </div>
-                            <!-- ... Other header content ... -->
                         </div>
                     </div>
                     <hr class="my-0" />
@@ -479,13 +479,8 @@
         </div>
     </div>
 {% endblock %}
-                    
-                    
-                  </div>
-                </div>
-                <!-- /Invoice Add-->
 
-                
+
               </div>
 
               

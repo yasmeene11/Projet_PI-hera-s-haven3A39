@@ -66,6 +66,10 @@ class Account
         $this->donationMs = new ArrayCollection();
         $this->donationPs = new ArrayCollection();
     }
+    public function __toString():string
+    {
+        return $this->Name;
+    }
 
     public function getaccountId(): ?int
     {
