@@ -9,17 +9,45 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AnimalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Animal_Name')
-            ->add('Animal_Breed')
-            ->add('Animal_Status')
-            ->add('Animal_Type')
-            ->add('Age')
+        ->add('Animal_Name')
+        ->add('Animal_Breed', ChoiceType::class, [
+            'choices' => [
+                'Labrador Retriever' => 'Labrador Retriever',
+                'Persian ' => 'Persian ',
+                'Guinea Pig' => 'Guinea Pig',
+                'Cockatiel' => 'Cockatiel',
+                'Betta Fish ' => 'Betta Fish ',
+                'Bearded Dragon' => 'Bearded Dragon',
+        
+            ],
+            'placeholder' => 'Select Breed',
+            'required' => true,
+        ])
+        ->add('Animal_Status', ChoiceType::class, [
+            'choices' => [
+                
+        
+            ],
+            'placeholder' => 'Select Status',
+            'required' => true,
+        ])
+        ->add('Animal_Type', ChoiceType::class, [
+            'choices' => [
+                'Type 1' => 'type1',
+                'Type 2' => 'type2',
+                // Add more options as needed
+            ],
+            'placeholder' => 'Select Type',
+            'required' => true,
+        ])
+        ->add('Age')
             ->add('Enrollement_Date')
             ->add('Animal_Image', FileType::class, [
                 'label' => 'Animal Image',
