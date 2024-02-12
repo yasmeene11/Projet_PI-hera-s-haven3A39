@@ -55,6 +55,9 @@ class Account
     #[ORM\OneToMany(mappedBy: 'Account_Key', targetEntity: DonationP::class)]
     private Collection $donationPs;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Account_Status = null;
+
   
 
 
@@ -318,6 +321,18 @@ class Account
                 $donationP->setAccountKey(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAccountStatus(): ?string
+    {
+        return $this->Account_Status;
+    }
+
+    public function setAccountStatus(string $Account_Status): static
+    {
+        $this->Account_Status = $Account_Status;
 
         return $this;
     }

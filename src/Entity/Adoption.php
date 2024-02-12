@@ -3,15 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\AdoptionRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: AdoptionRepository::class)]
 class Adoption
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:'adoptionId')]
+    #[ORM\Column(name: 'adoptionId')]
     private ?int $adoptionId = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -27,7 +27,8 @@ class Adoption
     #[ORM\JoinColumn(nullable: false, name: 'Account_Key', referencedColumnName: 'accountId')]
     private ?Account $Account_Key = null;
 
-    #[ORM\OneToOne(mappedBy: 'Adoption_Key', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'adoptions')]
+    #[ORM\JoinColumn(nullable: false, name: 'Animal_Key', referencedColumnName: 'animalId')]
     private ?Animal $Animal_Key = null;
 
     public function getAdoptionId(): ?int
