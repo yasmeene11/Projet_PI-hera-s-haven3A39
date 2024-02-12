@@ -1,5 +1,5 @@
 
-////list 
+
 <!DOCTYPE html>
 
 <html
@@ -483,62 +483,57 @@
 
               {% block content %}
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row invoice-add">
-            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
-                <div class="card">
-                    <div class="card-datatable table-responsive">
-                        <div class="dt-action-buttons text-start mt-md-0 mt-3">
-    <div class="dt-buttons">
-        <a href="{{ path('app_add_A') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-            <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Animal</span></span>
-        </a>
-    </div>
-</div>
-
-
-                        <table class="invoice-list-table table">
-    <thead class="table-light">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Breed</th>
-            <th>Status</th>
-            <th>Type</th>
-            <th>Age</th>
-            <th class="text-truncate">Enrollment Date</th>
-            <th class="cell-fit">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for animal in result %}
-            <tr>
-                <td>{{ animal.getanimalId() }}</td>
-                <td>{{ animal.getAnimalName() }}</td>
-                <td>{{ animal.getAnimalBreed() }}</td>
-                <td>{{ animal.getAnimalStatus() }}</td>
-                <td>{{ animal.getAnimalType() }}</td>
-                <td>{{ animal.getAge() }}</td>
-                <td>{{ animal.getEnrollementDate()|date('Y-m-d') }}</td>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Animal List</h2>
                 <td>
-                    <!-- Add your actions here, e.g., edit, delete -->
-                    <td>
-    <!-- Add your actions here, e.g., edit, delete -->
-    <a href="{{ path('app_update_A', {'animalId': animal.getanimalId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
-    <a href="{{ path('app_delete_A', {'animalId': animal.getanimalId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Delete</a>
-</td>
-
+                    <a href="{{ path('app_add_A') }}" class="dt-button btn btn-primary waves-effect waves-light text-white">Add animal</a>
                 </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-                    </div>
-                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Breed</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Age</th>
+                            <th>Enrollment Date</th>
+                            <th>Image</th>
+                            <th>Actions</th> <!-- New column for buttons -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for animal in result %}
+                            <tr>
+                                <td>{{ animal.getanimalId() }}</td>
+                                <td>{{ animal.getAnimalName() }}</td>
+                                <td>{{ animal.getAnimalBreed() }}</td>
+                                <td>{{ animal.getAnimalStatus() }}</td>
+                                <td>{{ animal.getAnimalType() }}</td>
+                                <td>{{ animal.getAge() }}</td>
+                                <td>{{ animal.getEnrollementDate() ? animal.getEnrollementDate()|date('Y-m-d') : '' }}</td>
+                                <td>
+                                    {% if animal.getAnimalImage() %}
+                                        <img src="{{ asset('animal_images/' ~ animal.getAnimalImage()) }}" alt="Animal Image">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_update_A', {'animalId': animal.getanimalId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white">Edit</a>
+                                    <a href="{{ path('app_delete_A', {'animalId': animal.getanimalId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 {% endblock %}
+
+
 
 
             <!-- Footer -->

@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+ // Added this line for UploadedFile
 
 class AnimalController extends AbstractController
 {
@@ -25,15 +27,27 @@ class AnimalController extends AbstractController
     #[Route('/add_a', name: 'app_add_A')]
     public function AddA(ManagerRegistry $mr, Request $req): Response
     {
-        $s = new Animal();  //1 -instance
-
-        $form = $this->createForm(AnimalType::class, $s);
-
+        $animal = new Animal();
+        $form = $this->createForm(AnimalType::class, $animal);
         $form->handleRequest($req);
-        if ($form->isSubmitted()) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            $imageFile = $form->get('Animal_Image')->getData(); // Changed 'imageFile' to 'Animal_Image'
+
+            if ($imageFile instanceof UploadedFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/animal_images/',
+                    $newFilename
+                );
+                $animal->setAnimalImage($newFilename);
+            }
+
             $em = $mr->getManager();
-            $em->persist($s);
+            $em->persist($animal);
             $em->flush();
+
             return $this->redirectToRoute('app_listA');
         }
 
@@ -46,14 +60,25 @@ class AnimalController extends AbstractController
     public function updateA(ManagerRegistry $mr, Request $req, $animalId): Response
     {
         $em = $mr->getManager();
-        $s = $em->getRepository(Animal::class)->find($animalId);
+        $animal = $em->getRepository(Animal::class)->find($animalId);
 
-        $form = $this->createForm(AnimalType::class, $s);
+        $form = $this->createForm(AnimalType::class, $animal);
 
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $mr->getManager();
+            // Handle file upload
+            $imageFile = $form->get('Animal_Image')->getData(); // Changed 'imageFile' to 'Animal_Image'
+
+            if ($imageFile instanceof UploadedFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/animal_images/',
+                    $newFilename
+                );
+                $animal->setAnimalImage($newFilename);
+            }
+
             $em->flush();
 
             return $this->redirectToRoute('app_listA');
@@ -64,17 +89,21 @@ class AnimalController extends AbstractController
             'animalId' => $animalId,
         ]);
     }
-    
+
     #[Route('/delete_a/{animalId}', name: 'app_delete_A')]
-     public function removeA(AnimalRepository $repo, $animalId, ManagerRegistry $mr): Response
+    public function removeA(AnimalRepository $repo, $animalId, ManagerRegistry $mr): Response
     {
-    $animal = $repo->find($animalId); 
-    $em = $mr->getManager();
-    $em->remove($animal);
-    $em->flush();
-    
-   
-    return $this-> redirectToRoute('app_listA');
+        $animal = $repo->find($animalId);
+        $em = $mr->getManager();
+        $em->remove($animal);
+        $em->flush();
+
+        return $this->redirectToRoute('app_listA');
     }
 
+    #[Route('/List_af', name: 'app_listAF')]
+    public function ListAF(): Response
+    {
+        return $this->render('/Front/Animal/ListA.html.twig', []);
+    }
 }

@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
 class Animal
@@ -34,6 +37,12 @@ class Animal
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $Enrollement_Date = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Animal_Image = null;
+    
+    
+    
+
     #[ORM\OneToMany(mappedBy: 'Animal_Key', targetEntity: Appointment::class)]
     private Collection $appointments;
 
@@ -45,7 +54,9 @@ class Animal
         $this->appointments = new ArrayCollection();
         $this->adoptions = new ArrayCollection();
     }
+    
 
+   
     public function __toString(): string
     {
         return $this->Animal_Name;
@@ -128,6 +139,20 @@ class Animal
         return $this;
     }
 
+    public function getAnimalImage(): ?string
+    {
+        return $this->Animal_Image;
+    }
+
+    public function setAnimalImage(?string $Animal_Image): static
+    {
+        $this->Animal_Image = $Animal_Image;
+
+        return $this;
+    }
+
+    
+    
     /**
      * @return Collection<int, Appointment>
      */
