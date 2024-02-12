@@ -70,7 +70,7 @@ class Account
     {
         return $this->Name;
     }
-
+    
     public function getaccountId(): ?int
     {
         return $this->accountId;

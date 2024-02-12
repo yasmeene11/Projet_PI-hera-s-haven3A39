@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
- // Added this line for UploadedFile
+
 
 class AnimalController extends AbstractController
 {
@@ -32,8 +32,8 @@ class AnimalController extends AbstractController
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle file upload
-            $imageFile = $form->get('Animal_Image')->getData(); // Changed 'imageFile' to 'Animal_Image'
+            
+            $imageFile = $form->get('Animal_Image')->getData(); 
 
             if ($imageFile instanceof UploadedFile) {
                 $newFilename = uniqid().'.'.$imageFile->guessExtension();
@@ -106,4 +106,7 @@ class AnimalController extends AbstractController
     {
         return $this->render('/Front/Animal/ListA.html.twig', []);
     }
+
+
+    
 }

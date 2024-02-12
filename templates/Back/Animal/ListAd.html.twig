@@ -524,30 +524,23 @@
 
 
 
-                            {% block content %}
+ {% block content %}
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row invoice-add">
-            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
-                <div class="card">
-                    <div class="card-datatable table-responsive">
-                        <div class="dt-action-buttons text-start mt-md-0 mt-3">
-    <div class="dt-buttons">
-        <a href="{{ path('app_add_Ad') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-            <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Adoption</span></span>
-        </a>
-    </div>
-</div>
-
-
-                        <table class="invoice-list-table table">
-    <thead class="table-light">
-        <tr>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Animal List</h2>
+                <td>
+                    <a href="{{ path('app_add_Ad') }}" class="dt-button btn btn-primary waves-effect waves-light text-white">Add Adoption</a>
+                </td>
+                <table class="table">
+                    <thead>
+                        <tr>
             <th>ID</th>
             <th>Adoption Date</th>
             <th>Adoption Status</th>
             <th>Adoption Fee</th>
-            <th>Account Key</th>
-            <th>Animal Key</th>
+            <th>User Name </th>
+            <th>Animal Name</th>
             <th class="cell-fit">Actions</th>
         </tr>
     </thead>
@@ -575,8 +568,7 @@
     </tbody>
 </table>
 
-                    </div>
-                </div>
+                    
             </div>
         </div>
     </div>

@@ -29,24 +29,23 @@ class AnimalType extends AbstractType
         $builder->get('Animal_Image')->addModelTransformer(new class() implements DataTransformerInterface {
             public function transform($value)
             {
-                // Transform the File instance to a string (file name)
+               
                 if ($value instanceof \Symfony\Component\HttpFoundation\File\File) {
                     return $value->getFilename();
                 }
 
-                return null; // Adjust this based on your requirements
+                return null; 
             }
 
             public function reverseTransform($value)
             {
-                // Reverse transform the string (file name) to a File instance
+                
                 if ($value instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
                     return $value;
                 }
 
                 if (is_string($value)) {
-                    // Your logic to create a File instance, e.g., using the kernel.project_dir
-                    // and the actual upload directory
+                   
                     $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/animal_images/';
                     $filePath = $uploadDirectory . $value;
 

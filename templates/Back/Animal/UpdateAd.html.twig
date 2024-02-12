@@ -467,9 +467,28 @@
                     <hr class="my-0" />
                     <hr class="my-0" />
                     <div class="card-body">
-                        {{ form_start(formAdoption) }}
-                        {# Render form fields here using form_widget #}
-                        {{ form_widget(formAdoption) }}
+                        {{ form_start(formAdoption, {'attr': {'class': 'your-custom-form-class'}}) }}
+                        <div class="mb-3">
+                            {{ form_label(formAdoption.Adoption_Date) }}
+                            {{ form_widget(formAdoption.Adoption_Date, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formAdoption.Adoption_Status) }}
+                            {{ form_widget(formAdoption.Adoption_Status, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formAdoption.Adoption_Fee) }}
+                            {{ form_widget(formAdoption.Adoption_Fee, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formAdoption.Account_Key) }}
+                            {{ form_widget(formAdoption.Account_Key, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formAdoption.Animal_Key) }}
+                            {{ form_widget(formAdoption.Animal_Key, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
                         <button type="submit" class="btn btn-sm btn-primary">Save Adoption</button>
                         {{ form_end(formAdoption) }}
                     </div>

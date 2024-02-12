@@ -59,8 +59,10 @@ class Animal
    
     public function __toString(): string
     {
-        return $this->Animal_Name;
+        return $this->Animal_Image;
     }
+   
+    
 
     public function getanimalId(): ?int
     {

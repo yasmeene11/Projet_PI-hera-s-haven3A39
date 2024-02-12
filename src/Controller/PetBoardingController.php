@@ -22,4 +22,9 @@ class PetBoardingController extends AbstractController
             'controller_name' => 'IndexController',
         ]);
     }
+    #[Route('/List_bf', name: 'app_listBF')]
+    public function ListBF(): Response
+    {
+        return $this->render('/Front/Animal/ListB.html.twig', []);
+    }
 }

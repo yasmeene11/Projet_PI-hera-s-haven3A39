@@ -22,4 +22,9 @@ class ProductController extends AbstractController
             'controller_name' => 'IndexController',
         ]);
     }
+    #[Route('/List_pf', name: 'app_listPF')]
+    public function ListPF(): Response
+    {
+        return $this->render('/Front/Product/ListP.html.twig', []);
+    }
 }

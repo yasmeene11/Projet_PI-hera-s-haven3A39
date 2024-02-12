@@ -22,5 +22,11 @@ class AppointmentController extends AbstractController
             'controller_name' => 'IndexController',
         ]);
     }
+
+    #[Route('/List_apf', name: 'app_listApF')]
+    public function ListApF(): Response
+    {
+        return $this->render('/Front/Appointment/ListAp.html.twig', []);
+    }
     
 }

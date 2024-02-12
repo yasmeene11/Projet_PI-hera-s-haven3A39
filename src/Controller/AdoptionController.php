@@ -77,4 +77,9 @@ class AdoptionController extends AbstractController
     return $this-> redirectToRoute('app_listAd');
     }
 
+    #[Route('/List_adf', name: 'app_listAdF')]
+    public function ListAdF(): Response
+    {
+        return $this->render('/Front/Animal/ListAd.html.twig', []);
+    }
 }
