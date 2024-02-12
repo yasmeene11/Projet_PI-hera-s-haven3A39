@@ -126,7 +126,7 @@
                   </a>
                    </li>
                     <li class="menu-item active">
-                  <a href="{{ path('donation') }}"" class="menu-link">
+                  <a href="{{ path('app_listD') }}"" class="menu-link">
                     <div data-i18n="Donations">Donations</div>
                   </a>
                    </li>
@@ -448,134 +448,29 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
- <div class="dt-buttons">
-            <a href="{{ path('app_addDonationM') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Donation Money</span></span>
-            </a>
-        </div>
-    </div>
+
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h2 class="py-3 mb-4">Donation List</h4>
+              
 
+              <div class="container text-center">
+   <div style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+    <div style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+    <div class="dt-buttons">
+        <a href="{{ path('app_listD') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+            Donation Money
+        </a>
+    </div>
 
-  <div class="card">
-    <div class="card-datatable table-responsive">
-        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-            <div class="row mx-1">
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
-                    <div class="dataTables_length" id="DataTables_Table_0_length">
-                        <label>Show
-                            <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0"
-                                class="form-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
-       
-    <table class="invoice-list-table table">
-    <thead class="table-light">
-        <tr>
-            <th>ID</th>
-            <th>Donation Amount</th>
-            <th class="text-truncate">Donation Date</th>
-            <th class="cell-fit">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for donationM in result %}
-            <tr>
-                <td>{{ donationM.getdonationMId() }}</td>
-                <td>{{ donationM.getDonationAmount() }}</td>
-               
-                <td>{{ donationM.getDonationMDate()|date('Y-m-d') }}</td>
-                <td>
-                    <!-- Add your actions here, e.g., edit, delete -->
-               <a href="{{ path('app_update_donationM', {'donationMId': donationM.getdonationMId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
-    <a href="{{ path('app_delete_donationM', {'donationMId': donationM.getdonationMId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Delete</a>
-    <!-- Add your actions here, e.g., edit, delete -->
-    
-</td>
-
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-                </div>
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
-                    <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                        <label><input type="search" class="form-control" placeholder="Search Invoice"
-                                aria-controls="DataTables_Table_0"></label>
-                    </div>
-                    <div class="invoice_status mb-3 mb-md-0"></div>
-                </div>
-            </div>
-            
-            
-        </div>
+    <div class="dt-buttons" style="margin-left: 10px;">
+        <a href="{{ path('app_list_donationP') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+            Donation Product
+        </a>
     </div>
 </div>
 
-            
 
-                </div>
-            <!-- / Content -->
+</div>
 
-            <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl">
-                <div
-                  class="footer-container d-flex align-items-center justify-content-between py-3 flex-md-row flex-column">
-                  <div class="mb-2 mb-md-0">
-                    ©
-                    <script>
-                      document.write(new Date().getFullYear());
-                    </script>
-                    , made with <span class="text-danger"><i class="tf-icons mdi mdi-heart"></i></span> by
-                    <a href="https://pixinvent.com" target="_blank" class="footer-link fw-medium">Pixinvent</a>
-                  </div>
-                  <div class="d-none d-lg-inline-block">
-                    <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank"
-                      >License</a
-                    >
-                    <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4"
-                      >More Themes</a
-                    >
-
-                    <a
-                      href="https://demos.pixinvent.com/materialize-html-admin-template/documentation/"
-                      target="_blank"
-                      class="footer-link me-4"
-                      >Documentation</a
-                    >
-
-                    <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block"
-                      >Support</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </footer>
-            <!-- / Footer -->
-
-            <div class="content-backdrop fade"></div>
-          </div>
-          <!-- Content wrapper -->
-        </div>
-        <!-- / Layout page -->
-      </div>
-
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
-
-      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-      <div class="drag-target"></div>
-    </div>
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->

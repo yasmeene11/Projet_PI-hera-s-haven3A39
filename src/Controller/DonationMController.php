@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\DonationM;
 use App\Repository\DonationMRepository;
+use App\Repository\DonationPRepository;
+
 use App\Form\DonationMType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,6 +23,12 @@ class DonationMController extends AbstractController
         return $this->render('/Back/DonationM/ListD.html.twig', [
             'result' => $result,
         ]);
+    }
+    #[Route('/donation', name: 'donation')]
+    public function List(): Response
+    {
+    
+        return $this->render('/Back/donation.html.twig');
     }
     #[Route('/add_donationM', name: 'app_addDonationM')]
     public function addDonationM(ManagerRegistry $mr, Request $req): Response

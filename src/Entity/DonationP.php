@@ -17,21 +17,21 @@ class DonationP
     private ?int $donationPId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Donation_Product_Name = null;
+    private ?string $donation_product_name = null;
 
     #[ORM\Column]
-    private ?int $Donation_Product_Quantity = null;
+    private ?int $donation_product_quantity = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Donation_Product_Label = null;
+    private ?string $donation_product_label = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $Donation_Product_Expiration_Date = null;
+    private ?\DateTimeInterface $donation_product_expiration_date = null;
 
     
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $DonationP_Date = null;
+    private ?\DateTimeInterface $donationP_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'donationPs')]
     #[ORM\JoinColumn(nullable: false, name: 'Account_Key', referencedColumnName: 'accountId')]
@@ -40,7 +40,7 @@ class DonationP
     
 
     #[ORM\Column(length: 255)]
-    private ?string $DonationP_Type = null;
+    private ?string $donationP_type = null;
 
     #[ORM\OneToMany(mappedBy: 'Donation_Key', targetEntity: DonationProduct::class)]
     private Collection $donationProducts;
@@ -57,55 +57,55 @@ class DonationP
    
 
    
-    public function getdonationPId(): ?int
+    public function getDonationPId(): ?int
     {
         return $this->donationPId;
     }
 
     public function getDonationProductName(): ?string
     {
-        return $this->Donation_Product_Name;
+        return $this->donation_product_name;
     }
 
-    public function setDonationProductName(string $Donation_Product_Name): static
+    public function setDonationProductName(string $donation_product_name): static
     {
-        $this->Donation_Product_Name = $Donation_Product_Name;
+        $this->donation_product_name = $donation_product_name;
 
         return $this;
     }
 
     public function getDonationProductQuantity(): ?string
     {
-        return $this->Donation_Product_Quantity;
+        return $this->donation_product_quantity;
     }
 
-    public function setDonationProductQuantity(string $Donation_Product_Quantity): static
+    public function setDonationProductQuantity(string $donation_product_quantity): static
     {
-        $this->Donation_Product_Quantity = $Donation_Product_Quantity;
+        $this->donation_product_quantity = $donation_product_quantity;
 
         return $this;
     }
 
     public function getDonationProductLabel(): ?string
     {
-        return $this->Donation_Product_Label;
+        return $this->donation_product_label;
     }
 
-    public function setDonationProductLabel(string $Donation_Product_Label): static
+    public function setDonationProductLabel(string $donation_product_label): static
     {
-        $this->Donation_Product_Label = $Donation_Product_Label;
+        $this->donation_product_label = $donation_product_label;
 
         return $this;
     }
 
     public function getDonationProductExpirationDate(): ?\DateTimeInterface
     {
-        return $this->Donation_Product_Expiration_Date;
+        return $this->donation_product_expiration_date;
     }
 
-    public function setDonationProductExpirationDate(\DateTimeInterface $Donation_Product_Expiration_Date): static
+    public function setDonationProductExpirationDate(\DateTimeInterface $donation_product_expiration_date): static
     {
-        $this->Donation_Product_Expiration_Date = $Donation_Product_Expiration_Date;
+        $this->donation_product_expiration_date = $donation_product_expiration_date;
 
         return $this;
     }
@@ -114,12 +114,12 @@ class DonationP
 
     public function getDonationPDate(): ?\DateTimeInterface
     {
-        return $this->DonationP_Date;
+        return $this->donationP_date;
     }
 
-    public function setDonationPDate(\DateTimeInterface $DonationP_Date): static
+    public function setDonationPDate(\DateTimeInterface $donationP_date): static
     {
-        $this->DonationP_Date = $DonationP_Date;
+        $this->donationP_date = $donationP_date;
 
         return $this;
     }
@@ -139,12 +139,12 @@ class DonationP
    
     public function getDonationPType(): ?string
     {
-        return $this->DonationP_Type;
+        return $this->donationP_type;
     }
 
-    public function setDonationPType(string $DonationP_Type): static
+    public function setDonationPType(string $donationP_type): static
     {
-        $this->DonationP_Type = $DonationP_Type;
+        $this->donationP_type = $donationP_type;
 
         return $this;
     }
