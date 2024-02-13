@@ -110,7 +110,7 @@
                     <div data-i18n="Animals">Animals</div>
                   </a>
                     </li>
-                  <li class="menu-item active">
+                  <li class="menu-item">
                   <a href="{{ path('app_listAd') }}" class="menu-link">
                     <div data-i18n="Adoptions">Adoptions</div>
                   </a>
@@ -120,7 +120,7 @@
                     <div data-i18n="Pet Boarding">Pet Boarding</div>
                   </a>
                 </li>
-                 <li class="menu-item">
+                 <li class="menu-item active">
                   <a href="{{ path('app_listP') }}"class="menu-link">
                     <div data-i18n="Products">Products</div>
                   </a>
@@ -450,135 +450,131 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-3 mb-4">Adoption List</h4>
-
-              <!-- Invoice List Widget -->
-
-              <div class="card mb-4">
-                <div class="card-widget-separator-wrapper">
-                  <div class="card-body card-widget-separator">
-                    <div class="row gy-4 gy-sm-1">
-                      <div class="col-sm-6 col-lg-3">
-                        <div
-                          class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
-                          <div>
-                            <h3 class="mb-1">24</h3>
-                            <p class="mb-0">Clients</p>
-                          </div>
-                          <div class="avatar me-sm-4">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-account-outline text-heading mdi-20px"></i>
+              <div class="row invoice-add">
+                <!-- Invoice Add-->
+                <div class="col-lg-9 col-12 mb-lg-0 mb-4">
+                  <div class="card invoice-preview-card">
+                    <div class="card-body">
+                      <div class="row mx-0">
+                        <div class="col-md-7 mb-md-0 mb-4 ps-0">
+                          <div class="d-flex svg-illustration align-items-center gap-2 mb-4">
+                            <span class="app-brand-logo demo">
+                              <span style="color: var(--bs-primary)">
+                              </span>
                             </span>
+                            <span class="h4 mb-0 app-brand-text fw-bold">Add Product</span>
                           </div>
+                          
                         </div>
-                        <hr class="d-none d-sm-block d-lg-none me-4" />
-                      </div>
-                      <div class="col-sm-6 col-lg-3">
-                        <div
-                          class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-3 pb-sm-0">
-                          <div>
-                            <h3 class="mb-1">165</h3>
-                            <p class="mb-0">Invoices</p>
-                          </div>
-                          <div class="avatar me-lg-4">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-content-paste text-heading mdi-20px"></i>
-                            </span>
-                          </div>
-                        </div>
-                        <hr class="d-none d-sm-block d-lg-none" />
-                      </div>
-                      <div class="col-sm-6 col-lg-3">
-                        <div
-                          class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-3">
-                          <div>
-                            <h3 class="mb-1">$2.46k</h3>
-                            <p class="mb-0">Paid</p>
-                          </div>
-                          <div class="avatar me-sm-4">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-currency-usd text-heading mdi-20px"></i>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-6 col-lg-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                          <div>
-                            <h3 class="mb-1">$876</h3>
-                            <p class="mb-0">Unpaid</p>
-                          </div>
-                          <div class="avatar">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-currency-usd-off text-heading mdi-20px"></i>
-                            </span>
-                          </div>
+                        <div class="col-md-5 pe-0 ps-0 ps-md-2">
+                          <dl class="row mb-2 g-2">
+                            <dt class="col-sm-6 mb-2 d-md-flex align-items-center justify-content-end">
+                              <span class="h4 text-capitalize mb-0 text-nowrap">Invoice</span>
+                            </dt>
+                            <dd class="col-sm-6">
+                              <div class="input-group input-group-merge disabled">
+                                <span class="input-group-text">#</span>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  disabled
+                                  placeholder="3905"
+                                  value="3905"
+                                  id="invoiceId" />
+                              </div>
+                            </dd>
+                            
+                          </dl>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Animals List Table -->
-
-
-
- {% block content %}
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Adoption List</h2>
-                <td>
-                    <a href="{{ path('app_add_Ad') }}" class="dt-button btn btn-primary waves-effect waves-light text-white">Add Adoption</a>
-                </td>
-                <table class="table">
-                    <thead>
-                        <tr>
-            <th>ID</th>
-            <th>Adoption Date</th>
-            <th>Adoption Status</th>
-            <th>Adoption Fee</th>
-            <th>User Name </th>
-            <th>Animal Photo</th>
-            <th class="cell-fit">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for adoption in result %}
-            <tr>
-                <td>{{ adoption.getAdoptionId() }}</td>
-                <td>{{ adoption.getAdoptionDate()|date('Y-m-d') }}</td>
-                <td>{{ adoption.getAdoptionStatus() }}</td>
-                <td>{{ adoption.getAdoptionFee() }}</td>
-                <td>{{ adoption.getAccountKey() }}</td>
-                <td>
-                                    {% if adoption.getAnimalKey() %}
-                                        <img src="{{ asset('animal_images/' ~ adoption.getAnimalKey()) }}" alt="Animal Image">
-                                    {% else %}
-                                        No Image
-                                    {% endif %}
-                                </td>
-                
-                <td>
-                    <!-- Add your actions here, e.g., edit, delete -->
-                    <td>
-    <!-- Add your actions here, e.g., edit, delete -->
-    <a href="{{ path('app_update_Ad', {'adoptionId': adoption.getAdoptionId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
-    <a href="{{ path('app_delete_Ad', {'adoptionId': adoption.getAdoptionId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Delete</a>
-</td>
-
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                    <hr class="my-0" />
+                    
+                    <hr class="my-0" />
+                    <div class="card-body">
+                      <form class="source-item pt-1">
+                        <div class="mb-3" data-repeater-list="group-a">
+                          <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
+                            <div class="d-flex border rounded position-relative pe-0">
+                              <div class="row w-100 p-3">
+                                <div class="col-md-6 col-12 mb-md-0 mb-3">
+                                  <p class="mb-2 repeater-title">Item</p>
+                                  <select class="form-select item-details mb-3">
+                                    <option selected disabled>Select Item</option>
+                                    <option value="App Design">App Design</option>
+                                    <option value="App Customization">App Customization</option>
+                                    <option value="ABC Template">ABC Template</option>
+                                    <option value="App Development">App Development</option>
+                                  </select>
+                                  <textarea class="form-control" rows="2" placeholder="Item Information"></textarea>
+                                </div>
+                                <div class="col-md-3 col-12 mb-md-0 mb-3">
+                                  <p class="mb-2 repeater-title">Cost</p>
+                                  <input
+                                    type="number"
+                                    class="form-control invoice-item-price mb-2"
+                                    placeholder="00"
+                                    min="12" />
+                                  <div class="d-flex flex-column gap-2">
+                                    <span>Discount:</span>
+                                    <span>
+                                      <span class="discount me-2">0%</span>
+                                      <span
+                                        class="tax-1 me-2"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Tax 1"
+                                        >0%</span
+                                      >
+                                      <span class="tax-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Tax 2"
+                                        >0%</span
+                                      >
+                                    </span>
+                                  </div>
+                                </div>
+                                <div class="col-md-2 col-12 mb-md-0 mb-3">
+                                  <p class="mb-2 repeater-title">Qty</p>
+                                  <input
+                                    type="number"
+                                    class="form-control invoice-item-qty"
+                                    placeholder="1"
+                                    min="1"
+                                    max="50" />
+                                </div>
+                                <div class="col-md-1 col-12 pe-0">
+                                  <p class="mb-2 repeater-title">Price</p>
+                                  <p class="mb-0">$24.00</p>
+                                </div>
+                              </div>
+                              <div
+                                class="d-flex flex-column align-items-center justify-content-between border-start p-2">
+                                <i class="mdi mdi-close cursor-pointer" data-repeater-delete></i>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <button type="button" class="btn btn-sm btn-primary" data-repeater-create>
+                              <i class="mdi mdi-plus me-1"></i> Add Product
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
 
                     
+                    
+                  </div>
+                </div>
+                <!-- /Invoice Add-->
+
+                
+              </div>
+
+              
             </div>
-        </div>
-    </div>
-{% endblock %}
             <!-- / Content -->
 
             <!-- Footer -->
@@ -648,12 +644,16 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/moment/moment.js"></script>
-    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="../../assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="../../assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+    <script src="../../assets/vendor/libs/jquery-repeater/jquery-repeater.js"></script>
 
     <!-- Main JS -->
     <script src="../../assets/js/main.js"></script>
 
     <!-- Page JS -->
+    <script src="../../assets/js/offcanvas-send-invoice.js"></script>
+    <script src="../../assets/js/app-invoice-add.js"></script>
   </body>
 </html>

@@ -524,79 +524,57 @@
 
 
 
-              <div class="card">
-    <div class="card-datatable table-responsive">
-        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-            <div class="row mx-1">
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
-                    <div class="dataTables_length" id="DataTables_Table_0_length">
-                        <label>Show
-                            <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0"
-                                class="form-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
-        <div class="dt-buttons">
-            <a href="{{ path('app_add_B') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Pet Boarding</span></span>
-            </a>
-        </div>
-    </div>
-                </div>
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
-                    <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                        <label><input type="search" class="form-control" placeholder="Search Invoice"
-                                aria-controls="DataTables_Table_0"></label>
-                    </div>
-                    <div class="invoice_status mb-3 mb-md-0"></div>
-                </div>
-            </div>
-             <div class="card-datatable table-responsive">
-                  <table class="invoice-list-table table">
-                    <thead class="table-light">
-                      <tr>
-                        
-                        <th>ID</th>
-                        <th class="text-truncate">Start Date</th>
-                        <th class="text-truncate">End Date</th>
-                        <th>Status</th>
-                        <th>Boarding fee</th>
-                        <th>ID Animal</th>
-                        <th>ID User</th>
-                        <th class="cell-fit">Actions</th>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-            <div class="row mx-2">
-                <div class="col-sm-12 col-md-6">
-                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 0
-                        to 0 of 0 entries</div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                        <ul class="pagination">
-                            <li class="paginate_button page-item previous disabled"
-                                id="DataTables_Table_0_previous">
-                                <a aria-controls="DataTables_Table_0" aria-disabled="true" role="link"
-                                    data-dt-idx="previous" tabindex="0" class="page-link">Previous</a>
-                            </li>
-                            <li class="paginate_button page-item next disabled" id="DataTables_Table_0_next">
-                                <a aria-controls="DataTables_Table_0" aria-disabled="true" role="link"
-                                    data-dt-idx="next" tabindex="0" class="page-link">Next</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+               {% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Pet Boarding List</h2>
+                <td>
+                    <a href="{{ path('app_add_B') }}" class="dt-button btn btn-primary waves-effect waves-light text-white">Add Pet Boarding</a>
+                </td>
+                <table class="table">
+                    <thead>
+                        <tr>
+            <th>ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Boarding Status</th>
+            <th>Boarding Fee </th>
+            <th>Animal Name</th>
+            <th>User Name</th>
+            <th class="cell-fit">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for boarding in result %}
+            <tr>
+                <td>{{ boarding.getboardingId() }}</td>
+                <td>{{ boarding.getStartDate()|date('Y-m-d') }}</td>
+                <td>{{ boarding.getEndDate()|date('Y-m-d') }}</td>
+                <td>{{ boarding.getBoardingStatus() }}</td>
+                <td>{{ boarding.getBoardingFee() }}</td>
+                <td>{{ boarding.getAnimalKey() }}</td>
+                <td>{{ boarding.getAccountKey() }}</td>
+                
+                <td>
+                   
+                    <td>
+    <!-- Add your actions here, e.g., edit, delete -->
+    <a href="{{ path('app_update_B', {'boardingId': boarding.getboardingId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
+    <a href="{{ path('app_delete_B', {'boardingId': boarding.getboardingId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Delete</a>
+</td>
+
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+                    
             </div>
         </div>
     </div>
-</div>
+{% endblock %}
 
             <!-- / Content -->
 
