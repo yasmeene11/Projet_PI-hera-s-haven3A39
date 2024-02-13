@@ -520,53 +520,52 @@
                 </div>
               </div>
 
-             {% block body %}
-    <h1>User List</h1>
+      <form id="formUpdate" class="mb-3" action="{{ path('app_update_CB', {'UserId': user.getaccountId()}) }}" method="POST">
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name" required value="{{ user.getName() }}">
+        <label for="name">Name</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="surname" id="surname" placeholder="Enter your surname" required value="{{ user.getSurname() }}">
+        <label for="surname">Surname</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-3">
+        <select class="form-control" name="gender" id="gender" required>
+            <option value="male" {% if user.getGender() == 'male' %} selected {% endif %}>Male</option>
+            <option value="female" {% if user.getGender() == 'female' %} selected {% endif %}>Female</option>
+        </select>
+        <label for="gender">Gender</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="Enter your phone number" required value="{{ user.getPhoneNumber() }}">
+        <label for="phone_number">Phone Number</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="address" id="address" placeholder="Enter your address" required value="{{ user.getAddress() }}">
+        <label for="address">Address</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" required value="{{ user.getEmail() }}">
+        <label for="email">Email</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-3">
+        <select class="form-control" name="role" id="role" required>
+            <option value="admin" {% if user.getRole() == 'admin' %} selected {% endif %}>Admin</option>
+            <option value="user" {% if user.getRole() == 'user' %} selected {% endif %}>Vet</option>
+        </select>
+        <label for="role">Role</label>
+    </div>
+
+    <button id="updateButton" type="submit" class="btn btn-primary d-grid w-100">Update</button>
+</form>
 
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Gender</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in result %}
-                <tr>
-                    <td>{{ user.getaccountId() }}</td>
-                    <td>{{ user.getName() }}</td>
-                    <td>{{ user.getSurname() }}</td>
-                    <td>{{ user.getGender() }}</td>
-                    <td>{{ user.getPhoneNumber() }}</td>
-                    <td>{{ user.getAddress() }}</td>
-                    <td>{{ user.getEmail() }}</td>
-                    <td>{{ user.getPassword() }}</td>
-                    <td>{{ user.getRole() }}</td>
-                    <td>
-                      <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="mdi mdi-dots-vertical"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a href="{{ path('app_update_B', {'UserId': user.getaccountId()}) }}" class="dropdown-item waves-effect" href="javascript:void(0);"><i class="mdi mdi-pencil-outline me-1"></i> Edit</a>
-                              <a href="{{ path('app_delete_U', {'UserId': user.getaccountId()}) }}" class="dropdown-item waves-effect" href="javascript:void(0);"><i class="mdi mdi-trash-can-outline me-1"></i> Delete</a>
-                            </div>
-                          </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endblock %}
             <!-- / Content -->
 
             <!-- Footer -->

@@ -123,18 +123,20 @@
             <!-- /Logo -->
 
             <div class="card-body mt-2">
-              <h4 class="mb-2">Welcome to Materialize! 👋</h4>
+              <h4 class="mb-2">Welcome to United Pets! 👋</h4>
               <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-              <form id="formAuthentication" class="mb-3" action="{{ path('app_Login_B') }}" method="POST">
+             <form id="formAuthentication" class="mb-3" action="{{ path('app_Login_B') }}" method="POST">
     <div class="form-floating form-floating-outline mb-3">
         <input
             type="text"
             class="form-control"
             name="emailOrUsername"
+            id="emailOrUsername"
             placeholder="Enter your email or username"
             autofocus />
-        <label>Email or Username</label>
+        <label for="emailOrUsername">Email or Username</label>
+        <div id="emailOrUsernameError" class="error-message"></div> <!-- Placeholder for error message -->
     </div>
     <div class="mb-3">
         <div class="form-password-toggle">
@@ -144,11 +146,13 @@
                         type="password"
                         class="form-control"
                         name="password"
+                        id="password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password" />
-                    <label>Password</label>
+                    <label for="password">Password</label>
+                    <div id="passwordError" class="error-message"></div>  
                 </div>
-                <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
+                <span id="togglePassword" class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
             </div>
         </div>
     </div>
@@ -162,14 +166,74 @@
         </a>
     </div>
     <div class="mb-3">
-        <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+        <button id="signInButton" class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
     </div>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('formAuthentication');
+        const emailOrUsernameInput = document.getElementById('emailOrUsername');
+        const passwordInput = document.getElementById('password');
+        const signInButton = document.getElementById('signInButton');
+
+        function validateEmailOrUsername() {
+            const value = emailOrUsernameInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (value === '') {
+                setError(emailOrUsernameInput, 'Email or Username cannot be empty');
+            } else if (!emailRegex.test(value)) {
+                setError(emailOrUsernameInput, 'Invalid email format');
+            } else {
+                clearError(emailOrUsernameInput);
+            }
+        }
+
+        function validatePassword() {
+            const value = passwordInput.value.trim();
+            if (value === '') {
+                setError(passwordInput, 'Password cannot be empty');
+            } else {
+                clearError(passwordInput);
+            }
+        }
+
+        function setError(input, message) {
+            const errorElement = input.nextElementSibling;
+            errorElement.innerText = message;
+            errorElement.style.color = 'red';
+        }
+
+        function clearError(input) {
+            const errorElement = input.nextElementSibling;
+            errorElement.innerText = '';
+        }
+
+        emailOrUsernameInput.addEventListener('input', function() {
+            validateEmailOrUsername();
+        });
+
+        passwordInput.addEventListener('input', function() {
+            validatePassword();
+        });
+
+        signInButton.addEventListener('click', function(event) {
+            validateEmailOrUsername();
+            validatePassword();
+
+            // Check if there are any errors before submitting the form
+            if (form.querySelectorAll('.error-message').length > 0) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+</script>
+
 
 
               <p class="text-center">
                 <span>New on our platform?</span>
-                <a href="auth-register-basic.html">
+                <a href="{{ path('app_Register_B') }}">
                   <span>Create an account</span>
                 </a>
               </p>

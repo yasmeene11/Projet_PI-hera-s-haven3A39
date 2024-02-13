@@ -124,6 +124,11 @@
             <div class="card-body mt-2">
               <h4 class="mb-2">Adventure starts here 🚀</h4>
               <p class="mb-4">Make your app management easy and fun!</p>
+               {% if errorMessage %}
+    <div class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
+{% endif %}
 
               <!-- HTML Template -->
               <script>
@@ -140,77 +145,241 @@
 </script>
 
    
-    {{ form_start(form) }}
+    <form id="formRegister" class="mb-3" action="{{ path('app_Register_B') }}" method="POST">
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name" required>
+        <label for="name">Name</label>
+        <div id="nameError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Name, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your name'} }) }}
-    {{ form_label(form.Name) }}
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="surname" id="surname" placeholder="Enter your surname" required>
+        <label for="surname">Surname</label>
+        <div id="surnameError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Surname, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your surname'} }) }}
-    {{ form_label(form.Surname) }}
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <select class="form-control" name="gender" id="gender" required>
+            <option value="">Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        <label for="gender">Gender</label>
+        <div id="genderError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Gender, { 'attr': {'class': 'form-control'} }) }}
-    {{ form_label(form.Gender) }}
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="Enter your phone number" required>
+        <label for="phone_number">Phone Number</label>
+        <div id="phone_numberError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Phone_Number, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your phone number'} }) }}
-    {{ form_label(form.Phone_Number) }}
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="text" class="form-control" name="address" id="address" placeholder="Enter your address" required>
+        <label for="address">Address</label>
+        <div id="addressError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Address, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your address'} }) }}
-    {{ form_label(form.Address) }}
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" required>
+        <label for="email">Email</label>
+        <div id="emailError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Email, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your email'} }) }}
-    {{ form_label(form.Email) }}
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" required>
+        <label for="password">Password</label>
+        <div id="passwordError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Password, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your password', 'id': 'password'} }) }}
-    {{ form_label(form.Password) }}
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+        <label for="confirm_password">Confirm Password</label>
+        <div id="confirm_passwordError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your password" onkeyup="checkPasswordMatch();">
-    <label for="confirm_password">Confirm Password</label>
-    <div class="invalid-feedback" id="password_error"></div>
-</div>
+    <div class="form-floating form-floating-outline mb-3">
+        <select class="form-control" name="role" id="role" required>
+            <option value="">Select role</option>
+            <option value="admin">Admin</option>
+            <option value="user">Vet</option>
+        </select>
+        <label for="role">Role</label>
+        <div id="roleError" class="error-message"></div>
+    </div>
 
-<div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Role, { 'attr': {'class': 'form-control'} }) }}
-    {{ form_label(form.Role) }}
-</div>
+    <button id="registerButton" type="button" class="btn btn-primary d-grid w-100">Sign up</button>
 
-<button type="submit" class="btn btn-primary d-grid w-100">Sign up</button>
-
-{{ form_end(form) }}
+   
+</form>
 
 <script>
-    function checkPasswordMatch() {
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirm_password").value;
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('formRegister');
+        const nameInput = document.getElementById('name');
+        const surnameInput = document.getElementById('surname');
+        const genderInput = document.getElementById('gender');
+        const phoneNumberInput = document.getElementById('phone_number');
+        const addressInput = document.getElementById('address');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const roleInput = document.getElementById('role');
 
-        if (password != confirmPassword) {
-            document.getElementById("password_error").innerHTML = "Passwords do not match!";
-        } else {
-            document.getElementById("password_error").innerHTML = "";
+        function validateName() {
+            const value = nameInput.value.trim();
+            if (value === '') {
+                setError(nameInput, 'Name cannot be empty');
+                return false;
+            } else {
+                clearError(nameInput);
+                return true;
+            }
         }
-    }
+
+        function validateSurname() {
+            const value = surnameInput.value.trim();
+            if (value === '') {
+                setError(surnameInput, 'Surname cannot be empty');
+                return false;
+            } else {
+                clearError(surnameInput);
+                return true;
+            }
+        }
+
+        function validateGender() {
+            const value = genderInput.value;
+            if (value === '') {
+                setError(genderInput, 'Please select a gender');
+                return false;
+            } else {
+                clearError(genderInput);
+                return true;
+            }
+        }
+
+        function validatePhoneNumber() {
+            const value = phoneNumberInput.value.trim();
+            if (value === '') {
+                setError(phoneNumberInput, 'Phone number cannot be empty');
+                return false;
+            } else {
+                clearError(phoneNumberInput);
+                return true;
+            }
+        }
+
+        function validateAddress() {
+            const value = addressInput.value.trim();
+            if (value === '') {
+                setError(addressInput, 'Address cannot be empty');
+                return false;
+            } else {
+                clearError(addressInput);
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const value = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (value === '') {
+                setError(emailInput, 'Email cannot be empty');
+                return false;
+            } else if (!emailRegex.test(value)) {
+                setError(emailInput, 'Invalid email format');
+                return false;
+            } else {
+                clearError(emailInput);
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const value = passwordInput.value.trim();
+            if (value === '') {
+                setError(passwordInput, 'Password cannot be empty');
+                return false;
+            } else {
+                clearError(passwordInput);
+                return true;
+            }
+        }
+
+        function validateConfirmPassword() {
+            const passwordValue = passwordInput.value.trim();
+            const confirmPasswordValue = confirmPasswordInput.value.trim();
+            if (confirmPasswordValue === '') {
+                setError(confirmPasswordInput, 'Confirm Password cannot be empty');
+                return false;
+            } else if (passwordValue !== confirmPasswordValue) {
+                setError(confirmPasswordInput, 'Passwords do not match');
+                return false;
+            } else {
+                clearError(confirmPasswordInput);
+                return true;
+            }
+        }
+
+        function validateRole() {
+            const value = roleInput.value;
+            if (value === '') {
+                setError(roleInput, 'Please select a role');
+                return false;
+            } else {
+                clearError(roleInput);
+                return true;
+            }
+        }
+
+        function setError(input, message) {
+            const errorElement = input.nextElementSibling;
+            errorElement.innerText = message;
+            errorElement.style.color = 'red';
+        }
+
+        function clearError(input) {
+            const errorElement = input.nextElementSibling;
+            errorElement.innerText = '';
+        }
+
+        function validateForm() {
+            const isNameValid = validateName();
+            const isSurnameValid = validateSurname();
+            const isGenderValid = validateGender();
+            const isPhoneNumberValid = validatePhoneNumber();
+            const isAddressValid = validateAddress();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+            const isRoleValid = validateRole();
+
+            return isNameValid && isSurnameValid && isGenderValid && isPhoneNumberValid &&
+                   isAddressValid && isEmailValid && isPasswordValid && isConfirmPasswordValid &&
+                   isRoleValid;
+        }
+
+        function submitForm() {
+            if (validateForm()) {
+                form.submit();
+            }
+        }
+
+        const registerButton = document.getElementById('registerButton');
+        registerButton.addEventListener('click', function() {
+            submitForm();
+        });
+    });
 </script>
+
 
 
 
 
               <p class="text-center">
                 <span>Already have an account?</span>
-                <a href="auth-login-basic.html">
+                <a href="{{ path('logino') }}">
                   <span>Sign in instead</span>
                 </a>
               </p>
