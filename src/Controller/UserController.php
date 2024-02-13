@@ -23,8 +23,6 @@ class UserController extends AbstractController
         ]);
     }
 
-    
-
     #[Route('/LoginBack', name: 'logino')]
     public function Listo(): Response
     {
@@ -35,51 +33,29 @@ class UserController extends AbstractController
     }
 
 
-    #[Route('/UpdateBack/{UserId}', name: 'app_update_B')]
-    public function Listoo(AccountRepository $accountRepository, $UserId): Response
+    #[Route('/update_u/{UserId}', name: 'app_update_U')]
+    public function updateU(ManagerRegistry $mr, Request $req, $UserId): Response
     {
-        // Find the user by UserId
-        $user = $accountRepository->find($UserId);
+        $em = $mr->getManager();
+        $user = $em->getRepository(Account::class)->find($UserId); // Update entity class to your User entity
     
-        // Check if user exists
-        if (!$user) {
-            // Handle case when user is not found, e.g., redirect or display an error message
-            // For example:
-            throw $this->createNotFoundException('User not found');
+        $form = $this->createForm(RegisterType::class, $user, [
+            'include_password_field' => false, // Pass an option to exclude the password field from the form
+        ]); 
+    
+        $form->handleRequest($req);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+    
+            return $this->redirectToRoute('app_listU');
         }
     
-        return $this->render('Back/User/UpdateAd.html.twig', [
-            'user' => $user,
+        return $this->render('/Back/User/UpdateAd.html.twig', [
+            'form' => $form->createView(),
+            'userId' => $UserId,
         ]);
     }
-
-    #[Route('/UpdateBackConfirm/{UserId}', name: 'app_update_CB')]
-public function update(Request $request, UserPasswordEncoderInterface $passwordEncoder, int $UserId): Response
-{
-    // Get the user by its ID
-    $entityManager = $this->getDoctrine()->getManager();
-    $user = $entityManager->getRepository(Account::class)->find($UserId);
-
-    if (!$user) {
-        throw $this->createNotFoundException('User not found');
-    }
-
-    // Update user details based on the submitted form data
-    $user->setName($request->request->get('name'));
-    $user->setSurname($request->request->get('surname'));
-    $user->setGender($request->request->get('gender'));
-    $user->setPhoneNumber($request->request->get('phone_number'));
-    $user->setAddress($request->request->get('address'));
-    $user->setEmail($request->request->get('email'));
-    $user->setRole($request->request->get('role'));
-
-    // Save the updated user
-    $entityManager->flush();
-
-    // Redirect to appropriate page
-    $this->addFlash('success', 'User details updated successfully.');
-    return $this->redirectToRoute('app_listU');
-}
     
     
     #[Route('/user_add', name: 'app_add_U')]
@@ -102,57 +78,46 @@ public function update(Request $request, UserPasswordEncoderInterface $passwordE
     }
 
     #[Route('/RegisterBack', name: 'app_Register_B')]
-public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-{
-    $errorMessage = '';
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $errorMessage = '';
 
-    if ($request->isMethod('POST')) {
-        $name = $request->request->get('name');
-        $surname = $request->request->get('surname');
-        $gender = $request->request->get('gender');
-        $phoneNumber = $request->request->get('phone_number');
-        $address = $request->request->get('address');
-        $email = $request->request->get('email');
-        $password = $request->request->get('password');
-        $role = $request->request->get('role');
+        // Create a new instance of Account entity
+        $user = new Account();
 
-        // Perform input validation here
+        // Create the form
+        $form = $this->createForm(RegisterType::class, $user);
 
-        // Check if the user already exists with the same email
-        $existingUser = $this->getDoctrine()->getRepository(Account::class)->findOneBy(['Email' => $email]);
-        if ($existingUser) {
-            $errorMessage = 'User with this email already exists.';
-        } else {
-            // Create a new user
-            $user = new Account();
-            $user->setName($name);
-            $user->setSurname($surname);
-            $user->setGender($gender);
-            $user->setPhoneNumber($phoneNumber);
-            $user->setAddress($address);
-            $user->setEmail($email);
-            $user->setRole($role);
-            $user->setAccountStatus("Pending");
+        // Handle form submission
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Check if the user already exists with the same email
+            $existingUser = $this->getDoctrine()->getRepository(Account::class)->findOneBy(['Email' => $user->getEmail()]);
+            if ($existingUser) {
+                $errorMessage = 'User with this email already exists.';
+            } else {
+                // Encode the password
+                $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
+                $user->setPassword($encodedPassword);
+                $user->setAccountStatus("Pending");
 
-            // Encode the password
-            $encodedPassword = $passwordEncoder->encodePassword($user, $password);
-            $user->setPassword($encodedPassword);
+                // Save the user
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-            // Save the user
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // Redirect to appropriate page
-            $this->addFlash('success', 'Registration successful.');
-            return $this->redirectToRoute('app_listU');
+                // Redirect to appropriate page
+                $this->addFlash('success', 'Registration successful.');
+                return $this->redirectToRoute('app_listU');
+            }
         }
-    }
 
-    return $this->render('/Back/User/RegisterAdBack.html.twig', [
-        'errorMessage' => $errorMessage,
-    ]);
-}
+        // Render the Twig template with the form
+        return $this->render('Back/User/RegisterAdBack.html.twig', [
+            'form' => $form->createView(),
+            'errorMessage' => $errorMessage,
+        ]);
+    }
 
 #[Route('/LoginBack_C', name: 'app_Login_B')]
 public function login(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response

@@ -145,73 +145,61 @@
 </script>
 
    
-    <form id="formRegister" class="mb-3" action="{{ path('app_Register_B') }}" method="POST">
-    <div class="form-floating form-floating-outline mb-3">
-        <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name" required>
-        <label for="name">Name</label>
-        <div id="nameError" class="error-message"></div>
-    </div>
+   {{ form_start(form, { 'attr': {'id': 'formRegister', 'class': 'mb-3'} }) }}
 
-    <div class="form-floating form-floating-outline mb-3">
-        <input type="text" class="form-control" name="surname" id="surname" placeholder="Enter your surname" required>
-        <label for="surname">Surname</label>
-        <div id="surnameError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Name, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your name'} }) }}
+    <label for="name">Name</label>
+    {{ form_errors(form.Name) }}
+</div>
 
-    <div class="form-floating form-floating-outline mb-3">
-        <select class="form-control" name="gender" id="gender" required>
-            <option value="">Select gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select>
-        <label for="gender">Gender</label>
-        <div id="genderError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Surname, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your surname'} }) }}
+    <label for="surname">Surname</label>
+    {{ form_errors(form.Surname) }}
+</div>
 
-    <div class="form-floating form-floating-outline mb-3">
-        <input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="Enter your phone number" required>
-        <label for="phone_number">Phone Number</label>
-        <div id="phone_numberError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Gender, { 'attr': {'class': 'form-control'} }) }}
+    <label for="gender">Gender</label>
+    {{ form_errors(form.Gender) }}
+</div>
 
-    <div class="form-floating form-floating-outline mb-3">
-        <input type="text" class="form-control" name="address" id="address" placeholder="Enter your address" required>
-        <label for="address">Address</label>
-        <div id="addressError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Phone_Number, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your phone number'} }) }}
+    <label for="phone_number">Phone Number</label>
+    {{ form_errors(form.Phone_Number) }}
+</div>
 
-    <div class="form-floating form-floating-outline mb-3">
-        <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" required>
-        <label for="email">Email</label>
-        <div id="emailError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Address, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your address'} }) }}
+    <label for="address">Address</label>
+    {{ form_errors(form.Address) }}
+</div>
 
-    <div class="form-floating form-floating-outline mb-3">
-        <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" required>
-        <label for="password">Password</label>
-        <div id="passwordError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Email, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your email'} }) }}
+    <label for="email">Email</label>
+    {{ form_errors(form.Email) }}
+</div>
 
-    <div class="form-floating form-floating-outline mb-3">
-        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
-        <label for="confirm_password">Confirm Password</label>
-        <div id="confirm_passwordError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Password, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your password'} }) }}
+    <label for="password">Password</label>
+    {{ form_errors(form.Password) }}
+</div>
 
-    <div class="form-floating form-floating-outline mb-3">
-        <select class="form-control" name="role" id="role" required>
-            <option value="">Select role</option>
-            <option value="admin">Admin</option>
-            <option value="user">Vet</option>
-        </select>
-        <label for="role">Role</label>
-        <div id="roleError" class="error-message"></div>
-    </div>
+<div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Role, { 'attr': {'class': 'form-control'} }) }}
+    <label for="role">Role</label>
+    {{ form_errors(form.Role) }}
+</div>
 
-    <button id="registerButton" type="button" class="btn btn-primary d-grid w-100">Sign up</button>
+<button id="registerButton" type="submit" class="btn btn-primary d-grid w-100">Sign up</button>
 
-   
-</form>
+{{ form_end(form) }}
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

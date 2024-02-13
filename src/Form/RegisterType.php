@@ -25,65 +25,45 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Name', TextType::class, [
-                'label' => 'Name',
-                'attr' => [
-                    'placeholder' => 'Enter your name',
-                ],
-            ])
-            ->add('Surname', TextType::class, [
-                'label' => 'Surname',
-                'attr' => [
-                    'placeholder' => 'Enter your surname',
-                ],
-            ])
-            ->add('Gender', ChoiceType::class, [
-                'label' => 'Gender',
-                'choices' => [
-                    'Male' => 'male',
-                    'Female' => 'female',
-                ],
-            ])
-            ->add('Phone_Number', TextType::class, [
-                'label' => 'Phone Number',
-                'attr' => [
-                    'placeholder' => 'Enter your phone number',
-                ],
-            ])
-            ->add('Address', TextType::class, [
-                'label' => 'Address',
-                'attr' => [
-                    'placeholder' => 'Enter your address',
-                ],
-            ])
-            ->add('Email', TextType::class, [
-                'label' => 'Email',
-                'attr' => [
-                    'placeholder' => 'Enter your email',
-                ],
-            ])
-            ->add('Password', PasswordType::class, [
-                'label' => 'Password',
-                'attr' => [
-                    'placeholder' => '•••••••••••••',
-                ],
-            ])
-            ->add('Role', ChoiceType::class, [
-                'label' => 'Role',
-                'choices' => [
-                    'Admin' => 'admin',
-                    'Veterinary' => 'veterinary',
-                ],
-            ])
-            ->add('Account_Status', HiddenType::class, [
-                'data' => 'Waiting for admin approval', // Set default value
-            ]);
+        ->add('Name', TextType::class)
+        ->add('Surname', TextType::class)
+        ->add('Gender', ChoiceType::class, [
+            'choices' => [
+                'Select gender' => null,
+                'Male' => 'male',
+                'Female' => 'female',
+            ],
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ])
+        ->add('Phone_Number', TextType::class)
+        ->add('Address', TextType::class)
+        ->add('Email', TextType::class);
+
+    // Add password field only if include_password_field option is true
+    if ($options['include_password_field']) {
+        $builder->add('Password', PasswordType::class);
+    }
+
+    $builder
+        ->add('Role', ChoiceType::class, [
+            'choices' => [
+                'Select role' => null,
+                'Admin' => 'admin',
+                'Veterinary' => 'vet',
+            ],
+            'attr' => [
+                'class' => 'form-control',
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Account::class,
+            'include_password_field' => true, // Default to including password field
         ]);
     }
 }
