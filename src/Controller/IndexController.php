@@ -19,7 +19,7 @@ class IndexController extends AbstractController
     #[Route('/homev', name: 'app_homeV')]
     public function indexhomeV(): Response
     {
-        return $this->render('/Front/indexFrontV.html copy.twig', [
+        return $this->render('/Front/indexFrontV.html.twig', [
             'controller_name' => 'IndexController',
         ]);
     }

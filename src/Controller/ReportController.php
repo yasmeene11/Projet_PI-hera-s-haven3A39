@@ -28,5 +28,6 @@ class ReportController extends AbstractController
     {
         return $this->render('/Front/Appointment/ListR.html.twig', []);
     }
+
     
 }
