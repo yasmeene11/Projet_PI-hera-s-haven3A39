@@ -6,9 +6,9 @@ use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-class Account
+class Account implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -169,6 +169,30 @@ class Account
         $this->Role = $Role;
 
         return $this;
+    }
+    public function getRoles(): array
+    {
+        // Return the roles for the user
+        return [$this->Role]; // Assuming Role is the role of the user
+    }
+
+    public function getUsername(): string
+    {
+        // Return the username for the user
+        return $this->Email; // Assuming Email is the username
+    }
+
+    public function getSalt(): ?string
+    {
+        // You can return null if not using a salt
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        // Implement if you need to erase sensitive data from the user
+        // For example, clear plaintext password
+        $this->Password = null;
     }
 
     
@@ -337,3 +361,4 @@ class Account
         return $this;
     }
 }
+
