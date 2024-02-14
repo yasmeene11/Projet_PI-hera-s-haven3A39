@@ -31,15 +31,30 @@
                         <h3>Get more things done with Loggin platform.</h3>
                         <p>Access to the most powerfull tool in the entire design and web industry.</p>
                         <div class="page-links">
-                            <a href={{ path('app_login') }} class="active">Login</a><a href={{ path('app_register') }}>Register</a>
+                            <a href={{ path('app_login') }} class="active">Login</a><a href={{ path('app_Register_F') }}>Register</a>
                         </div>
-                        <form>
-                            <input class="form-control" type="text" name="username" placeholder="E-mail Address" required>
-                            <input class="form-control" type="password" name="password" placeholder="Password" required>
-                            <div class="form-button">
-                                <button id="submit" type="submit" class="ibtn">Login</button>
-                            </div>
-                        </form>
+                        {% block body %}
+   
+    {% if app.flashes('error') %}
+        <div class="alert alert-danger">
+            {% for message in app.flashes('error') %}
+               <h1>{{ message }}</h1>  
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" action="{{ path('app_Login_F') }}">
+        <div class="form-group">
+            <label for="emailOrUsername">Email or Username:</label>
+            <input type="text" id="emailOrUsername" name="emailOrUsername" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+{% endblock %}
                         <div class="other-links">
                             <span>Or login with</span><a href="#">Facebook</a><a href="#">Google</a><a href="#">Linkedin</a>
                         </div>

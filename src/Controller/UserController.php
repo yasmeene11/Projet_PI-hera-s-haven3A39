@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 class UserController extends AbstractController
 {
     #[Route('/ListUsers', name: 'app_listU')]
@@ -155,5 +157,101 @@ public function login(Request $request, UserPasswordEncoderInterface $passwordEn
     // Render the login form
     return $this->render('/Back/User/LoginAdBack.html.twig');
 }
+
+
+#[Route('/LoginFront_C', name: 'app_Login_F')]
+public function loginFront(Request $request, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session): Response
+{
+    // Handle form submission
+    if ($request->isMethod('POST')) {
+        // Retrieve submitted data
+        $emailOrUsername = $request->request->get('emailOrUsername');
+        $password = $request->request->get('password');
+
+        // Retrieve user by email or username
+        $user = $this->getDoctrine()->getRepository(Account::class)->findOneBy(['Email' => $emailOrUsername]);
+
+        if (!$user) {
+            // User not found
+            $this->addFlash('error', 'Invalid credentials.');
+            return $this->redirectToRoute('app_Login_F');
+        }
+
+        // Check if the provided password is correct
+        if ($passwordEncoder->isPasswordValid($user, $password)) {
+            // Check if user role is 'user' and account status is 'active'
+            if ($user->getRole() === 'user' && $user->getAccountStatus() === 'active') {
+                // Password is correct, login successful
+                // Start a session and store the user ID
+                $session->set('user_id', $user->getaccountId());
+                
+                // You can add more user information to the session if needed
+
+                $this->addFlash('success', 'Login successful.');
+                return $this->redirectToRoute('app_listU');
+            } else {
+                // Role is not 'user' or account status is not 'active'
+                $this->addFlash('error', 'Invalid credentials.');
+                return $this->redirectToRoute('app_Login_F');
+            }
+        }
+
+        // Invalid password
+        $this->addFlash('error', 'Invalid credentials.');
+        return $this->redirectToRoute('app_Login_F');
+    }
+
+    // Render the login form
+    return $this->render('/index_login/Login.html.twig');
+}
+
+
+#[Route('/RegisterFront', name: 'app_Register_F')]
+public function registerf(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+{
+    $errorMessage = '';
+
+    // Create a new instance of Account entity
+    $user = new Account();
+    $user->setAccountStatus("active");
+    $user->setRole("user");
+
+    // Create the form with the role field excluded
+    $form = $this->createForm(RegisterType::class, $user, [
+        'include_role_field' => false,
+    ]);
+
+    // Handle form submission
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Check if the user already exists with the same email
+        $existingUser = $this->getDoctrine()->getRepository(Account::class)->findOneBy(['Email' => $user->getEmail()]);
+        if ($existingUser) {
+            $errorMessage = 'User with this email already exists.';
+        } else {
+            // Encode the password
+            $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($encodedPassword);
+
+            // Save the user
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Redirect to appropriate page
+            $this->addFlash('success', 'Registration successful.');
+            return $this->redirectToRoute('app_listU');
+        }
+    }
+
+    // Render the Twig template with the form
+    return $this->render('/index_login/register.html.twig', [
+        'form' => $form->createView(),
+        'errorMessage' => $errorMessage,
+    ]);
+}
+
+
+
 
 }

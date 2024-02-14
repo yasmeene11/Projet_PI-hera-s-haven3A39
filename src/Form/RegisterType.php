@@ -46,17 +46,20 @@ class RegisterType extends AbstractType
             $builder->add('Password', PasswordType::class);
         }
 
-        $builder
-            ->add('Role', ChoiceType::class, [
-                'choices' => [
-                    'Select role' => null,
-                    'Admin' => 'admin',
-                    'Veterinary' => 'veterinary',
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ]);
+        // Add role field only if include_role_field option is true
+        if ($options['include_role_field']) {
+            $builder
+                ->add('Role', ChoiceType::class, [
+                    'choices' => [
+                        'Select role' => null,
+                        'Admin' => 'admin',
+                        'Veterinary' => 'veterinary',
+                    ],
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                ]);
+        }
 
         // Add account status field if it's an update form
         if ($options['is_update_form']) {
@@ -78,6 +81,7 @@ class RegisterType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Account::class,
             'include_password_field' => true, // Default to including password field
+            'include_role_field' => true, // Default to including role field
             'is_update_form' => false, // Default to not being an update form
         ]);
     }

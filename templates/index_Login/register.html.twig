@@ -33,24 +33,34 @@
                         <div class="page-links">
                             <a href={{ path('app_login') }}>Login</a><a href={{ path('app_register') }} class="active">Register</a>
                         </div>
-                        <form>
-                            <input class="form-control" type="text" name="name" placeholder="Name" required>
-                            <input class="form-control" type="text" name="surname" placeholder="Surname" required>
-                            <input class="form-control" type="email" name="email" placeholder="E-mail Address" required>
-                            <input class="form-control" type="password" name="password" placeholder="Password" required>
-                            <input class="form-control" type="password" name="confirm_password" placeholder="Confirm Password" required>
-                            <input class="form-control" type="text" name="cin" placeholder="CIN" required>
-                            <input class="form-control" type="tel" name="phone_number" placeholder="Phone Number" required>
-                            <input class="form-control" type="text" name="address" placeholder="Address" required>
-                            <select class="form-control" name="gender" id="gender" required>
-                                <option value="">Select gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                            <div class="form-button">
-                                <button id="submit" type="submit" class="ibtn">Register</button>
-                            </div>
-                        </form>
+                        {{ form_start(form) }}
+<div class="form-group">
+    {{ form_row(form.Name, {'attr': {'class': 'form-control', 'placeholder': 'Name'}, 'label': false}) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.Surname, {'attr': {'class': 'form-control', 'placeholder': 'Surname'}, 'label': false}) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.Email, {'attr': {'class': 'form-control', 'placeholder': 'E-mail Address'}, 'label': false}) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.Password, {'attr': {'class': 'form-control', 'placeholder': 'Password'}, 'label': false}) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.Phone_Number, {'attr': {'class': 'form-control', 'placeholder': 'Phone Number'}, 'label': false}) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.Address, {'attr': {'class': 'form-control', 'placeholder': 'Address'}, 'label': false}) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.Gender, {'attr': {'class': 'form-control'}, 'empty_data': 'Select gender', 'label': false}) }}
+</div>
+<div class="form-button">
+    <button id="submit" type="submit" class="ibtn">Register</button>
+</div>
+{{ form_end(form) }}
+
+   
                         <div class="other-links">
                             <span>Or register with</span><a href="#">Facebook</a><a href="#">Google</a><a href="#">Linkedin</a>
                         </div>
