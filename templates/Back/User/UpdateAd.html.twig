@@ -558,6 +558,12 @@
 </div>
 
 <div class="form-floating form-floating-outline mb-3">
+    {{ form_widget(form.Account_Status, { 'attr': {'class': 'form-control'} }) }}
+    <label for="account_status">Account Status</label>
+    {{ form_errors(form.Account_Status) }}
+</div>
+
+<div class="form-floating form-floating-outline mb-3">
     {{ form_widget(form.Role, { 'attr': {'class': 'form-control'} }) }}
     <label for="role">Role</label>
     {{ form_errors(form.Role) }}

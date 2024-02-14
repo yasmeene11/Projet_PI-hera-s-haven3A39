@@ -34,28 +34,30 @@ class UserController extends AbstractController
 
 
     #[Route('/update_u/{UserId}', name: 'app_update_U')]
-    public function updateU(ManagerRegistry $mr, Request $req, $UserId): Response
-    {
-        $em = $mr->getManager();
-        $user = $em->getRepository(Account::class)->find($UserId); // Update entity class to your User entity
-    
-        $form = $this->createForm(RegisterType::class, $user, [
-            'include_password_field' => false, // Pass an option to exclude the password field from the form
-        ]); 
-    
-        $form->handleRequest($req);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-    
-            return $this->redirectToRoute('app_listU');
-        }
-    
-        return $this->render('/Back/User/UpdateAd.html.twig', [
-            'form' => $form->createView(),
-            'userId' => $UserId,
-        ]);
+public function updateU(ManagerRegistry $mr, Request $req, $UserId): Response
+{
+    $em = $mr->getManager();
+    $user = $em->getRepository(Account::class)->find($UserId); // Update entity class to your User entity
+
+    $form = $this->createForm(RegisterType::class, $user, [
+        'include_password_field' => false, // Pass an option to exclude the password field from the form
+        'is_update_form' => true, // Indicate that this is an update form
+    ]); 
+
+    $form->handleRequest($req);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->flush();
+
+        return $this->redirectToRoute('app_listU');
     }
+
+    return $this->render('/Back/User/UpdateAd.html.twig', [
+        'form' => $form->createView(),
+        'userId' => $UserId,
+    ]);
+}
+
     
     
     #[Route('/user_add', name: 'app_add_U')]
