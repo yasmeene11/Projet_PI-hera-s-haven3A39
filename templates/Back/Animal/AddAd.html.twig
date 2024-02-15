@@ -468,26 +468,34 @@
                     <hr class="my-0" />
                     <hr class="my-0" />
                     <div class="card-body">
-                        {{ form_start(formAdoption, {'attr': {'class': 'your-custom-form-class'}}) }}
+                       {{ form_start(formAdoption, {'attr': {'class': 'your-custom-form-class', 'novalidate': 'novalidate'}}) }}
+
                         <div class="mb-3">
                             {{ form_label(formAdoption.Adoption_Date) }}
                             {{ form_widget(formAdoption.Adoption_Date, {'attr': {'class': 'form-control'}}) }}
+                             {{ form_errors(formAdoption.Adoption_Date, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAdoption.Adoption_Status) }}
                             {{ form_widget(formAdoption.Adoption_Status, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAdoption.Adoption_Status, {'attr': {'class': 'text-danger'}}) }}
+                            
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAdoption.Adoption_Fee) }}
                             {{ form_widget(formAdoption.Adoption_Fee, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAdoption.Adoption_Fee, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAdoption.Account_Key) }}
                             {{ form_widget(formAdoption.Account_Key, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAdoption.Account_Key, {'attr': {'class': 'text-danger'}}) }}
+                           
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAdoption.Animal_Key) }}
                             {{ form_widget(formAdoption.Animal_Key, {'attr': {'class': 'form-control'}}) }}
+                           {{ form_errors(formAdoption.Animal_Key, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         
                         

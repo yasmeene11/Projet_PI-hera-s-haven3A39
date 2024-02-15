@@ -36,7 +36,8 @@ class AdoptionController extends AbstractController
         
         $form = $this->createForm(AdoptionType::class, $s, ['is_admin' => true]);
         $form->handleRequest($req);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            
             $em = $mr->getManager();
             $em->persist($s);
             $em->flush();
@@ -94,34 +95,20 @@ class AdoptionController extends AbstractController
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Get the authenticated user
+          
             $accountId = 1;
-
-            // Set the Account_Key based on the authenticated user
             $user = $mr->getRepository(Account::class)->find($accountId);
             $adoption->setAccountKey($user);
-
-            // Set the Animal_Key based on the retrieved animal
             $adoption->setAnimalKey($animal);
-
             $adoption->setAdoptionStatus('Pending');
-
-            // Set a default value for adoption_fee if not provided by the form
             if ($adoption->getAdoptionFee() === null) {
-                $adoption->setAdoptionFee(200); // Set your default value here
+                $adoption->setAdoptionFee(200); 
             }
-
             $em = $mr->getManager();
             $em->persist($adoption);
-
-            // Update the status of the animal
             $animal->setAnimalStatus('Pending');
-
-            // Persist the changes to the animal
             $em->persist($animal);
-
             $em->flush();
-
             return $this->redirectToRoute('app_home');
         }
 
