@@ -18,7 +18,7 @@ class Adoption
     private ?\DateTimeInterface $Adoption_Date = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Adoption_Status = null;
+    private ?string $Adoption_Status = 'null';
 
     #[ORM\Column]
     private ?float $Adoption_Fee = null;

@@ -32,7 +32,9 @@ class AnimalType extends AbstractType
         ])
         ->add('Animal_Status', ChoiceType::class, [
             'choices' => [
-                
+                'Available' => 'Available',
+                'Pending' => 'Pending',
+                'Adopted' => 'Adopted',
         
             ],
             'placeholder' => 'Select Status',
@@ -40,14 +42,16 @@ class AnimalType extends AbstractType
         ])
         ->add('Animal_Type', ChoiceType::class, [
             'choices' => [
-                'Type 1' => 'type1',
-                'Type 2' => 'type2',
-                // Add more options as needed
+                'Dog' => 'Dog',
+                'Cat' => 'Cat',
+                'Rabbit' => 'Rabbit',
+                'Turtle' => 'Turtle',
+                
             ],
             'placeholder' => 'Select Type',
             'required' => true,
         ])
-        ->add('Age')
+            ->add('Age')
             ->add('Enrollement_Date')
             ->add('Animal_Image', FileType::class, [
                 'label' => 'Animal Image',

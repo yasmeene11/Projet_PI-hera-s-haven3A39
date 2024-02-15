@@ -101,12 +101,19 @@ class AnimalController extends AbstractController
         return $this->redirectToRoute('app_listA');
     }
 
-    #[Route('/List_af', name: 'app_listAF')]
-    public function ListAF(): Response
-    {
-        return $this->render('/Front/Animal/ListA.html.twig', []);
-    }
+    
+   
 
+    #[Route('/List_af', name: 'app_listAF')]
+    public function ListAF(AnimalRepository $repo): Response
+    {
+        $availableAnimals = $repo->findBy(['Animal_Status' => 'available']);
+    
+        return $this->render('/Front/Animal/ListA.html.twig', [
+            'result' => $availableAnimals,
+        ]);
+    }
+    
 
     
 }

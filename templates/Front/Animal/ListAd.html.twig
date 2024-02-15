@@ -184,12 +184,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                           
                         </li>
                         <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a  class="nav-link"  href={{ path('app_listAdF') }}>
-                           Adopt
-                           </a>
-                           
-                        </li>
+                        
                         <!-- menu item -->
                         <li class="nav-item dropdown">
                            <a class="nav-link"   href={{ path('app_listBF') }}>
@@ -239,14 +234,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </nav>
       <!-- /nav -->
       <!-- ==== Slider ==== -->
-      <div class="container-fluid p-0">
-         <div id="slider" class="overlay-parallax-slider" style="width:1200px;height:650px;margin:0 auto;margin-bottom: 0px;">
-            
+      <div class="jumbotron jumbotron-fluid">
+         <div class="container" >
+            <div class="jumbo-heading" data-aos="fade-up">
+               <h1>Adoption</h1>
+               <!-- Breadcrumbs -->
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href={{ path('app_home') }}>Home</a></li>
+                    <li class="breadcrumb-item active"><a href={{ path('app_listAF') }}>Animal</a></li>
+                  </ol>
+               </nav>
+            </div>
          </div>
-         <!-- /slider -->
-      </div>
+         <!-- /jumbo-heading -->
+       </div>
       <!-- /container-fluid -->
-      
+      {% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row invoice-add">
+            <!-- Invoice Add-->
+            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
+                <div class="card invoice-preview-card">
+                    <div class="card-body">
+                        <div class="row mx-0">
+                            <div class="col-md-7 mb-md-0 mb-4 ps-0">
+                                <div class="d-flex svg-illustration align-items-center gap-2 mb-4">
+                                    <!-- Add your custom branding/logo here -->
+                                    <span class="app-brand-logo demo">
+                                        <span style="color: var(--bs-primary)">
+                                        </span>
+                                    </span>
+                                    <span class="h4 mb-0 app-brand-text fw-bold">Add Adoption</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-0" />
+                    <hr class="my-0" />
+                    <div class="card-body">
+                        {{ form_start(formAdoption, {'attr': {'class': 'your-custom-form-class'}}) }}
+                        <div class="mb-3">
+                            {{ form_label(formAdoption.Adoption_Date) }}
+                            {{ form_widget(formAdoption.Adoption_Date, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary">Save Adoption</button>
+                        {{ form_end(formAdoption) }}
+                    </div>
+                </div>
+            </div>
+            <!-- /Invoice Add-->
+        </div>
+    </div>
+{% endblock %}
+
 	  <!-- ==== footer ==== -->
       <footer class="bg-light pattern1">
          <div class="container">

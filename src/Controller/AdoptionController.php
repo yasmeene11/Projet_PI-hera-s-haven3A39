@@ -5,11 +5,17 @@ namespace App\Controller;
 use App\Entity\Adoption;
 use App\Repository\AdoptionRepository;
 use App\Form\AdoptionType;
+use App\Entity\Animal;
+use App\Repository\AnimalRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Security;
+use App\Entity\Account; 
+
 
 class AdoptionController extends AbstractController
 {
@@ -27,8 +33,8 @@ class AdoptionController extends AbstractController
     {
         $s = new Adoption();  //1 -instance
 
-        $form = $this->createForm(AdoptionType::class, $s);
-
+        
+        $form = $this->createForm(AdoptionType::class, $s, ['is_admin' => true]);
         $form->handleRequest($req);
         if ($form->isSubmitted()) {
             $em = $mr->getManager();
@@ -48,7 +54,7 @@ class AdoptionController extends AbstractController
         $em = $mr->getManager();
         $s = $em->getRepository(Adoption::class)->find($adoptionId);
 
-        $form = $this->createForm(AdoptionType::class, $s);
+        $form = $this->createForm(AdoptionType::class, $s, ['is_admin' => true]);
 
         $form->handleRequest($req);
 
@@ -77,9 +83,57 @@ class AdoptionController extends AbstractController
     return $this-> redirectToRoute('app_listAd');
     }
 
-    #[Route('/List_adf', name: 'app_listAdF')]
-    public function ListAdF(): Response
+
+    #[Route('/List_adf/{animalId}', name: 'app_listAdF', requirements: ['animalId' => '\d+'], defaults: ['animalId' => null])]
+    public function AddAdF(ManagerRegistry $mr, Request $req, $animalId): Response
     {
-        return $this->render('/Front/Animal/ListAd.html.twig', []);
+        $animal = $mr->getRepository(Animal::class)->find($animalId);
+
+        $adoption = new Adoption();
+        $form = $this->createForm(AdoptionType::class, $adoption, ['is_admin' => false]);
+        $form->handleRequest($req);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Get the authenticated user
+            $accountId = 1;
+
+            // Set the Account_Key based on the authenticated user
+            $user = $mr->getRepository(Account::class)->find($accountId);
+            $adoption->setAccountKey($user);
+
+            // Set the Animal_Key based on the retrieved animal
+            $adoption->setAnimalKey($animal);
+
+            $adoption->setAdoptionStatus('Pending');
+
+            // Set a default value for adoption_fee if not provided by the form
+            if ($adoption->getAdoptionFee() === null) {
+                $adoption->setAdoptionFee(200); // Set your default value here
+            }
+
+            $em = $mr->getManager();
+            $em->persist($adoption);
+
+            // Update the status of the animal
+            $animal->setAnimalStatus('Pending');
+
+            // Persist the changes to the animal
+            $em->persist($animal);
+
+            $em->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('/Front/Animal/ListAd.html.twig', [
+            'formAdoption' => $form->createView(),
+        ]);
     }
+
+
 }
+
+
+
+
+

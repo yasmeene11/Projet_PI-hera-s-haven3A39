@@ -548,7 +548,7 @@
         {% for adoption in result %}
             <tr>
                 <td>{{ adoption.getAdoptionId() }}</td>
-                <td>{{ adoption.getAdoptionDate()|date('Y-m-d') }}</td>
+                <td>{{ adoption.getAdoptionDate()|date('d-m-Y') }}</td>
                 <td>{{ adoption.getAdoptionStatus() }}</td>
                 <td>{{ adoption.getAdoptionFee() }}</td>
                 <td>{{ adoption.getAccountKey() }}</td>
