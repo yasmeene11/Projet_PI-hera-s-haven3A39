@@ -461,13 +461,21 @@
                     <div class="col-md-4 mb-3">
                         {{ form_label(form.Account_Key, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.Account_Key, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.Account_Key) }}
+                        {% if form_errors(form.Account_Key) %}
+                            {% for error in form.Account_Key.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                     <!-- Animal Key -->
                     <div class="col-md-4 mb-3">
                         {{ form_label(form.Animal_Key, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.Animal_Key, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.Animal_Key) }}
+                        {% if form_errors(form.Animal_Key) %}
+                            {% for error in form.Animal_Key.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
@@ -475,13 +483,21 @@
                     <div class="col-md-4 mb-3">
                         {{ form_label(form.Appointment_Date, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.Appointment_Date, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.Appointment_Date) }}
+                        {% if form_errors(form.Appointment_Date) %}
+                            {% for error in form.Appointment_Date.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                     <!-- Appointment Time -->
                     <div class="col-md-4 mb-3">
                         {{ form_label(form.Appointment_Time, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.Appointment_Time, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.Appointment_Time) }}
+                        {% if form_errors(form.Appointment_Time) %}
+                            {% for error in form.Appointment_Time.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 {% if form.Appointment_Status is defined %}
@@ -505,6 +521,7 @@
         </div>
     </div>
 </div>
+
 
 
                 <!-- /Invoice Add-->

@@ -446,84 +446,45 @@
           <!-- / Navbar -->
 
           <!-- Content wrapper -->
-<div class="content-wrapper">
+          <div class="content-wrapper">
     <!-- Content -->
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title mb-0">Modify Appointment</h4>
-            </div>
-            <div class="card-body">
-                <form method="POST">
-                    {{ form_start(form) }}
-                    <div class="row">
-                        <!-- Account Key -->
-                        <div class="col-md-4 mb-3">
-                            {{ form_label(form.Account_Key, null, {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.Account_Key, {'attr': {'class': 'form-control'}}) }}
-                            {% if form_errors(form.Account_Key) %}
-                                {% for error in form.Account_Key.vars.errors %}
-                                    <div class="alert alert-danger">{{ error.message }}</div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                        <!-- Animal Key -->
-                        <div class="col-md-4 mb-3">
-                            {{ form_label(form.Animal_Key, null, {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.Animal_Key, {'attr': {'class': 'form-control'}}) }}
-                            {% if form_errors(form.Animal_Key) %}
-                                {% for error in form.Animal_Key.vars.errors %}
-                                    <div class="alert alert-danger">{{ error.message }}</div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Appointment Date -->
-                        <div class="col-md-4 mb-3">
-                            {{ form_label(form.Appointment_Date, null, {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.Appointment_Date, {'attr': {'class': 'form-control'}}) }}
-                            {% if form_errors(form.Appointment_Date) %}
-                                {% for error in form.Appointment_Date.vars.errors %}
-                                    <div class="alert alert-danger">{{ error.message }}</div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                        <!-- Appointment Time -->
-                        <div class="col-md-4 mb-3">
-                            {{ form_label(form.Appointment_Time, null, {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.Appointment_Time, {'attr': {'class': 'form-control'}}) }}
-                            {% if form_errors(form.Appointment_Time) %}
-                                {% for error in form.Appointment_Time.vars.errors %}
-                                    <div class="alert alert-danger">{{ error.message }}</div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Appointment Status -->
-                        <div class="col-md-8 mb-4">
-                            {{ form_label(form.Appointment_Status, null, {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.Appointment_Status, {'attr': {'class': 'form-select'}}) }}
-                            {% if form_errors(form.Appointment_Status) %}
-                                {% for error in form.Appointment_Status.vars.errors %}
-                                    <div class="alert alert-danger">{{ error.message }}</div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Update Button -->
-                        <div class="col-md-8 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                    </div>
-                    {{ form_end(form) }}
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="table-responsive pt-4">
+    <table class="invoice-list-table table">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Veterinarian</th>
+                <th>Animal Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr style="background-color: {% if appointment.getAppointmentStatus() == 'Confirmed' %}#d4edda{% elseif appointment.getAppointmentStatus() == 'Cancelled' %}#f8d7da{% else %}#fff{% endif %}">
+                <td>{{ appointment.getAppointmentId() }}</td>
+                <td>{{ appointment.getAccountKey().getName() }} {{ appointment.getAccountKey().getSurname() }}</td>
+                <td>{{ appointment.getAnimalKey().getAnimalName() }}</td>
+                <td>{{ appointment.getAppointmentDate()|date('Y-m-d') }}</td>
+                <td>{{ appointment.getAppointmentTime()|date('H:i') }}</td>
+                <td>{{ appointment.getAppointmentStatus() }}</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-info">View</a>
+                    <a href="{{ path('app_modify_ap', {'id': appointment.getAppointmentId()}) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{{ path('app_delete_Ap', {'id': appointment.getAppointmentId()}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this appointment?')" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ appointment.getAppointmentId()) }}">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+
+
                 <!-- /Invoice Add-->
 
                 

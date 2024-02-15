@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html
@@ -136,11 +135,12 @@
                     <div data-i18n="Appointments">Appointments</div>
                   </a>
                 </li>
-               <li class="menu-item active">
-                  <a href="{{ path('app_listAp') }}" class="menu-link">
-                    <div data-i18n="Reports">Reports</div>
+                <li class="menu-item active">
+                  <a href="{{ path('app_listR') }}" class="menu-link">
+                    <div data-i18n="Report">Report</div>
                   </a>
                 </li>
+               
                </ul>
             </li>
             
@@ -456,128 +456,177 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="py-3 mb-4">Appointment List</h4>
+              <h4 class="py-3 mb-4">Reports List</h4>
 
               <!-- Invoice List Widget -->
 
               <div class="card mb-4">
-  <div class="card-body">
-    <div class="d-flex align-items-center">
-      <div class="avatar me-3">
-        <span class="avatar-initial rounded bg-label-secondary">
-          <i class="mdi mdi-calendar-clock text-heading mdi-24px"></i>
-        </span>
-      </div>
-      <div>
-        <h3 class="mb-1">24</h3>
-        <p class="mb-0">Number of Appointments</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-                <!-- Animals List Table -->
-
-
-
-                <div class="card">
-    <div class="card-body">
-        <div class="row mx-1">
-            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
-                <div class="dataTables_length" id="DataTables_Table_0_length">
-                    <label>Show
-                        <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select">
-                            <option value="10">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
-                    <div class="dt-buttons">
-                        <a href="{{ path('app_add_Ap') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                            <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Appointment</span></span>
-                        </a>
+                <div class="card-widget-separator-wrapper">
+                  <div class="card-body card-widget-separator">
+                    <div class="row gy-4 gy-sm-1">
+                      <div class="col-sm-6 col-lg-3">
+                        <div
+                          class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
+                          <div>
+                            <h3 class="mb-1">24</h3>
+                            <p class="mb-0">Clients</p>
+                          </div>
+                          <div class="avatar me-sm-4">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                              <i class="mdi mdi-account-outline text-heading mdi-20px"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <hr class="d-none d-sm-block d-lg-none me-4" />
+                      </div>
+                      <div class="col-sm-6 col-lg-3">
+                        <div
+                          class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-3 pb-sm-0">
+                          <div>
+                            <h3 class="mb-1">165</h3>
+                            <p class="mb-0">Number of Reports</p>
+                          </div>
+                          <div class="avatar me-lg-4">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                              <i class="mdi mdi-content-paste text-heading mdi-20px"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <hr class="d-none d-sm-block d-lg-none" />
+                      </div>
+                      <div class="col-sm-6 col-lg-3">
+                        <div
+                          class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-3">
+                          <div>
+                            <h3 class="mb-1">$2.46k</h3>
+                            <p class="mb-0">Paid</p>
+                          </div>
+                          <div class="avatar me-sm-4">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                              <i class="mdi mdi-currency-usd text-heading mdi-20px"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-lg-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                          <div>
+                            <h3 class="mb-1">$876</h3>
+                            <p class="mb-0">Unpaid</p>
+                          </div>
+                          <div class="avatar">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                              <i class="mdi mdi-currency-usd-off text-heading mdi-20px"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
-                <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                    <label><input type="search" class="form-control" placeholder="Search appointment" aria-controls="DataTables_Table_0"></label>
-                </div>
-                <div class="invoice_status mb-3 mb-md-0"></div>
-            </div>
+              </div>
+
+              <!-- Animals List Table -->
+
+
+
+              <div class="card">
+    <div class="card-datatable table-responsive">
+        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+            <div class="row mx-1">
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
+                    <div class="dataTables_length" id="DataTables_Table_0_length">
+                        <label>Show
+                            <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0"
+                                class="form-select">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
+        <div class="dt-buttons">
+            <a href="{{ path('app_add_R') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Report</span></span>
+            </a>
         </div>
-<div class="table-responsive pt-4">
-    <table class="invoice-list-table table">
+    </div>
+                </div>
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
+                    <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                        <label><input type="search" class="form-control" placeholder="Search Invoice"
+                                aria-controls="DataTables_Table_0"></label>
+                    </div>
+                    <div class="invoice_status mb-3 mb-md-0"></div>
+                </div>
+            </div>
+            <div class="card-datatable table-responsive">
+    <table class="table">
         <thead class="table-light">
             <tr>
                 <th>ID</th>
-                <th>Veterinarian</th>
-                <th>Animal Name</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Description</th>
+                <th>Appointment Key</th>
+                <th class="cell-fit">Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for appointment in appointments %}
-            <tr>
-                <td>{{ appointment.id }}</td>
-                <td>{{ appointment.UserKey.getUserName() }} {{ appointment.UserKey.getUserSurname() }}</td>
-                <td>{{ appointment.AnimalKey.getAnimalName() }}</td>
-                <td>{{ appointment.AppointmentDate|date('Y-m-d') }}</td>
-                <td>{{ appointment.AppointmentTime|date('H:i') }}</td>
-                <td>{{ appointment.AppointmentStatus }}</td>
-                <td>
-                    <!-- Buttons for actions -->
-                    <a href="#" class="btn btn-sm btn-info">View</a>
-<a href="{{ path('app_modify_ap', {'id': appointment.id}) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <!-- Delete button form -->
-                    <form action="{{ path('app_delete_Ap', {'id': appointment.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this appointment?')" style="display: inline;">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ appointment.id) }}">
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
+            {% for report in rapports %}
+    <tr>
+        <td>{{ report.rapportId }}</td>
+        <td>{{ report.description }}</td>
+        <!-- Use camelCase as defined in your entity for method names -->
+        <td>{{ report.appointmentKey.appointmentId }}</td>
+        <td>
+            <a href="{{ path('app_edit_R', {'id': report.rapportId}) }}" class="btn btn-primary btn-sm">Edit</a>
+            <a href="{{ path('app_delete_R', {'id': report.rapportId}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+    </tr>
+{% endfor %}
         </tbody>
     </table>
 </div>
 
-
-
-
-
-
-
-
-        <div class="row mx-2">
-            
-            <div class="col-sm-12 col-md-6">
-                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                    <ul class="pagination">
-                        <li class="paginate_button page-item previous disabled">
-                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                        </li>
-                        <!-- Pagination dynamically generated here -->
-                        <li class="paginate_button page-item next">
-                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">Next</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
             <!-- / Content -->
 
-            
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl">
+                <div
+                  class="footer-container d-flex align-items-center justify-content-between py-3 flex-md-row flex-column">
+                  <div class="mb-2 mb-md-0">
+                    ©
+                    <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                    , made with <span class="text-danger"><i class="tf-icons mdi mdi-heart"></i></span> by
+                    <a href="https://pixinvent.com" target="_blank" class="footer-link fw-medium">Pixinvent</a>
+                  </div>
+                  <div class="d-none d-lg-inline-block">
+                    <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank"
+                      >License</a
+                    >
+                    <a href="https://1.envato.market/pixinvent_portfolio" target="_blank" class="footer-link me-4"
+                      >More Themes</a
+                    >
+
+                    <a
+                      href="https://demos.pixinvent.com/materialize-html-admin-template/documentation/"
+                      target="_blank"
+                      class="footer-link me-4"
+                      >Documentation</a
+                    >
+
+                    <a href="https://pixinvent.ticksy.com/" target="_blank" class="footer-link d-none d-sm-inline-block"
+                      >Support</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
 
             <div class="content-backdrop fade"></div>
           </div>
