@@ -549,11 +549,17 @@
         {% for boarding in result %}
             <tr>
                 <td>{{ boarding.getboardingId() }}</td>
-                <td>{{ boarding.getStartDate()|date('Y-m-d') }}</td>
-                <td>{{ boarding.getEndDate()|date('Y-m-d') }}</td>
+                <td>{{ boarding.getStartDate()|date('d-m-Y') }}</td>
+                <td>{{ boarding.getEndDate()|date('d-m-Y') }}</td>
                 <td>{{ boarding.getBoardingStatus() }}</td>
                 <td>{{ boarding.getBoardingFee() }}</td>
-                <td>{{ boarding.getAnimalKey() }}</td>
+                 <td>
+                                    {% if boarding.getAnimalKey() %}
+                                        <img src="{{ asset('animal_images/' ~ boarding.getAnimalKey()) }}" alt="Animal Image" style="width: 100px; height: 100px; object-fit: cover;">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
                 <td>{{ boarding.getAccountKey() }}</td>
                 
                 <td>

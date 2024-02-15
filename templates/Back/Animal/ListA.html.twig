@@ -512,10 +512,10 @@
                                 <td>{{ animal.getAnimalStatus() }}</td>
                                 <td>{{ animal.getAnimalType() }}</td>
                                 <td>{{ animal.getAge() }}</td>
-                                <td>{{ animal.getEnrollementDate() ? animal.getEnrollementDate()|date('Y-m-d') : '' }}</td>
+                                <td>{{ animal.getEnrollementDate() ? animal.getEnrollementDate()|date('d-m-Y') : '' }}</td>
                                 <td>
                                     {% if animal.getAnimalImage() %}
-                                        <img src="{{ asset('animal_images/' ~ animal.getAnimalImage()) }}" alt="Animal Image">
+                                        <img src="{{ asset('animal_images/' ~ animal.getAnimalImage()) }}" alt="Animal Image" style="width: 250px; height: 250px; object-fit: cover;">
                                     {% else %}
                                         No Image
                                     {% endif %}

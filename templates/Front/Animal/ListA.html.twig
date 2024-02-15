@@ -215,10 +215,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                            </a>
                         </li>
 
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="battouna btn btn-primary" href={{ path('app_login') }}>Login</a>
-                        </li>
+                        
 
 
 
@@ -280,12 +277,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                              <div class="adopt-image d-flex flex-wrap align-items-center ">
     
          {% if animal.getAnimalImage() %}
-        <img src="{{ asset('animal_images/' ~ animal.getAnimalImage()) }}" alt="{{ animal.getAnimalName }} Image" class="img-fluid" >
+        <img src="{{ asset('animal_images/' ~ animal.getAnimalImage()) }}" alt="{{ animal.getAnimalName }} Image" class="img-fluid" style="width: 250px; height: 250px; object-fit: cover;">
+
           {% else %}
         No Image
         {% endif %}
 
-                         </div>
+                            </div>
 
 
 
