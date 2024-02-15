@@ -459,7 +459,7 @@
                                         <span style="color: var(--bs-primary)">
                                         </span>
                                     </span>
-                                    <span class="h4 mb-0 app-brand-text fw-bold">Add Donation Money </span>
+                                    <span class="h4 mb-0 app-brand-text fw-bold">Add Donation Product </span>
                                 </div>
                             </div>
                             <!-- ... Other header content ... -->
@@ -468,10 +468,10 @@
                     <hr class="my-0" />
                     <hr class="my-0" />
                     <div class="card-body">
-                        {{ form_start(formDonationP) }}
+                        {{ form_start(formDonationP,{'attr': {'novalidate': 'novalidate'}}) }}
                         {# Render form fields here using form_widget #}
                         {{ form_widget(formDonationP) }}
-                        <button type="submit" class="btn btn-sm btn-primary">Save Donation Money</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Save Donation Product</button>
                         {{ form_end(formDonationP) }}
                     </div>
                 </div>

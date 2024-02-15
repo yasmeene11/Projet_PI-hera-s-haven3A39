@@ -36,7 +36,7 @@ class DonationPController extends AbstractController
         $form = $this->createForm(DonationPType::class, $s);
 
         $form->handleRequest($req);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted()&& $form->isValid()) {
             $em = $mr->getManager();
             $em->persist($s);
             $em->flush();

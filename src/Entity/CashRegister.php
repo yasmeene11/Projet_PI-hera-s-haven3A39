@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CashRegisterRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CashRegisterRepository::class)]
@@ -14,81 +15,96 @@ class CashRegister
     private ?int $cashRegisterId = null;
 
     #[ORM\Column]
-    private ?float $Balance = null;
+    private ?int $input = null;
 
     #[ORM\Column]
-    private ?float $Expenses = null;
+    private ?int $output = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateTransaction = null;
+
+    #[ORM\Column(length: 30)]
+    private ?string $type = null;
 
     #[ORM\Column]
-    private ?float $Donation_Total = null;
+    private ?float $somme = null;
 
     #[ORM\Column]
-    private ?float $Adoption_Fee_Total = null;
-
-    #[ORM\Column]
-    private ?float $Boarding_Fee_Total = null;
+    private ?int $idEntity = null;
 
     public function getcashRegisterId(): ?int
     {
         return $this->cashRegisterId;
     }
 
-    public function getBalance(): ?float
+    public function getInput(): ?int
     {
-        return $this->Balance;
+        return $this->input;
     }
 
-    public function setBalance(float $Balance): static
+    public function setInput(int $input): static
     {
-        $this->Balance = $Balance;
+        $this->input = $input;
 
         return $this;
     }
 
-    public function getExpenses(): ?float
+    public function getOutput(): ?int
     {
-        return $this->Expenses;
+        return $this->output;
     }
 
-    public function setExpenses(float $Expenses): static
+    public function setOutput(int $output): static
     {
-        $this->Expenses = $Expenses;
+        $this->output = $output;
 
         return $this;
     }
 
-    public function getDonationTotal(): ?float
+    public function getDateTransaction(): ?\DateTimeInterface
     {
-        return $this->Donation_Total;
+        return $this->dateTransaction;
     }
 
-    public function setDonationTotal(float $Donation_Total): static
+    public function setDateTransaction(\DateTimeInterface $dateTransaction): static
     {
-        $this->Donation_Total = $Donation_Total;
+        $this->dateTransaction = $dateTransaction;
 
         return $this;
     }
 
-    public function getAdoptionFeeTotal(): ?float
+    public function getType(): ?string
     {
-        return $this->Adoption_Fee_Total;
+        return $this->type;
     }
 
-    public function setAdoptionFeeTotal(float $Adoption_Fee_Total): static
+    public function setType(string $type): static
     {
-        $this->Adoption_Fee_Total = $Adoption_Fee_Total;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getBoardingFeeTotal(): ?float
+    public function getSomme(): ?float
     {
-        return $this->Boarding_Fee_Total;
+        return $this->somme;
     }
 
-    public function setBoardingFeeTotal(float $Boarding_Fee_Total): static
+    public function setSomme(float $somme): static
     {
-        $this->Boarding_Fee_Total = $Boarding_Fee_Total;
+        $this->somme = $somme;
+
+        return $this;
+    }
+
+    public function getIdEntity(): ?int
+    {
+        return $this->idEntity;
+    }
+
+    public function setIdEntity(int $idEntity): static
+    {
+        $this->idEntity = $idEntity;
 
         return $this;
     }

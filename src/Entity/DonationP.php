@@ -6,6 +6,9 @@ use App\Repository\DonationPRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DonationPRepository::class)]
@@ -20,17 +23,20 @@ class DonationP
     private ?string $donation_product_name = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(value: 0, message: "Quantity should be greater than 0.")]
     private ?int $donation_product_quantity = null;
 
     #[ORM\Column(length: 255)]
     private ?string $donation_product_label = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThanOrEqual(value: "+2 weeks", message: "Expiration date should be at least two weeks from today.")]
     private ?\DateTimeInterface $donation_product_expiration_date = null;
 
     
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\EqualTo("today", message: "The donation date should be today")]
     private ?\DateTimeInterface $donationP_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'donationPs')]
@@ -48,6 +54,7 @@ class DonationP
     public function __construct()
     {
         $this->donationProducts = new ArrayCollection();
+        $this->donationP_Date = new \DateTime();
     }
 
    

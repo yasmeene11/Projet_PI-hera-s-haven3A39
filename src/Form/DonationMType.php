@@ -6,6 +6,7 @@ use App\Entity\DonationM;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class DonationMType extends AbstractType
 {
@@ -13,7 +14,11 @@ class DonationMType extends AbstractType
     {
         $builder
             ->add('Donation_Amount')
-            ->add('donationM_Date')
+            ->add('donationM_Date', DateType::class, [
+                'label' => 'Donation Date',
+                'widget' => 'single_text',
+                'required' => true,
+            ])  
             ->add('Account_Key')
         ;
     }

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\DonationMRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: DonationMRepository::class)]
 class DonationM
@@ -15,9 +17,12 @@ class DonationM
     private ?int $donationMId = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(value: 10, message: "The donation amount should be equal to or greater than 10 DT.")]
     private ?float $Donation_Amount = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThanOrEqual("today", message: "You cannot make a donation in the past.")]
+
     private ?\DateTimeInterface $donationM_Date = null;
 
     #[ORM\ManyToOne(inversedBy: 'donationMs')]

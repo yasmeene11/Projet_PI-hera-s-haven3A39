@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240211132815 extends AbstractMigration
+final class Version20240215113117 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20240211132815 extends AbstractMigration
         $this->addSql('CREATE TABLE animal (animalId INT AUTO_INCREMENT NOT NULL, animal_name VARCHAR(255) NOT NULL, animal_breed VARCHAR(255) NOT NULL, animal_status VARCHAR(255) NOT NULL, animal_type VARCHAR(255) NOT NULL, age INT NOT NULL, enrollement_date DATE NOT NULL, PRIMARY KEY(animalId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE appointment (appointmentId INT AUTO_INCREMENT NOT NULL, appointment_date DATE NOT NULL, appointment_time TIME NOT NULL, appointment_status VARCHAR(255) NOT NULL, Account_Key INT NOT NULL, Animal_Key INT NOT NULL, INDEX IDX_FE38F84474BA3BC0 (Account_Key), INDEX IDX_FE38F844620EA577 (Animal_Key), PRIMARY KEY(appointmentId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE boarding (boardingId INT AUTO_INCREMENT NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, boarding_status VARCHAR(255) NOT NULL, boarding_fee DOUBLE PRECISION NOT NULL, Animal_Key INT NOT NULL, Account_Key INT NOT NULL, INDEX IDX_114209DA620EA577 (Animal_Key), INDEX IDX_114209DA74BA3BC0 (Account_Key), PRIMARY KEY(boardingId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE cash_register (cashRegisterId INT AUTO_INCREMENT NOT NULL, balance DOUBLE PRECISION NOT NULL, expenses DOUBLE PRECISION NOT NULL, donation_total DOUBLE PRECISION NOT NULL, adoption_fee_total DOUBLE PRECISION NOT NULL, boarding_fee_total DOUBLE PRECISION NOT NULL, PRIMARY KEY(cashRegisterId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE cash_register (cashRegisterId INT AUTO_INCREMENT NOT NULL, input INT NOT NULL, output INT NOT NULL, date_transaction DATE NOT NULL, type VARCHAR(30) NOT NULL, somme DOUBLE PRECISION NOT NULL, id_entity INT NOT NULL, PRIMARY KEY(cashRegisterId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE category (categoryId INT AUTO_INCREMENT NOT NULL, product_type VARCHAR(255) NOT NULL, product_source VARCHAR(255) NOT NULL, PRIMARY KEY(categoryId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE donation_m (donationMId INT AUTO_INCREMENT NOT NULL, donation_amount DOUBLE PRECISION NOT NULL, donation_m_date DATE NOT NULL, Account_Key INT NOT NULL, INDEX IDX_7B41703B74BA3BC0 (Account_Key), PRIMARY KEY(donationMId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE donation_p (donationPId INT AUTO_INCREMENT NOT NULL, donation_product_name VARCHAR(255) NOT NULL, donation_product_quantity INT NOT NULL, donation_product_label VARCHAR(255) NOT NULL, donation_product_expiration_date DATE NOT NULL, donation_p_date DATE NOT NULL, donation_p_type VARCHAR(255) NOT NULL, Account_Key INT NOT NULL, INDEX IDX_18471CE274BA3BC0 (Account_Key), PRIMARY KEY(donationPId)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
