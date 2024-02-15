@@ -20,6 +20,11 @@ class DonationP
     private ?int $donationPId = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        match: false,
+        message: "The product name should not contain any digits."
+    )]
     private ?string $donation_product_name = null;
 
     #[ORM\Column]
@@ -27,6 +32,11 @@ class DonationP
     private ?int $donation_product_quantity = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        match: false,
+        message: "The product label should not contain any digits."
+    )]
     private ?string $donation_product_label = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -41,6 +51,7 @@ class DonationP
 
     #[ORM\ManyToOne(inversedBy: 'donationPs')]
     #[ORM\JoinColumn(nullable: false, name: 'Account_Key', referencedColumnName: 'accountId')]
+    #[Assert\NotNull(message: "You must select an account")]
     private ?Account $Account_Key = null;
 
     

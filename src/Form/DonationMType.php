@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\DonationM;
+use App\Entity\Account;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +22,12 @@ class DonationMType extends AbstractType
                 'widget' => 'single_text',
                 'required' => true,
             ])  
-            ->add('Account_Key')
+            ->add('Account_Key',EntityType::class, [
+                'class' => Account::class,
+                'label' => 'Account',
+                'required' => false,    
+                'placeholder' => '',
+            ])
         ;
     }
 

@@ -27,6 +27,8 @@ class DonationM
 
     #[ORM\ManyToOne(inversedBy: 'donationMs')]
     #[ORM\JoinColumn(nullable: false, name: 'Account_Key', referencedColumnName: 'accountId')]
+    #[Assert\NotNull(message: "You must select an account")]
+
     private ?Account $Account_Key = null;
 
     public function getdonationMId(): ?int

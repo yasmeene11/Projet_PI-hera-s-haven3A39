@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\DonationP;
+use App\Entity\Account;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -47,7 +50,12 @@ class DonationPType extends AbstractType
                 'required' => true,
                 'placeholder' => 'Select product type', // optionnel, ajoutez ceci si vous voulez une option par défaut
             ])
-            ->add('Account_Key')
+            ->add('Account_Key',EntityType::class, [
+                'class' => Account::class,
+                'label' => 'Account',
+                'required' => false,    
+                'placeholder' => '',
+            ])
         ;
         
     }

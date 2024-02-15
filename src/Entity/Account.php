@@ -261,7 +261,6 @@ class Account
 
         return $this;
     }
-
     /**
      * @return Collection<int, DonationM>
      */
@@ -269,17 +268,14 @@ class Account
     {
         return $this->donationMs;
     }
-
     public function addDonationM(DonationM $donationM): static
     {
         if (!$this->donationMs->contains($donationM)) {
             $this->donationMs->add($donationM);
             $donationM->setAccountKey($this);
         }
-
         return $this;
     }
-
     public function removeDonationM(DonationM $donationM): static
     {
         if ($this->donationMs->removeElement($donationM)) {
@@ -291,7 +287,6 @@ class Account
 
         return $this;
     }
-
     /**
      * @return Collection<int, DonationP>
      */
@@ -299,7 +294,6 @@ class Account
     {
         return $this->donationPs;
     }
-
     public function addDonationP(DonationP $donationP): static
     {
         if (!$this->donationPs->contains($donationP)) {
@@ -323,7 +317,6 @@ class Account
     }
     public function __toString()
     {
-        // Retournez une représentation de l'objet sous forme de chaîne
         return $this->getName(); // Supposons que 'name' est un champ approprié dans votre entité Account
     }
 }
