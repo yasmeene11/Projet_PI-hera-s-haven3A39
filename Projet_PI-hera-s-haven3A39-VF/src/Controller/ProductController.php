@@ -20,6 +20,16 @@ class ProductController extends AbstractController
             'result' => $result,
         ]);
     }
+    
+    #[Route('/List_pf', name: 'app_listPF')]
+    public function ListPF(ProductRepository $repo): Response
+    {
+        $result = $repo->findAll();
+        return $this->render('/Front/Product/ListP.html.twig', [
+            'result' => $result,
+        ]);
+    }
+
     #[Route('/add_p', name: 'app_add_P')]
     public function AddP(ManagerRegistry $mr,Request $req): Response
     {
@@ -36,6 +46,7 @@ class ProductController extends AbstractController
             'formProduct'=>$form->createView()
         ]);
     }
+    
     #[Route('/updateP/{productId}', name: 'updateP')]
     public function updateP($productId,ProductRepository $repo, ManagerRegistry $mr, Request $req):Response
     {
