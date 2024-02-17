@@ -1,4 +1,5 @@
 <?php
+// RegisterType.php
 
 namespace App\Form;
 
@@ -62,7 +63,7 @@ class RegisterType extends AbstractType
         }
 
         // Add account status field if it's an update form
-        if ($options['is_update_form']) {
+        if ($options['is_update_form'] && $options['include_account_status_field']) {
             $builder->add('Account_Status', ChoiceType::class, [
                 'choices' => [
                     'Pending' => 'pending',
@@ -82,6 +83,7 @@ class RegisterType extends AbstractType
             'data_class' => Account::class,
             'include_password_field' => true, // Default to including password field
             'include_role_field' => true, // Default to including role field
+            'include_account_status_field' => true, // Default to including account status field
             'is_update_form' => false, // Default to not being an update form
         ]);
     }

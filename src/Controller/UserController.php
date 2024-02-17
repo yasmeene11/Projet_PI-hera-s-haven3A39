@@ -252,6 +252,82 @@ public function registerf(Request $request, UserPasswordEncoderInterface $passwo
 }
 
 
+//////////////test
+
+#[Route('/testuser', name: 'testuser')]
+public function testUser(SessionInterface $session): Response
+{
+    // Retrieve the user's ID from the session
+    $userId = $session->get('user_id');
+
+    // Retrieve the user entity from the database using the ID
+    $user = $this->getDoctrine()->getRepository(Account::class)->find($userId);
+
+    // Check if user exists
+    if (!$user) {
+        throw $this->createNotFoundException('User not found.');
+    }
+
+    // Pass the user data to the Twig template
+    return $this->render('/index_Login/testuserfront.html.twig', [
+        'user' => $user,
+    ]);
+}
+
+
+#[Route('/logout', name: 'logout')]
+    public function logout(SessionInterface $session): Response
+    {
+        // Invalidate the session to log the user out
+        $session->invalidate();
+
+        // Redirect the user to the login page or any other page
+        return $this->redirectToRoute('app_Login_F');
+    }
+
+
+
+    #[Route('/update_uf{UserId}', name: 'edit_user_f')]
+public function updateUf(ManagerRegistry $mr, Request $req, $UserId): Response
+{
+    $em = $mr->getManager();
+    $user = $em->getRepository(Account::class)->find($UserId); // Update entity class to your User entity
+
+    $form = $this->createForm(RegisterType::class, $user, [
+        'include_password_field' => false, // Pass an option to exclude the password field from the form
+        'include_role_field' => false, // Exclude the role field
+        'include_account_status_field' => false, // Exclude the account status field
+        'is_update_form' => true, // Indicate that this is an update form
+    ]); 
+
+    $form->handleRequest($req);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->flush();
+
+        return $this->redirectToRoute('testuser');
+    }
+
+    return $this->render('/index_Login/updateloginuser.html.twig', [
+        'form' => $form->createView(),
+        'userId' => $UserId,
+    ]);
+}
+
+
+#[Route('/delete_User/{UserId}', name: 'app_delete_UF')]
+public function removeAf(AccountRepository $repo, $UserId, ManagerRegistry $mr, SessionInterface $session): Response
+{
+    $User = $repo->find($UserId);
+    $em = $mr->getManager();
+    $em->remove($User);
+    $em->flush();
+
+    // Close the session
+    $session->invalidate();
+
+    return $this->redirectToRoute('app_Login_F');
+}
 
 
 }
