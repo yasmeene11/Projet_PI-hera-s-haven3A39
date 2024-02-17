@@ -50,13 +50,10 @@ class DonationP
         $this->donationProducts = new ArrayCollection();
     }
 
-   
-
-    
-
-   
-
-   
+    public function __toString()
+    {
+        return $this->Donation_Product_Name;
+    }
     public function getdonationPId(): ?int
     {
         return $this->donationPId;

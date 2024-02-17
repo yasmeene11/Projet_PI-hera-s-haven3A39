@@ -131,6 +131,11 @@
                     <div data-i18n="Category">Category</div>
                   </a>
                    </li>
+                                                      <li class="menu-item">
+                  <a href="{{ path('app_listpd') }}"class="menu-link">
+                    <div data-i18n="ProductDonation">DonationProduct</div>
+                  </a>
+                   </li>
                     <li class="menu-item">
                   <a href="{{ path('app_listD') }}"" class="menu-link">
                     <div data-i18n="Donations">Donations</div>
@@ -509,8 +514,8 @@
                         <th>Label</th>
                         <th class="text-truncate">Expiration Date</th>
                         <th>Category</th>
+                        <th>Donation</th>
                         <th class="cell-fit">Actions</th>
-                       
                       </tr>
     </thead>
     <tbody>
@@ -522,6 +527,11 @@
                 <td>{{ product.getProductLabel() }}</td>
                 <td>{{ product.getExpirationDate()|date('Y-m-d') }}</td>
                 <td>{{ product.getCategoryKey().getProductType()}}</td>
+                <td> 
+                {% for donationProduct in product.getDonationProducts() %}
+                 <td>{{ donationProduct.getDonationKey().getDonationProductName() }}</td>
+                {% endfor %}
+                </td>
                 <td>
                     <!-- Add your actions here, e.g., edit, delete -->
                     <a href="{{ path('updateP', { 'productId': product.productId }) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>

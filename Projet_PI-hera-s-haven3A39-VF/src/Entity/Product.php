@@ -6,10 +6,8 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -21,28 +19,34 @@ class Product
 
     #[ORM\Column(length: 255)]
 /**
- * @Assert\NotBlank(message="veuillez remplir ce champ")
- * @Assert\Length(min=4, minMessage="au moins 4 caractères")
+ * @Assert\NotBlank(message="Please don't left it blank")
+ * @Assert\Length(min=4, 
+ * minMessage="Min length is 4 caracters")
  */
 private ?string $Product_Name = null;
 
     #[ORM\Column]
     /**
-     * @Assert\NotBlank(message="le champ quantite ne doit pas etre vide")
+     * @Assert\NotBlank(message="Please don't left it blank")
      * @Assert\Positive()
+     * @Assert\GreaterThan(value=0, 
+     * message="Quantity should be greater than 0.")
      */
     private ?int $Product_Quantity = null;
 
     #[ORM\Column(length: 255)]
     /**
-     * @Assert\NotBlank(message="le champ label ne doit pas etre vide")
+     * @Assert\NotBlank(message="Please don't left it blank")
+    * @Assert\Regex(pattern="/\d/", 
+    * match=false,
+    * message="The product label should not contain any digits.")
      */
     private ?string $Product_Label = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     /**
-     * @Assert\NotBlank(message="le champ date d expiration ne doit pas etre vide")
-     * @Assert\Date()
+     * @Assert\GreaterThanOrEqual(value="+2 weeks", 
+     * message="Expiration date should be at least two weeks from today.")
      */
     private ?\DateTimeInterface $Expiration_Date = null;
   
@@ -115,8 +119,6 @@ private ?string $Product_Name = null;
 
     return $this;
 }
-
-
     public function getCategoryKey(): ?Category
     {
         return $this->Category_Key;
@@ -128,7 +130,10 @@ private ?string $Product_Name = null;
 
         return $this;
     }
-
+    public function __toString()
+    {
+        return $this->Product_Name;
+    }
     /**
      * @return Collection<int, DonationProduct>
      */

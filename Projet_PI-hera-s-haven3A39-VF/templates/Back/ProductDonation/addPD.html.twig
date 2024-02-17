@@ -106,7 +106,7 @@
                     <div data-i18n="Users">Users</div>
                   </a>
                     </li>
-                  <li class="menu-item active">
+                  <li class="menu-item ">
                   <a href="{{ path('app_listA') }}" class="menu-link">
                     <div data-i18n="Animals">Animals</div>
                   </a>
@@ -125,15 +125,16 @@
                   <a href="{{ path('app_listP') }}"class="menu-link">
                     <div data-i18n="Products">Products</div>
                   </a>
-                   </li>
-                                                                         <li class="menu-item">
+                                     </li>
+                                                      <li class="menu-item">
                   <a href="{{ path('app_listcat') }}"class="menu-link">
                     <div data-i18n="Category">Category</div>
                   </a>
                    </li>
-                                                                         <li class="menu-item">
+                   </li>
+                                                      <li class="menu-item active">
                   <a href="{{ path('app_listpd') }}"class="menu-link">
-                    <div data-i18n="ProductDonation">ProductDonation</div>
+                    <div data-i18n="ProductDonation">DonationProduct</div>
                   </a>
                    </li>
                     <li class="menu-item">
@@ -146,6 +147,8 @@
                     <div data-i18n="Appointments">Appointments</div>
                   </a>
                 </li>
+                                                     </li>
+                   </li>
                </ul>
             </li>
             
@@ -454,43 +457,73 @@
             </div>
           </nav>
 
-         {% block content %}
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row invoice-add">
-            <!-- Invoice Add-->
-            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
-                <div class="card invoice-preview-card">
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+<span class="h4 mb-0 app-brand-text fw-bold">Add ProductDonation</span>
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row invoice-add">
+                <!-- Invoice Add-->
+                <div class="col-lg-9 col-12 mb-lg-0 mb-4">
+                  <div class="card invoice-preview-card">
                     <div class="card-body">
-                        <div class="row mx-0">
-                            <div class="col-md-7 mb-md-0 mb-4 ps-0">
-                                <div class="d-flex svg-illustration align-items-center gap-2 mb-4">
-                                    <!-- Add your custom branding/logo here -->
-                                    <span class="app-brand-logo demo">
-                                        <span style="color: var(--bs-primary)">
-                                        </span>
-                                    </span>
-                                    <span class="h4 mb-0 app-brand-text fw-bold">Add Animal</span>
-                                </div>
-                            </div>
-                            <!-- ... Other header content ... -->
-                        </div>
-                    </div>
-                    <hr class="my-0" />
-                    <hr class="my-0" />
-                    <div class="card-body">
-                        {{ form_start(formAnimal) }}
-                        {# Render form fields here using form_widget #}
-                        {{ form_widget(formAnimal) }}
-                        <button type="submit" class="btn btn-sm btn-primary">Save Animal</button>
-                        {{ form_end(formAnimal) }}
-                    </div>
-                </div>
+                      <div class="row mx-0">
+                        <div class="col-md-7 mb-md-0 mb-4 ps-0">
+                          <div class="d-flex svg-illustration align-items-center gap-2 mb-4">
+                            <span class="app-brand-logo demo">
+                              <span style="color: var(--bs-primary)">
+                              </span>
+                            </span>
+{{ form_start(formDonationProduct, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<table>
+    <tr>
+        <td>
+            <label for="inputText">Product</label>
+            <div>
+                {{ form_widget(formDonationProduct.Product_Key, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formDonationProduct.Product_Key, {'attr': {'class': 'text-danger'}}) }}
             </div>
-            <!-- /Invoice Add-->
-        </div>
-    </div>
-{% endblock %}
-              </div>
+        </td>
+        
+    </tr>
+    <tr>
+        <td>
+            <label for="inputText">Donation</label>
+            <div>
+                {{ form_widget(formDonationProduct.Donation_Key, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formDonationProduct.Donation_Key, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+    </tr>
+ 
+</table>
+
+<div class="card-body">
+    <button type="submit" class="btn btn-sm btn-primary">Save </button>
+    {{ form_end(formDonationProduct) }}
+    <!-- /Invoice Add-->
+</div>
+
+
+                          </div>
+                          
+                        </div>
+                        <div class="col-md-5 pe-0 ps-0 ps-md-2">
+                          <dl class="row mb-2 g-2">
+                            <dd class="col-sm-6">
+                            </dd>
+                            
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="my-0" />
+                    
+                    <hr class="my-0" />
+ 
 
               
             </div>

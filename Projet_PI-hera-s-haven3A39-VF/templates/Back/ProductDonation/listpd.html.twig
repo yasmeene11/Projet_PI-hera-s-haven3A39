@@ -70,7 +70,7 @@
             <a href="indexb" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <span style="color: var(--bs-primary)">
-                  <image href="path/to/your/image.jpg" width="100%" height="100%" />
+                   <img src="../../public/logo.svg" width="100%" height="100%" alt="Logo">
                 </span>
               </span>
               <span class="app-brand-text demo menu-text fw-bold ms-2">United Pets</span>
@@ -102,11 +102,11 @@
               </a>
               <ul class="menu-sub">
                   <li class="menu-item ">
-                  <a href="{{ path('app_listU') }}" class="menu-link">
+                  <a href="{{ path('app_listU') }}"  class="menu-link">
                     <div data-i18n="Users">Users</div>
                   </a>
                     </li>
-                  <li class="menu-item active">
+                  <li class="menu-item">
                   <a href="{{ path('app_listA') }}" class="menu-link">
                     <div data-i18n="Animals">Animals</div>
                   </a>
@@ -121,19 +121,18 @@
                     <div data-i18n="Pet Boarding">Pet Boarding</div>
                   </a>
                 </li>
-                 <li class="menu-item">
+                 <li class="menu-item ">
                   <a href="{{ path('app_listP') }}"class="menu-link">
                     <div data-i18n="Products">Products</div>
                   </a>
-                   </li>
-                                                                         <li class="menu-item">
-                  <a href="{{ path('app_listcat') }}"class="menu-link">
-                    <div data-i18n="Category">Category</div>
+                                   <li class="menu-item active">
+                  <a href="{{ path('app_listpd') }}"class="menu-link">
+                    <div data-i18n="ProductDonation">DonationProduct</div>
                   </a>
                    </li>
-                                                                         <li class="menu-item">
-                  <a href="{{ path('app_listpd') }}"class="menu-link">
-                    <div data-i18n="ProductDonation">ProductDonation</div>
+                                                      <li class="menu-item">
+                  <a href="{{ path('app_listcat') }}"class="menu-link">
+                    <div data-i18n="Category">Category</div>
                   </a>
                    </li>
                     <li class="menu-item">
@@ -454,47 +453,85 @@
             </div>
           </nav>
 
-         {% block content %}
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row invoice-add">
-            <!-- Invoice Add-->
-            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
-                <div class="card invoice-preview-card">
-                    <div class="card-body">
-                        <div class="row mx-0">
-                            <div class="col-md-7 mb-md-0 mb-4 ps-0">
-                                <div class="d-flex svg-illustration align-items-center gap-2 mb-4">
-                                    <!-- Add your custom branding/logo here -->
-                                    <span class="app-brand-logo demo">
-                                        <span style="color: var(--bs-primary)">
-                                        </span>
-                                    </span>
-                                    <span class="h4 mb-0 app-brand-text fw-bold">Add Animal</span>
-                                </div>
-                            </div>
-                            <!-- ... Other header content ... -->
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="py-3 mb-4">DonationProduct List</h4>
+
+              <!-- Invoice List Widget -->
+
+              <div class="card mb-4">
+    <div class="card-widget-separator-wrapper">
+        <div class="card-body card-widget-separator">
+            <div class="row gy-4 gy-sm-1">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
+                        <div>
+                             
+                            <p class="mb-0">DonationProducts</p>
+                        </div>
+                        <div class="avatar me-sm-4">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="mdi mdi-account-outline text-heading mdi-20px"></i>
+                            </span>
                         </div>
                     </div>
-                    <hr class="my-0" />
-                    <hr class="my-0" />
-                    <div class="card-body">
-                        {{ form_start(formAnimal) }}
-                        {# Render form fields here using form_widget #}
-                        {{ form_widget(formAnimal) }}
-                        <button type="submit" class="btn btn-sm btn-primary">Save Animal</button>
-                        {{ form_end(formAnimal) }}
+                    <hr class="d-none d-sm-block d-lg-none me-4" />
+                </div>
+                <!-- ... (other columns) ... -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+              {% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row invoice-add">
+            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
+                <div class="card">
+                    <div class="card-datatable table-responsive">
+                        <div class="dt-action-buttons text-start mt-md-0 mt-3">
+    <div class="dt-buttons">
+        <a href="{{ path('app_add_PD') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+            <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Donation Product</span></span>
+        </a>
+    </div>
+</div>
+
+
+                        <table class="invoice-list-table table">
+    <thead class="table-light">
+                      <tr>
+                        <th>ID</th>
+                        <th>Product </th>
+                        <th>Donation</th>
+                      </tr>
+    </thead>
+    <tbody>
+        {% for dp in result %}
+            <tr>
+            <td>{{ dp.getdpId() }}</td>
+                <td>{{ dp.getproductKey().getProductName() }}</td>
+                <td>{{ dp.getDonationKey().getDonationProductName() }}</td>
+                 </tr>
+                 
+        {% endfor %}
+        
+    </tbody>
+</table>
+
                     </div>
                 </div>
             </div>
-            <!-- /Invoice Add-->
         </div>
     </div>
 {% endblock %}
-              </div>
 
-              
-            </div>
-            <!-- / Content -->
 
             <!-- Footer -->
             <footer class="content-footer footer bg-footer-theme">
@@ -563,16 +600,13 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
-    <script src="../../assets/vendor/libs/cleavejs/cleave.js"></script>
-    <script src="../../assets/vendor/libs/cleavejs/cleave-phone.js"></script>
-    <script src="../../assets/vendor/libs/jquery-repeater/jquery-repeater.js"></script>
+    <script src="../../assets/vendor/libs/moment/moment.js"></script>
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
 
     <!-- Main JS -->
     <script src="../../assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script src="../../assets/js/offcanvas-send-invoice.js"></script>
-    <script src="../../assets/js/app-invoice-add.js"></script>
   </body>
 </html>
+

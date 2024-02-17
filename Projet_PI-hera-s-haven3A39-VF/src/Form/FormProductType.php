@@ -41,7 +41,7 @@ class FormProductType extends AbstractType
             ])
             ->add('Expiration_Date')
             ->add('Category_Key')
-            
+            ->add('donationProducts')
         ;
     }
 

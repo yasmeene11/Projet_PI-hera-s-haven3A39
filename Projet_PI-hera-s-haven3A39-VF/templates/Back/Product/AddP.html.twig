@@ -142,6 +142,13 @@
                     <div data-i18n="Appointments">Appointments</div>
                   </a>
                 </li>
+                                                     </li>
+                                                      <li class="menu-item">
+                  <a href="{{ path('app_listpd') }}"class="menu-link">
+                    <div data-i18n="ProductDonation">ProductDonation</div>
+                  </a>
+                   </li>
+                   </li>
                </ul>
             </li>
             
@@ -455,7 +462,7 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-
+<span class="h4 mb-0 app-brand-text fw-bold">Add Product</span>
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row invoice-add">
                 <!-- Invoice Add-->
@@ -469,54 +476,69 @@
                               <span style="color: var(--bs-primary)">
                               </span>
                             </span>
-                            <span class="h4 mb-0 app-brand-text fw-bold">Add Product</span>
-  {{ form_start(formProduct,{'attr': {'novalidate': 'novalidate'}} ) }}
+{{ form_start(formProduct, {'attr': {'novalidate': 'novalidate'}}) }}
 
+<table>
+    <tr>
+        <td>
+            <label for="inputText">Name</label>
+            <div>
+                {{ form_widget(formProduct.Product_Name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Name, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+        
+    </tr>
+    <tr>
+        <td>
+            <label for="inputText">Quantity</label>
+            <div>
+                {{ form_widget(formProduct.Product_Quantity, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Quantity, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="inputText">Label</label>
+            <div>
+                {{ form_widget(formProduct.Product_Label, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Label, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+            <td></td><label>{{ form_label(formProduct.Expiration_Date, "Date d'expiration") }}</label>
+       <div>
+        <label> {{ form_widget(formProduct.Expiration_Date) }}
+             {{ form_errors(formProduct.Expiration_Date) }}</label> 
+             </div>
+          </td>
 
-    <table>
+    </tr>
+    <tr>
+        <td>
+            <div class="mb-3">
+                {{ form_label(formProduct.Category_Key) }}
+                {{ form_widget(formProduct.Category_Key, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </td>
+    </tr>
         <tr>
-            <td>
-                <label for="inputText">Name</label>
-                <div>
-                    {{ form_widget(formProduct.Product_Name, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(formProduct.Product_Name, {'attr': {'class': 'text-danger'}}) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="inputText">Quantity</label>
-                <div>
-                    {{ form_widget(formProduct.Product_Quantity, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(formProduct.Product_Quantity, {'attr': {'class': 'text-danger'}}) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="inputText">Label</label>
-                <div>
-                    {{ form_widget(formProduct.Product_Label, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(formProduct.Product_Label, {'attr': {'class': 'text-danger'}}) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>{{ form_label(formProduct.Expiration_Date, "Date d'expiration") }}</label>
-                <td>{{ form_widget(formProduct.Expiration_Date) }}</td>
-                <td>{{ form_errors(formProduct.Expiration_Date) }}</td>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="mb-3">
-                    {{ form_label(formProduct.Category_Key) }}
-                    {{ form_widget(formProduct.Category_Key, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </td>
-        </tr>
-    </table>
+        <td>
+            <div class="mb-3">
+                {{ form_label(formProduct.donationProducts) }}
+                {{ form_widget(formProduct.donationProducts, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div class="card-body">
+    <button type="submit" class="btn btn-sm btn-primary">Save Product</button>
+    {{ form_end(formProduct) }}
+    <!-- /Invoice Add-->
+</div>
 
 
                           </div>
@@ -534,14 +556,7 @@
                     <hr class="my-0" />
                     
                     <hr class="my-0" />
-                    <div class="card-body">
-                       <button type="submit" class="btn btn-sm btn-primary">Save Product</button>
-                                     
-                     {{form_end(formProduct)}}
-                <!-- /Invoice Add-->
-
-                
-              </div>
+ 
 
               
             </div>
