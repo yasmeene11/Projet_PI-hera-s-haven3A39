@@ -4,14 +4,17 @@ namespace App\Form;
 
 use App\Entity\DonationM;
 use App\Entity\Account;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class DonationMType extends AbstractType
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\DataTransformerInterface;
+use Doctrine\ORM\EntityManagerInterface;
+
+class DonationMFrontType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -21,14 +24,8 @@ class DonationMType extends AbstractType
                 'label' => 'Donation Date',
                 'widget' => 'single_text',
                 'required' => false,
-            ])  
-            ->add('Account_Key',EntityType::class, [
-                'class' => Account::class,
-                'label' => 'Account',
-                'required' => false,    
-                'placeholder' => '',
-            ])
-        ;
+            ]);
+        // Ne pas ajouter le champ Account_Key
     }
 
     public function configureOptions(OptionsResolver $resolver): void

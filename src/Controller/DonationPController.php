@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 use App\Entity\DonationP;
+use App\Entity\Account;
+
 use App\Repository\DonationPRepository;
 use App\Form\DonationPType;
+use App\Form\DonationPFrontType;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,4 +84,40 @@ class DonationPController extends AbstractController
             'donationPId' => $donationPId,
         ]);
     }
+    #[Route('/donationPFront', name: 'donationPFront')]
+public function addFront(Request $request, ManagerRegistry $managerRegistry): Response
+{
+    try {
+        // Obtenez l'Account d'id 1
+        $entityManager = $this->getDoctrine()->getManager();
+        $account = $entityManager->getRepository(Account::class)->find(1);
+
+        // Créez une nouvelle instance de DonationM avec l'Account prérempli
+        $donationP = new DonationP();
+        $donationP->setAccountKey($account);
+        // Créez le formulaire avec l'instance de DonationM préremplie
+        $form = $this->createForm(DonationPFrontType::class, $donationP);
+        
+
+        $form->handleRequest($request);
+//dd($form->isValid());
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrez l'entité dans la base de données
+            $entityManager->persist($donationP);
+            $entityManager->flush();
+            //dd( $donationM);
+
+
+            return $this->redirectToRoute('home');
+        }
+    } catch (\Exception $e) {
+        // Log the exception or print it for debugging
+        dd($e->getMessage());
+    }
+
+    return $this->render('/Front/DonationP/addDonationP.html.twig', [
+        'formDonationP' => $form->createView(),
+    ]);
+}
+
 }

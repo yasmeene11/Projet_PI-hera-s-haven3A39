@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\DonationM;
+use App\Entity\Account;
+
 use App\Repository\DonationMRepository;
 use App\Repository\DonationPRepository;
+use App\Form\DonationMFrontType;
 
 use App\Form\DonationMType;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,4 +85,42 @@ class DonationMController extends AbstractController
             'donationMId' => $donationMId,
         ]);
     }
+ 
+    #[Route('/donationMFront', name: 'donationMFront')]
+public function addFront(Request $request, ManagerRegistry $managerRegistry): Response
+{
+    try {
+        // Obtenez l'Account d'id 1
+        $entityManager = $this->getDoctrine()->getManager();
+        $account = $entityManager->getRepository(Account::class)->find(1);
+
+        // Créez une nouvelle instance de DonationM avec l'Account prérempli
+        $donationM = new DonationM();
+        $donationM->setAccountKey($account);
+        // Créez le formulaire avec l'instance de DonationM préremplie
+        $form = $this->createForm(DonationMFrontType::class, $donationM);
+        
+
+        $form->handleRequest($request);
+//dd($form->isValid());
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrez l'entité dans la base de données
+            $entityManager->persist($donationM);
+            $entityManager->flush();
+            //dd( $donationM);
+
+
+            return $this->redirectToRoute('home');
+        }
+    } catch (\Exception $e) {
+        // Log the exception or print it for debugging
+        dd($e->getMessage());
+    }
+
+    return $this->render('/Front/DonationM/addDonationM.html.twig', [
+        'formDonationM' => $form->createView(),
+    ]);
+}
+
+
 }

@@ -25,10 +25,14 @@ class DonationP
         match: false,
         message: "The product name should not contain any digits."
     )]
+    #[Assert\NotBlank( message: "You must enter the product name")]
+
     private ?string $donation_product_name = null;
 
     #[ORM\Column]
     #[Assert\GreaterThan(value: 0, message: "Quantity should be greater than 0.")]
+    #[Assert\NotBlank( message: "You must enter the product quantity")]
+
     private ?int $donation_product_quantity = null;
 
     #[ORM\Column(length: 255)]
@@ -37,16 +41,22 @@ class DonationP
         match: false,
         message: "The product label should not contain any digits."
     )]
+    #[Assert\NotBlank( message: "You must enter the product label")]
+
     private ?string $donation_product_label = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\GreaterThanOrEqual(value: "+2 weeks", message: "Expiration date should be at least two weeks from today.")]
+    #[Assert\NotBlank( message: "You must enter the product expiration date ")]
+
     private ?\DateTimeInterface $donation_product_expiration_date = null;
 
     
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\EqualTo("today", message: "The donation date should be today")]
+    #[Assert\NotBlank( message: "You must enter the donation date")]
+
     private ?\DateTimeInterface $donationP_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'donationPs')]
@@ -57,6 +67,8 @@ class DonationP
     
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank( message: "You must enter the product type")]
+
     private ?string $donationP_type = null;
 
     #[ORM\OneToMany(mappedBy: 'Donation_Key', targetEntity: DonationProduct::class)]

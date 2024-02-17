@@ -18,17 +18,19 @@ class DonationM
 
     #[ORM\Column]
     #[Assert\GreaterThanOrEqual(value: 10, message: "The donation amount should be equal to or greater than 10 DT.")]
+    #[Assert\NotBlank( message: "You must enter the donation amount")]
+
+
     private ?float $Donation_Amount = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\GreaterThanOrEqual("today", message: "You cannot make a donation in the past.")]
-
+    #[Assert\EqualTo("today", message: "You must make a donation today")]
+    #[Assert\NotBlank( message: "You must enter the donation date")]
     private ?\DateTimeInterface $donationM_Date = null;
 
     #[ORM\ManyToOne(inversedBy: 'donationMs')]
     #[ORM\JoinColumn(nullable: false, name: 'Account_Key', referencedColumnName: 'accountId')]
     #[Assert\NotNull(message: "You must select an account")]
-
     private ?Account $Account_Key = null;
 
     public function getdonationMId(): ?int

@@ -489,6 +489,8 @@
             <th>Product Label</th>
             <th>Product Expiration Date </th>
             <th class="text-truncate">Donation Date</th>
+            <th>Product Type</th>
+
             <th class="cell-fit">Actions</th>
         </tr>
     </thead>
@@ -502,7 +504,8 @@
                 <td>{{ donationP.getDonationProductExpirationDate()|date('Y-m-d') }}</td>
 
                 <td>{{ donationP.getDonationPDate()|date('Y-m-d') }}</td>
-                
+                <td>{{ donationP.getDonationPType() }}</td>
+
                 <td>
                     <!-- Add your actions here, e.g., edit, delete -->
                <a href="{{ path('app_update_donationP', {'donationPId': donationP.getDonationPId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
