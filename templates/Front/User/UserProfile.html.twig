@@ -184,7 +184,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                           
                         </li>
                         <!-- menu item -->
-                        
+                       
                         <!-- menu item -->
                         <li class="nav-item dropdown">
                            <a class="nav-link"   href={{ path('app_listBF') }}>
@@ -216,7 +216,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                            </a>
                         </li>
 
-                        
+                        <!-- menu item -->
+                        <li class="nav-item dropdown">
+                           <a class="battouna btn btn-primary" href={{ path('app_login') }}>Login</a>
+                        </li>
+
 
 
                      </ul>
@@ -230,58 +234,134 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </nav>
       <!-- /nav -->
       <!-- ==== Slider ==== -->
-      <div class="jumbotron jumbotron-fluid">
-         <div class="container" >
-            <div class="jumbo-heading" data-aos="fade-up">
-               <h1>Adoption</h1>
-               <!-- Breadcrumbs -->
-               <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                     <li class="breadcrumb-item"><a href={{ path('app_home') }}>Home</a></li>
-                    <li class="breadcrumb-item active"><a href={{ path('app_listAF') }}>Animal</a></li>
-                  </ol>
-               </nav>
-            </div>
-         </div>
-         <!-- /jumbo-heading -->
-       </div>
-      <!-- /container-fluid -->
-      {% block content %}
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row invoice-add">
-            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
-                <div class="card invoice-preview-card">
+      
+               <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="py-3 mb-4"><span class="text-muted fw-light">User / View /</span> Account</h4>
+              <div class="row">
+                <!-- User Sidebar -->
+                <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+                  <!-- User Card -->
+                  <div class="card mb-4">
                     <div class="card-body">
-                        <div class="row mx-0">
-                            <div class="col-md-7 mb-md-0 mb-4 ps-0">
-                                <div class="d-flex svg-illustration align-items-center gap-2 mb-4">
-                                    <span class="app-brand-logo demo">
-                                        <span style="color: var(--bs-primary)"></span>
-                                    </span>
-                                    <span class="h4 mb-0 app-brand-text fw-bold">Add Adoption</span>
-                                </div>
+                      <div class="user-avatar-section">
+                        <div class="d-flex align-items-center flex-column">
+                          <img
+                            class="img-fluid rounded mb-3 mt-4"
+                            src="../../assets/img/avatars/10.png"
+                            height="120"
+                            width="120"
+                            alt="User avatar" />
+                          <div class="user-info text-center">
+                            <h4>Violet Mendoza</h4>
+                            <span class="badge bg-label-danger rounded-pill">Author</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between flex-wrap my-2 py-3">
+                        <div class="d-flex align-items-center me-4 mt-3 gap-3">
+                          <div class="avatar">
+                            <div class="avatar-initial bg-label-primary rounded">
+                              <i class="mdi mdi-check mdi-24px"></i>
                             </div>
+                          </div>
+                          <div>
+                            <h4 class="mb-0">1.23k</h4>
+                            <span>Tasks Done</span>
+                          </div>
                         </div>
-                    </div>
-                    <hr class="my-0" />
-                    <hr class="my-0" />
-                    <div class="card-body">
-                        {{ form_start(formAdoption, {'attr': {'class': 'your-custom-form-class', 'novalidate': 'novalidate'}}) }}
-                        <div class="mb-3">
-                            {{ form_label(formAdoption.Adoption_Date) }}
-                            {{ form_widget(formAdoption.Adoption_Date, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(formAdoption.Adoption_Date, {'attr': {'class': 'text-danger'}}) }}
+                        <div class="d-flex align-items-center mt-3 gap-3">
+                          <div class="avatar">
+                            <div class="avatar-initial bg-label-primary rounded">
+                              <i class="mdi mdi-star-outline mdi-24px"></i>
+                            </div>
+                          </div>
+                          <div>
+                            <h4 class="mb-0">568</h4>
+                            <span>Projects Done</span>
+                          </div>
                         </div>
-                        <button type="submit" class="btn btn-sm btn-primary">Save Adoption</button>
-                        {{ form_end(formAdoption) }}
+                      </div>
+                      <h5 class="pb-3 border-bottom mb-3">Details</h5>
+                      <div class="info-container">
+                        <ul class="list-unstyled mb-4">
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Username:</span>
+                            <span>violet.dev</span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Email:</span>
+                            <span>vafgot@vultukir.org</span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Status:</span>
+                            <span class="badge bg-label-success rounded-pill">Active</span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Role:</span>
+                            <span>Author</span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Tax id:</span>
+                            <span>Tax-8965</span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Contact:</span>
+                            <span>(123) 456-7890</span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Languages:</span>
+                            <span>French</span>
+                          </li>
+                          <li class="mb-3">
+                            <span class="fw-medium text-heading me-2">Country:</span>
+                            <span>England</span>
+                          </li>
+                        </ul>
+                        <div class="d-flex justify-content-center">
+                          <a
+                            href="javascript:;"
+                            class="btn btn-primary me-3"
+                            data-bs-target="#editUser"
+                            data-bs-toggle="modal"
+                            >Edit</a
+                          >
+                          <a href="javascript:;" class="btn btn-outline-danger suspend-user">Suspended</a>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                  <!-- /User Card -->
+                  <!-- Plan Card -->
+                  
+                  <!-- /Plan Card -->
                 </div>
+                <!--/ User Sidebar -->
+
+                <!-- User Content -->
+                
+                        
+                  
+                  <!-- /Activity Timeline -->
+
+                  <!-- Invoice table -->
+                 
+                  <!-- /Invoice table -->
+            
+                <!--/ User Content -->
+              </div>
+
+              
+                </div>
+              </div>
+              <!--/ Edit User Modal -->
+
+             
+
+              <!-- /Modal -->
             </div>
-        </div>
-    </div>
-{% endblock %}
-
-
+        
+      <!-- /container-fluid -->
+      
 	  <!-- ==== footer ==== -->
       <footer class="bg-light pattern1">
          <div class="container">

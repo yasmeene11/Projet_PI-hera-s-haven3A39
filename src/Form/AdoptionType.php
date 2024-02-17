@@ -10,20 +10,24 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Account;
 use App\Entity\Animal;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
+
+
 class AdoptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Use condition to include/exclude fields based on the context
+        $builder->add('Adoption_Date');
+
         if ($options['is_admin']) {
-            // Admin has access to all fields
             $builder
-                ->add('Adoption_Date')
                 ->add('Adoption_Status', ChoiceType::class, [
                     'choices' => [
-                        'Cancelled' => 'Cancelled',       
-                'Pending' => 'Pending',
-                'Adopted' => 'Adopted',
+                        'Cancelled' => 'Cancelled',
+                        'Pending' => 'Pending',
+                        'Adopted' => 'Adopted',
                     ],
                     'placeholder' => 'Select Status',
                     'required' => true,
@@ -31,28 +35,50 @@ class AdoptionType extends AbstractType
                 ->add('Adoption_Fee')
                 ->add('Account_Key', EntityType::class, [
                     'class' => Account::class, 
-                    'choice_label' => 'name', // Replace with the actual property name
+                    'choice_label' => 'name',
                     'placeholder' => 'Select Account',
                     'required' => true,
                 ])
                 ->add('Animal_Key', EntityType::class, [
                     'class' => Animal::class, 
-                    'choice_label' => 'Animal_Image', // Replace with the actual property name
+                    'choice_label' => 'Animal_Image',
                     'placeholder' => 'Select Animal',
                     'required' => true,
                 ]);
         } else {
-            // Front-end user can only select the date
-            $builder->add('Adoption_Date');
+            // For the front office, set fields as not mapped or use HiddenType
+            $builder
+                ->add('Adoption_Status', HiddenType::class, [
+                    'mapped' => false,
+                ])
+                ->add('Adoption_Fee', HiddenType::class, [
+                    'mapped' => false,
+                ])
+                ->add('Account_Key', HiddenType::class, [
+                    'mapped' => false,
+                ])
+                ->add('Animal_Key', HiddenType::class, [
+                    'mapped' => false,
+                ]);
         }
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Adoption::class,
             // Add a custom option to pass the role/context information
             'is_admin' => false,
+            // Specify validation group based on the context
+            'validation_groups' => function (FormInterface $form) {
+                $groups = ['Default'];
+
+                if ($form->getConfig()->getOption('is_admin')) {
+                    // Add an additional validation group for the admin context
+                    $groups[] = 'admin';
+                }
+
+                return $groups;
+            },
         ]);
     }
 }

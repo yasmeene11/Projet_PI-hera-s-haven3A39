@@ -31,11 +31,12 @@ class AdoptionController extends AbstractController
     #[Route('/add_ad', name: 'app_add_Ad')]
     public function AddAd(ManagerRegistry $mr, Request $req): Response
     {
-        $s = new Adoption();  //1 -instance
+        $s = new Adoption(); 
 
         
         $form = $this->createForm(AdoptionType::class, $s, ['is_admin' => true]);
         $form->handleRequest($req);
+        
         if ($form->isSubmitted() && $form->isValid()) {
             
             $em = $mr->getManager();
@@ -50,27 +51,36 @@ class AdoptionController extends AbstractController
     }
 
     #[Route('/update_ad/{adoptionId}', name: 'app_update_Ad')]
-    public function updateAd(ManagerRegistry $mr, Request $req, $adoptionId): Response
-    {
+public function updateAd(ManagerRegistry $mr, Request $req, $adoptionId): Response
+{
+    $em = $mr->getManager();
+    $adoption = $em->getRepository(Adoption::class)->find($adoptionId);
+
+    $form = $this->createForm(AdoptionType::class, $adoption, ['is_admin' => true]);
+
+    $form->handleRequest($req);
+
+    if ($form->isSubmitted() && $form->isValid()) {
         $em = $mr->getManager();
-        $s = $em->getRepository(Adoption::class)->find($adoptionId);
 
-        $form = $this->createForm(AdoptionType::class, $s, ['is_admin' => true]);
-
-        $form->handleRequest($req);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $mr->getManager();
-            $em->flush();
-
-            return $this->redirectToRoute('app_listAd');
+        // Check if the adoption status is updated to "Cancelled"
+        if ($adoption->getAdoptionStatus() === 'Cancelled') {
+            $animal = $adoption->getAnimalKey();
+            $animal->setAnimalStatus('Available');
+            $em->persist($animal);
         }
 
-        return $this->render('/Back/Animal/UpdateAd.html.twig', [
-            'formAdoption' => $form->createView(),
-            'adoptionId' => $adoptionId,
-        ]);
+        $em->flush();
+
+        return $this->redirectToRoute('app_listAd');
     }
+
+    return $this->render('/Back/Animal/UpdateAd.html.twig', [
+        'formAdoption' => $form->createView(),
+        'adoptionId' => $adoptionId,
+    ]);
+}
+
     
     #[Route('/delete_ad/{adoptionId}', name: 'app_delete_Ad')]
      public function removeA(AdoptionRepository $repo, $adoptionId, ManagerRegistry $mr): Response
@@ -85,33 +95,47 @@ class AdoptionController extends AbstractController
     }
 
 
-    #[Route('/List_adf/{animalId}', name: 'app_listAdF', requirements: ['animalId' => '\d+'], defaults: ['animalId' => null])]
+    #[Route('List_adf{animalId}', name: 'app_listAdF')]
     public function AddAdF(ManagerRegistry $mr, Request $req, $animalId): Response
     {
         $animal = $mr->getRepository(Animal::class)->find($animalId);
-
+    
         $adoption = new Adoption();
+    
+      
+        $adoption->setAdoptionStatus('Pending');
+        $adoption->setAdoptionFee(200);
+    
+        
+        $accountId = 1;
+        $user = $mr->getRepository(Account::class)->find($accountId);
+        $adoption->setAccountKey($user);
+    
+        $adoption->setAnimalKey($animal);
+    
         $form = $this->createForm(AdoptionType::class, $adoption, ['is_admin' => false]);
+    
+        
+        dump('Form data before handling request:', $form->getData());
+    
         $form->handleRequest($req);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-          
-            $accountId = 1;
-            $user = $mr->getRepository(Account::class)->find($accountId);
-            $adoption->setAccountKey($user);
-            $adoption->setAnimalKey($animal);
-            $adoption->setAdoptionStatus('Pending');
-            if ($adoption->getAdoptionFee() === null) {
-                $adoption->setAdoptionFee(200); 
-            }
+            
+            dump('Form data after handling request:', $form->getData());
+    
             $em = $mr->getManager();
             $em->persist($adoption);
             $animal->setAnimalStatus('Pending');
             $em->persist($animal);
             $em->flush();
+    
             return $this->redirectToRoute('app_home');
+        } else {
+            
+            dump('Form errors:', $form->getErrors(true, false));
         }
-
+    
         return $this->render('/Front/Animal/ListAd.html.twig', [
             'formAdoption' => $form->createView(),
         ]);

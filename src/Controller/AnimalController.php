@@ -19,10 +19,18 @@ class AnimalController extends AbstractController
     public function ListA(AnimalRepository $repo): Response
     {
         $result = $repo->findAll();
+        $totalAnimals = $repo->count([]);  // Count total animals
+        $adoptedAnimals = $repo->count(['Animal_Status' => 'Adopted']);
+        $availableAnimals = $repo->count(['Animal_Status' => 'Available']);  // Count adopted animals
+    
         return $this->render('/Back/Animal/ListA.html.twig', [
             'result' => $result,
+            'totalAnimals' => $totalAnimals,
+            'adoptedAnimals' => $adoptedAnimals,
+            'availableAnimals' => $availableAnimals,
         ]);
     }
+    
 
     #[Route('/add_a', name: 'app_add_A')]
     public function AddA(ManagerRegistry $mr, Request $req): Response
@@ -114,6 +122,23 @@ class AnimalController extends AbstractController
         ]);
     }
     
+
+
+    #[Route('/animal_statistics', name: 'app_animal_statistics')]
+    public function animalStatistics(AnimalRepository $repo): Response
+{
+    $availableAnimals = $repo->findBy(['Animal_Status' => 'Available']);
+    $totalAnimals = $repo->count([]);
+    $adoptedAnimals = $repo->count(['Animal_Status' => 'Adopted']);
+
+    return $this->render('/Front/Animal/ListA.html.twig', [
+        'result' => $result,
+        'totalAnimals' => $totalAnimals,
+        'availableAnimals' => $availableAnimals,
+        'adoptedAnimals' => $adoptedAnimals,
+    ]);
+}
+
 
     
 }

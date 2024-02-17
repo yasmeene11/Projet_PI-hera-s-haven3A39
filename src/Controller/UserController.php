@@ -22,4 +22,11 @@ class UserController extends AbstractController
             'controller_name' => 'IndexController',
         ]);
     }
+    #[Route('/List_up', name: 'app_listUP')]
+    public function ListUP(): Response
+    {
+        return $this->render('/Front/User/UserProfile.html.twig', [
+            'controller_name' => 'IndexController',
+        ]);
+    }
 }
