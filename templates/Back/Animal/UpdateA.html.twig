@@ -491,6 +491,10 @@
                             {{ form_label(formAnimal.Enrollement_Date) }}
                             {{ form_widget(formAnimal.Enrollement_Date, {'attr': {'class': 'form-control'}}) }}
                         </div>
+                         <div class="mb-3">
+                            {{ form_label(formAnimal.Animal_Description) }}
+                            {{ form_widget(formAnimal.Animal_Description, {'attr': {'class': 'form-control'}}) }}
+                        </div>
                         <div class="mb-3">
                             {{ form_label(formAnimal.Animal_Image) }}
                             {% if formAnimal.Animal_Image.vars.value %}

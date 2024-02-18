@@ -41,13 +41,16 @@ class Animal
     private ?string $Animal_Image = null;
     
     
-    
+    #[ORM\Column(length: 1000)]
+    private ?string $Animal_Description = null;
 
     #[ORM\OneToMany(mappedBy: 'Animal_Key', targetEntity: Appointment::class)]
     private Collection $appointments;
 
     #[ORM\OneToMany(mappedBy: 'Animal_Key', targetEntity: Adoption::class)]
     private Collection $adoptions;
+
+  
 
     public function __construct()
     {
@@ -211,6 +214,18 @@ class Animal
                 $adoption->setAnimalKey(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAnimalDescription(): ?string
+    {
+        return $this->Animal_Description;
+    }
+
+    public function setAnimalDescription(string $Animal_Description): static
+    {
+        $this->Animal_Description = $Animal_Description;
 
         return $this;
     }

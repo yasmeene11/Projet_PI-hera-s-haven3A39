@@ -528,6 +528,7 @@
                             <th>Type</th>
                             <th>Age</th>
                             <th>Enrollment Date</th>
+                            <th class="cell-fit">Description</th>
                             <th>Image</th>
                             <th>Actions</th> <!-- New column for buttons -->
                         </tr>
@@ -542,6 +543,7 @@
                                 <td>{{ animal.getAnimalType() }}</td>
                                 <td>{{ animal.getAge() }}</td>
                                 <td>{{ animal.getEnrollementDate() ? animal.getEnrollementDate()|date('d-m-Y') : '' }}</td>
+                                <td>{{ animal.getAnimalDescription() }}</td>
                                 <td>
                                     {% if animal.getAnimalImage() %}
                                         <img src="{{ asset('animal_images/' ~ animal.getAnimalImage()) }}" alt="Animal Image" style="width: 250px; height: 250px; object-fit: cover;">

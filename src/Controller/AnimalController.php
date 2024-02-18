@@ -140,5 +140,17 @@ class AnimalController extends AbstractController
 }
 
 
+
+      #[Route('/desc_a{animalId}', name: 'app_descA')]
+    public function DescA(AnimalRepository $repo, int $animalId): Response
+    {
+        $animal = $repo->find($animalId);
+
+    
+        return $this->render('/Front/Animal/Description.html.twig', [
+            'animal' => $animal,
+        ]);
+    }
+
     
 }

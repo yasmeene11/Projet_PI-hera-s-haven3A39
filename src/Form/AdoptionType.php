@@ -12,14 +12,16 @@ use App\Entity\Account;
 use App\Entity\Animal;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
-
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class AdoptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('Adoption_Date');
+        $builder->add('Adoption_Date', DateType::class, [
+            'widget' => 'single_text',
+            
+        ]);
 
         if ($options['is_admin']) {
             $builder

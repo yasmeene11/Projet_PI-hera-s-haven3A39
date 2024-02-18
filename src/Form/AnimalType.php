@@ -53,10 +53,12 @@ class AnimalType extends AbstractType
         ])
             ->add('Age')
             ->add('Enrollement_Date')
+            ->add('Animal_Description')
             ->add('Animal_Image', FileType::class, [
                 'label' => 'Animal Image',
                 'required' => false,
             ]);
+            
 
         $builder->get('Animal_Image')->addModelTransformer(new class() implements DataTransformerInterface {
             public function transform($value)

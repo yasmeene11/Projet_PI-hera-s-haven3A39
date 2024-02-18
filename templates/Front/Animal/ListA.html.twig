@@ -303,7 +303,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         </div>
                         <div class="col-md-12 mt-3">
                             <div class="text-center">
-                                <a  class="btn btn-primary">More Info</a>
+                                <a  class="btn btn-primary"  href="{{ path('app_descA', {'animalId': animal.getAnimalId()}) }}">More Info</a>
                                 <a class="btn btn-primary" href="{{ path('app_listAdF', {'animalId': animal.getAnimalId()}) }}">Adopt Now</a>
 
                             </div>

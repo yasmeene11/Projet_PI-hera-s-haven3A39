@@ -233,15 +233,68 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
          <!-- /navbar -->
       </nav>
       <!-- /nav -->
-      <!-- ==== Slider ==== -->
-      <div class="container-fluid p-0">
-         <div id="slider" class="overlay-parallax-slider" style="width:1200px;height:650px;margin:0 auto;margin-bottom: 0px;">
-            
+     <!-- Jumbotron -->
+      <div class="jumbotron jumbotron-fluid">
+         <div class="container" >
+            <div class="jumbo-heading" data-aos="fade-up">
+               <h1>Animal Description</h1>
+               <!-- Breadcrumbs -->
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href={{ path('app_home') }}>Home</a></li>
+                     <li class="breadcrumb-item"><a href={{ path('app_listAF') }}>Animal</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"  >Animal Description</li>
+                  </ol>
+               </nav>
+            </div>
          </div>
-         <!-- /slider -->
+         <!-- /jumbo-heading -->
       </div>
-      <!-- /container-fluid -->
-      
+      <!-- /jumbotron -->
+<div class="page container">
+    <div class="row">
+        <!-- page with sidebar starts -->
+        <div class="col-lg-9 page-with-sidebar">
+            <div class="row">
+                <div class="adopt-card col-lg-12">
+                    <!-- Image -->
+                    <div class="col-md-4 float-start p-0 pe-sm-4">
+                         {% if animal.getAnimalImage() %}
+        <img src="{{ asset('animal_images/' ~ animal.getAnimalImage()) }}" alt="{{ animal.getAnimalName }} Image" class="img-fluid" style="width: 250px; height: 250px; object-fit: cover;">
+
+          {% else %}
+        No Image
+        {% endif %}
+                    </div>
+                    <!-- Name -->
+                    <div class="caption-adoption col-md-8 float-end res-margin my-auto">
+                        <h2>{{ animal.getAnimalName }}</h2>
+                        <!-- List -->
+                        <ul class="list-unstyled mt-3">
+                            
+                                    <li><strong>Age:</strong> {{ animal.getAge }} years</li>
+                                    <li><strong>Breed:</strong> {{ animal.getAnimalBreed }}</li>
+                                    <li><strong>Status:</strong> {{ animal.getAnimalStatus }}</li>
+                        </ul>
+                        <!-- Adopt info -->
+                       
+                    </div>
+                    <!-- /caption-adoption -->
+                </div>
+                <!-- /adopt-card -->
+            </div>
+            <!-- /row -->
+            <div class="col-lg-12">
+                <h3>About me</h3>
+                <p>{{ animal.getAnimalDescription }}</p>
+                
+                <a href="{{ path('app_listAdF', {'animalId': animal.getAnimalId()}) }}" class="btn btn btn-secondary mt-2">Adopt me</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
 	  <!-- ==== footer ==== -->
       <footer class="bg-light pattern1">
          <div class="container">

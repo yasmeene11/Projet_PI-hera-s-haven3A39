@@ -18,7 +18,7 @@ class Adoption
 
     /**
      * @Assert\NotBlank(message="Date is required.")
-     *  @Assert\LessThanOrEqual("today", message="The adoption date cannot be in the past.")
+     *  @Assert\GreaterThanOrEqual("today", message="The adoption date cannot be in the past.")
      */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $Adoption_Date = null;
