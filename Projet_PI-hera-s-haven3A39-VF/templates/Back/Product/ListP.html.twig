@@ -507,16 +507,16 @@
 
                         <table class="invoice-list-table table">
     <thead class="table-light">
-                      <tr>
-                        <th>ID</th>
-                        <th>Name </th>
-                        <th>Quantity</th>
-                        <th>Label</th>
-                        <th class="text-truncate">Expiration Date</th>
-                        <th>Category</th>
-                        <th>Donation</th>
-                        <th class="cell-fit">Actions</th>
-                      </tr>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Label</th>
+            <th class="text-truncate">Expiration Date</th>
+            <th>Category</th>
+            <th>Donation</th>
+            <th class="cell-fit">Actions</th>
+        </tr>
     </thead>
     <tbody>
         {% for product in result %}
@@ -527,23 +527,26 @@
                 <td>{{ product.getProductLabel() }}</td>
                 <td>{{ product.getExpirationDate()|date('Y-m-d') }}</td>
                 <td>{{ product.getCategoryKey().getProductType()}}</td>
-                <td> 
-                {% for donationProduct in product.getDonationProducts() %}
-                 <td>{{ donationProduct.getDonationKey().getDonationProductName() }}</td>
-                {% endfor %}
-                </td>
+               {% set donationCount = product.getDonationProducts()|length %}
+{% if donationCount > 0 %}
+    <td>
+        {{ donationCount }} donation{% if donationCount != 1 %}s{% endif %}
+    </td>
+{% else %}
+    <td></td>
+{% endif %}
+
                 <td>
                     <!-- Add your actions here, e.g., edit, delete -->
                     <a href="{{ path('updateP', { 'productId': product.productId }) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
                     <a href="{{ path('removeP', { 'productId': product.productId })}}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Delete</a>
                 </td>
-
-                 </tr>
-                 
+            </tr>
         {% endfor %}
-        
     </tbody>
 </table>
+
+
 
                     </div>
                 </div>

@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Product;
 //use App\Entity\Category;
 use Symfony\Component\Form\Extension\Core\Type\TextType ;
-
+use Symfony\Component\Form\Extension\Core\Type\DateType ;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\AbstractType;
@@ -39,9 +39,11 @@ class FormProductType extends AbstractType
                 'required'=> false,
 
             ])
-            ->add('Expiration_Date')
+            ->add('Expiration_Date', DateType::class, [
+                'widget' => 'single_text',
+            ])
             ->add('Category_Key')
-            ->add('donationProducts')
+
         ;
     }
 

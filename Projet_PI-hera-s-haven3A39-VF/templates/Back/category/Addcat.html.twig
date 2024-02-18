@@ -496,6 +496,13 @@
         <label for="inputText">Type</label>
         <div>
             {{ form_widget(formCategory.Product_Type, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(formCategory.Product_Type, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+    </tr>
+     <tr>
+        <label for="inputText">Source</label>
+        <div>
+            {{ form_widget(formCategory.Product_Source, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(formCategory.Product_Source, {'attr': {'class': 'text-danger'}}) }}
         </div>
     </tr>

@@ -18,15 +18,13 @@ class Category
 
     #[ORM\Column(length: 255)]
     /**
- * @Assert\NotBlank(message="veuillez remplir ce champ")
- * @Assert\Length(min=4, minMessage="au moins 4 caractères")
+ * @Assert\NotBlank(message="Don't leave it blank")
  */
     private ?string $Product_Type = null;
 
     #[ORM\Column(length: 255)]
     /**
- * @Assert\NotBlank(message="veuillez remplir ce champ")
- * @Assert\Length(min=4, minMessage="au moins 4 caractères")
+ * @Assert\NotBlank(message="Don't leave it blank")
  */
     private ?string $Product_Source = null;
 

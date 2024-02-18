@@ -173,23 +173,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                      <ul class="navbar-nav ms-auto">
                         <!-- menu item -->
                         <li class="nav-item home-menu">
-                        <!--   <a class="nav-link " href={{ path('app_home') }}>Home -->
+                          <a class="nav-link " href={{ path('app_home') }}>Home
                            </a>
                         </li>
                         <!-- menu item -->
                         <li class="nav-item dropdown">
+                        <a class="nav-link"  >
                            Animals
                            </a>
                           
                         </li>
                         <!-- menu item -->
                         <li class="nav-item dropdown">
+                        <a class="nav-link"  >
                            Adopt
                            </a>
                            
                         </li>
                         <!-- menu item -->
                         <li class="nav-item dropdown">
+                        <a class="nav-link"   >
                            Pet Boarding
                            </a>
                         </li>
@@ -219,42 +222,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <!-- menu item -->
                         <li class="nav-item dropdown">
                         </li>
-
-<table class="invoice-list-table table">
-    <thead class="table-light">
-                      <tr>
-                        <th>ID</th>
-                        <th>Name </th>
-                        <th>Quantity</th>
-                        <th>Label</th>
-                        <th class="text-truncate">Expiration Date</th>
-                        <th>Category</th>
-                        <th class="cell-fit">Actions</th>
-                       
-                      </tr>
-    </thead>
-    <tbody>
-        {% for product in result %}
-            <tr>
-                <td>{{ product.getproductId() }}</td>
-                <td>{{ product.getProductName() }}</td>
-                <td>{{ product.getProductQuantity() }}</td>
-                <td>{{ product.getProductLabel() }}</td>
-                <td>{{ product.getExpirationDate()|date('Y-m-d') }}</td>
-                <td>{{ product.getCategoryKey().getProductType()}}</td>
-                <td>
-                    <!-- Add your actions here, e.g., edit, delete -->
-                    <a  class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">See</a>
-               
-                </td>
-
-                 </tr>
-                 
-        {% endfor %}
-        
-    </tbody>
-</table>
-
                      </ul>
                      <!--/ul -->
                   </div>
@@ -265,15 +232,69 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
          <!-- /navbar -->
       </nav>
       <!-- /nav -->
-      <!-- ==== Slider ==== -->
-      <div class="container-fluid p-0">
-         <div id="slider" class="overlay-parallax-slider" style="width:1200px;height:650px;margin:0 auto;margin-bottom: 0px;">
-            
+<div class="jumbotron jumbotron-fluid">
+         <div class="container" >
+            <div class="jumbo-heading" data-aos="fade-up">
+               <h1>Product</h1>
+               <!-- Breadcrumbs -->
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href={{ path('app_home') }}>Home</a></li>
+                    <li class="breadcrumb-item active"><a >Product</a></li>
+                  </ol>
+               </nav>
+            </div>
          </div>
-         <!-- /slider -->
-      </div>
-      <!-- /container-fluid -->
-      
+         <!-- /jumbo-heading -->
+  </div>
+    
+{% block content %}
+<div class="page container">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row invoice-add">
+            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
+                <div class="card">
+                    <div class="card-datatable table-responsive">
+                        <div class="dt-action-buttons text-start mt-md-0 mt-3">
+                            <div class="dt-buttons">
+                                <a  >
+                                    <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none"></span></span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <table class="invoice-list-table table">
+        
+           <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th class="cell-fit">Actions</th>
+            </tr>
+           </thead>
+        <tbody>
+            {% for product in result %}
+            <tr>
+                <td>{{ product.getProductName() }}</td>
+                <td>{{ product.getCategoryKey().getProductType() }}</td>
+                <td>
+                    
+                    <a class="dt-button btn btn-primary waves-effect waves-light text-white"
+                        tabindex="0" aria-controls="DataTables_Table_0" type="button">See</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
 	  <!-- ==== footer ==== -->
       <footer class="bg-light pattern1">
          <div class="container">
