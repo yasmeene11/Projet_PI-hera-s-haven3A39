@@ -14,7 +14,7 @@ class Animal
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name:'animalId')]
-    private ?int $animalId = null;
+    private ?int $animalId = null;              
 
     #[ORM\Column(length: 255)]
     private ?string $Animal_Name = null;

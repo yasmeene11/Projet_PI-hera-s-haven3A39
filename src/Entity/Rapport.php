@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\RapportRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraint;
 
 #[ORM\Entity(repositoryClass: RapportRepository::class)]
 class Rapport
@@ -18,6 +19,8 @@ class Rapport
 
     #[ORM\OneToOne(inversedBy: 'rapport', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false, name: 'Appointment_Key', referencedColumnName: 'appointmentId')]
+    #[Assert\NotNull(message: "You must choose an appointment!")]
+
     private ?Appointment $Appointment_Key = null;
 
     public function getRapportId(): ?int
@@ -48,4 +51,5 @@ class Rapport
 
         return $this;
     }
+    
 }
