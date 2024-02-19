@@ -148,6 +148,15 @@ public function AddBa(ManagerRegistry $mr, Request $request, $animalId,AnimalRep
     ]);
 }
 
+
+#[Route('/Hist_b', name: 'app_HistB')]
+public function HistB(BoardingRepository $repo): Response
+{
+    $result = $repo->findAll();
+    return $this->render('/Front/Animal/HistoryB.html.twig', [
+        'result' => $result,
+    ]);
+}
    
 
 }

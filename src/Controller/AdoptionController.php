@@ -23,11 +23,35 @@ class AdoptionController extends AbstractController
     public function ListAd(AdoptionRepository $repo): Response
     {
         $result = $repo->findAll();
+        $totalAdoptions = $repo->count([]);  
+        $adoptedAdoptions = $repo->count(['Adoption_Status' => 'Adopted']);
+        $pendingAdoptions = $repo->count(['Adoption_Status' => 'Pending']);
+        $cancelledAdoptions = $repo->count(['Adoption_Status' => 'Cancelled']);
         return $this->render('/Back/Animal/ListAd.html.twig', [
-            'result' => $result,
+        'result' => $result,
+        'totalAdoptions' => $totalAdoptions,
+        'pendingAdoptions' => $pendingAdoptions,
+        'adoptedAdoptions' => $adoptedAdoptions,
+        'cancelledAdoptions' => $cancelledAdoptions,
         ]);
     }
 
+    #[Route('/adoption_statistics', name: 'app_adoption_statistics')]
+    public function adoptionStatistics(AdoptionRepository $repo): Response
+{
+    $pendingAdoptions = $repo->findBy(['Adoption_Status' => 'Pending']);
+    $totalAdoptions = $repo->count([]);
+    $adoptedAdoptions = $repo->count(['Adoption_Status' => 'Adopted']);
+    $cancelledAdoptions = $repo->count(['Adoption_Status' => 'Cancelled']);
+
+    return $this->render('/Front/Animal/ListAd.html.twig', [
+        'result' => $result,
+        'totalAdoptions' => $totalAdoptions,
+        'pendingAdoptions' => $pendingAdoptions,
+        'adoptedAdoptions' => $adoptedAdoptions,
+        'cancelledAdoptions' => $cancelledAdoptions,
+    ]);
+}
 /*
     #[Route('/update_animal_status', name: 'app_animal_status')]
     private function updateAnimalStatus(Adoption $adoption, Animal $animal): void
@@ -149,7 +173,14 @@ public function updateAd(ManagerRegistry $mr, Request $req, $adoptionId): Respon
         ]);
     }
 
-
+    #[Route('/Hist_ad', name: 'app_HistAd')]
+    public function HistAd(AdoptionRepository $repo): Response
+    {
+        $result = $repo->findAll();
+        return $this->render('/Front/Animal/HistoryAd.html.twig', [
+            'result' => $result,
+        ]);
+    }
 }
 
 

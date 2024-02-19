@@ -232,15 +232,78 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
          <!-- /navbar -->
       </nav>
       <!-- /nav -->
-      <!-- ==== Slider ==== -->
-      <div class="container-fluid p-0">
-         <div id="slider" class="overlay-parallax-slider" style="width:1200px;height:650px;margin:0 auto;margin-bottom: 0px;">
-            
+      <div class="jumbotron jumbotron-fluid">
+         <div class="container" >
+            <div class="jumbo-heading" data-aos="fade-up">
+               <h1>Animal</h1>
+               <!-- Breadcrumbs -->
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href={{ path('app_home') }}>Home</a></li>
+                    <li class="breadcrumb-item active"><a href={{ path('app_HistAd') }}>Adoption History</a></li>
+                  </ol>
+               </nav>
+            </div>
          </div>
-         <!-- /slider -->
-      </div>
-      <!-- /container-fluid -->
+         <!-- /jumbo-heading -->
+  </div>
       
+   {% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row">
+            <div class="col-md-12">
+            
+                <h2>Adoption History</h2>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+            <th>Adoption Num</th>
+            <th>Adoption Date</th>
+            <th>Adoption Status</th>
+            <th>Animal Photo</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for adoption in result %}
+            <tr>
+                <td>{{ adoption.getAdoptionId() }}</td>
+                <td>{{ adoption.getAdoptionDate()|date('m-d-Y') }}</td>
+                <td>{{ adoption.getAdoptionStatus() }}</td>
+               
+                <td>
+                                    {% if adoption.getAnimalKey() %}
+                                        <img src="{{ asset('animal_images/' ~ adoption.getAnimalKey()) }}" alt="Animal Image" style="width: 100px; height: 100px; object-fit: cover;">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                
+                <td>
+                    
+                    <td >
+    
+    
+</td>
+
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+                    
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
 	  <!-- ==== footer ==== -->
       <footer class="bg-light pattern1">
          <div class="container">
