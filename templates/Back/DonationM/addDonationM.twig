@@ -468,11 +468,18 @@
                     <hr class="my-0" />
                     <hr class="my-0" />
                     <div class="card-body">
-                        {{ form_start(formDonationM,{'attr': {'novalidate': 'novalidate'}}) }}
-                        {# Render form fields here using form_widget #}
-                        {{ form_widget(formDonationM) }}
-                        <button type="submit" class="btn btn-sm btn-primary">Save Donation Money</button>
-                        {{ form_end(formDonationM) }}
+                        {{ form_start(formDonationM, {'attr':{'class': 'your-custom-form-class', 'novalidate': 'novalidate'}}) }}
+            {# Render form fields here using form_widget #}
+            {{ form_row(formDonationM.Donation_Amount,{'attr': {'class': 'form-control'}}) }}
+            
+            {{ form_row(formDonationM.donationM_Date, {'attr': {'class': 'form-control'}}) }}
+            {{ form_row(formDonationM.Account_Key, {'attr': {'class': 'form-control'}}) }}
+
+
+
+
+ <button type="submit" class="btn btn-sm btn-primary">Save Donation Money</button>
+            {{ form_end(formDonationM) }}
                     </div>
                 </div>
             </div>

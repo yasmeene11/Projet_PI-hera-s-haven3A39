@@ -208,10 +208,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                            <a class="nav-link dropdown-toggle" href="#" id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Donate
                            </a>
-                           <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
-                              <a class="dropdown-item" href="addDonationP">Product donation</a>
-                              <a class="dropdown-item" href="addDonationM">Financial contributions</a>
-            
+<div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
+                              <a class="dropdown-item" href="donationPFront">Product donation</a>
+                              <a class="dropdown-item" href="donationMFront">Financial contributions</a>
+            <a class="dropdown-item" href="listDonationPFront">Product Donations History</a>
+                              <a class="dropdown-item" href="listDonationMFront">Financial contributions History</a>
                            </div>
                         </li>
                         <!-- menu item -->
@@ -264,13 +265,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
          <!--/page-scroll-->
       </footer>
       <!--/ footer-->
-        <div class="container mt-5 mb-10">
+ <div class="container mt-5 mb-10">
     <div class="card mt-4">
         <div class="card-body d-flex align-items-center justify-content-center">
-            {{ form_start(formDonationM, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_start(formDonationM, {'attr':{'class': 'your-custom-form-class', 'novalidate': 'novalidate'}}) }}
             {# Render form fields here using form_widget #}
-            {{ form_row(formDonationM.Donation_Amount) }}
-{{ form_row(formDonationM.donationM_Date) }}
+            {{ form_row(formDonationM.Donation_Amount,{'attr': {'class': 'form-control'}}) }}
+            
+            {{ form_row(formDonationM.donationM_Date, {'attr': {'class': 'form-control'}}) }}
+           
+
+
 
  <button type="submit" class="btn btn-sm btn-primary">Save Donation Money</button>
             {{ form_end(formDonationM) }}

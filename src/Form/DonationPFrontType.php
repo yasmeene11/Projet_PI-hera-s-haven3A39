@@ -18,27 +18,27 @@ class DonationPFrontType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('Donation_Product_Name', TextType::class, [
+        ->add('donation_product_name', TextType::class, [
             'label' => 'Product Name',
         ])
-        ->add('Donation_Product_Quantity', IntegerType::class, [
+        ->add('donation_product_quantity', IntegerType::class, [
             'label' => 'Product Quantity',
             'required' => false,
         ])
-        ->add('Donation_Product_Label', TextType::class, [
+        ->add('donation_product_label', TextType::class, [
             'label' => 'Product Label',
         ])
-        ->add('Donation_Product_Expiration_Date', DateType::class, [
+        ->add('donation_product_expiration_date', DateType::class, [
             'label' => 'Product Expiration Date',
             'widget' => 'single_text',
             'required' => false,
         ])            
-        ->add('DonationP_Date', DateType::class, [
+        ->add('donationP_date', DateType::class, [
             'label' => 'Donation Date',
             'widget' => 'single_text',
             'required' => false,
         ])    
-        ->add('DonationP_Type', ChoiceType::class, [
+        ->add('donationP_type', ChoiceType::class, [
             'label' => 'Product Type',
             'choices' => [
                 'Medical' => 'medical',

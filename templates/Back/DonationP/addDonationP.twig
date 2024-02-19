@@ -468,9 +468,16 @@
                     <hr class="my-0" />
                     <hr class="my-0" />
                     <div class="card-body">
-                        {{ form_start(formDonationP,{'attr': {'novalidate': 'novalidate'}}) }}
+                        {{ form_start(formDonationP,{'attr':{'class': 'your-custom-form-class', 'novalidate': 'novalidate'}}) }}
                         {# Render form fields here using form_widget #}
-                        {{ form_widget(formDonationP) }}
+                        {{ form_row(formDonationP.donation_product_name, {'attr': {'class': 'form-control'}}) }}
+{{ form_row(formDonationP.donation_product_quantity, {'attr': {'class': 'form-control'}}) }}
+{{ form_row(formDonationP.donation_product_label, {'attr': {'class': 'form-control'}}) }}
+{{ form_row(formDonationP.donation_product_expiration_date, {'attr': {'class': 'form-control'}}) }}
+{{ form_row(formDonationP.donationP_date, {'attr': {'class': 'form-control'}}) }}
+{{ form_row(formDonationP.Account_Key, {'attr': {'class': 'form-control'}}) }}
+{{ form_row(formDonationP.donationP_type, {'attr': {'class': 'form-control'}}) }}
+
                         <button type="submit" class="btn btn-sm btn-primary">Save Donation Product</button>
                         {{ form_end(formDonationP) }}
                     </div>

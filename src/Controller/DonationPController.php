@@ -32,6 +32,14 @@ class DonationPController extends AbstractController
             'result' => $result,
         ]);
     }
+    #[Route('/listDonationPFront', name: 'listDonationPFront')]
+    public function ListDPFront(DonationPRepository $repo): Response
+    {
+        $result = $repo->findAll();
+        return $this->render('/Front/DonationP/listDonationP.html.twig', [
+            'result' => $result,
+        ]);
+    }
     #[Route('/add_donationP', name: 'app_addDonationP')]
     public function addDonationP(ManagerRegistry $mr, Request $req): Response
     {
@@ -87,7 +95,7 @@ class DonationPController extends AbstractController
     #[Route('/donationPFront', name: 'donationPFront')]
 public function addFront(Request $request, ManagerRegistry $managerRegistry): Response
 {
-    try {
+    
         // Obtenez l'Account d'id 1
         $entityManager = $this->getDoctrine()->getManager();
         $account = $entityManager->getRepository(Account::class)->find(1);
@@ -110,10 +118,7 @@ public function addFront(Request $request, ManagerRegistry $managerRegistry): Re
 
             return $this->redirectToRoute('home');
         }
-    } catch (\Exception $e) {
-        // Log the exception or print it for debugging
-        dd($e->getMessage());
-    }
+   
 
     return $this->render('/Front/DonationP/addDonationP.html.twig', [
         'formDonationP' => $form->createView(),
