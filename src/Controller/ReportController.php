@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ReportController extends AbstractController
 {
     #[Route('/List_r', name: 'app_listR')]
@@ -101,4 +101,96 @@ public function deleteR(Request $request, $id): Response
 
     return $this->redirectToRoute('app_listR');
 }
+#[Route('/List_rf', name: 'app_listRF')]
+public function ListRF(): Response
+{
+
+    $rapports = $this->getDoctrine()->getRepository(Rapport::class)->findAll();
+    
+    return $this->render('Front/Appointment/ListR.html.twig', [
+        'rapports' => $rapports,
+    ]);
+
+}
+
+#[Route('/edit_rf{id}', name: 'app_edit_RF')]
+public function editRF(Request $request, $id): Response
+{
+    $rapport = $this->getDoctrine()->getRepository(Rapport::class)->find($id);
+
+    if (!$rapport) {
+        throw $this->createNotFoundException("Rapport not found.");
+    }
+
+    $originalAppointmentId = $rapport->getAppointmentKey()->getAppointmentId();
+
+    $form = $this->createForm(RapportType::class, $rapport);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $newAppointmentId = $rapport->getAppointmentKey()->getAppointmentId();
+
+        if ($originalAppointmentId !== $newAppointmentId) {
+            $existingReport = $this->getDoctrine()->getRepository(Rapport::class)->findOneBy(['appointmentKey' => $newAppointmentId]);
+            if ($existingReport) {
+                $this->addFlash('warning', 'The selected appointment is already associated with another report!');
+                return $this->redirectToRoute('app_edit_RF', ['id' => $rapport->getRapportId()]);
+            }
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+        $this->addFlash('success', 'Rapport updated successfully.');
+
+        return $this->redirectToRoute('app_listRF'); // Ensure this redirects to the correct route
+    }
+
+    return $this->render('Front/Appointment/modifyRp.html.twig', [
+        'rapport' => $rapport,
+        'form' => $form->createView(),
+    ]);
+}
+
+#[Route('/add_rf', name: 'app_add_RF')]
+    public function addRF(Request $request): Response
+    {
+        $rapport = new Rapport();
+        $form = $this->createForm(RapportType::class, $rapport);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($rapport);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Rapport added successfully.');
+    
+            // Redirect to the list of reports after adding a new report
+            return $this->redirectToRoute('app_listRF');
+        }
+    
+        return $this->render('Front/Appointment/addRp.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/delete_rf/{id}', name: 'app_delete_Rf')]
+    public function deleteRf(Request $request, $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $rapport = $entityManager->getRepository(Rapport::class)->find($id);
+    
+        if (!$rapport) {
+            throw new NotFoundHttpException("The rapport with id $id does not exist.");
+        }
+    
+        $entityManager->remove($rapport);
+        $entityManager->flush();
+    
+        $this->addFlash('success', 'Rapport deleted successfully.');
+    
+        return $this->redirectToRoute('app_listRF');
+    }
+
+
+
 }

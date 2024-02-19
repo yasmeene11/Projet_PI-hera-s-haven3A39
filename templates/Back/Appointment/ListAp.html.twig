@@ -539,13 +539,13 @@
                 <td>
                     <!-- Buttons for actions -->
                     <a href="#" class="btn btn-sm btn-info">View</a>
-                    <a href="{{ path('app_modify_ap', {'id': appointment.getAppointmentId()}) }}" class="btn btn-sm btn-warning">Edit</a>
+<a href="{{ path('app_modify_apf', {'id': appointment.getAppointmentId()}) }}" class="btn btn-sm btn-warning">Edit</a>
                     <!-- Delete button form -->
                       <form action="{{ path('app_delete_Ap', {'id': appointment.getAppointmentId()}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this appointment?')" style="display: inline;">
                           <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ appointment.getAppointmentId()) }}">
                           <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                       </form>
-                </td>
+                </td> 
             </tr>
             {% endfor %}
         </tbody>

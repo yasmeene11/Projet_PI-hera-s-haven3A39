@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-use Symfony\Component\Validator\Constraints as Assert;
+    use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\RapportRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraint;
@@ -19,7 +19,7 @@ class Rapport
 
     #[ORM\OneToOne(inversedBy: 'rapport', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false, name: 'Appointment_Key', referencedColumnName: 'appointmentId')]
-    #[Assert\NotNull(message: "You must choose an appointment!")]
+    #[Assert\NotNull(message: "You must choose an appointment! if the list is empty please wait until a new appointment is created and try again! ")]
 
     private ?Appointment $Appointment_Key = null;
 

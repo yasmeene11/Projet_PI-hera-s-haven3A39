@@ -4,22 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Appointment;
 use App\Form\AppointmentType;
+use App\Form\AppointmentTypef;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AppointmentRepository;
-namespace App\Controller;
-
-use App\Entity\Appointment;
-use App\Form\AppointmentType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface; 
-use App\Repository\AppointmentRepository;
 
 class AppointmentController extends AbstractController
 {
@@ -109,5 +101,71 @@ class AppointmentController extends AbstractController
             'id' => $appointment->getAppointmentId(),
         ]);
     }
+
+    #[Route('/List_apf', name: 'app_listApF')]
+    public function ListApF(): Response
+    {
+       // Fetch all appointments from the database
+    $appointments = $this->getDoctrine()->getRepository(Appointment::class)->findAll();
+
+    // Render the template and pass the appointments variable to it
+    return $this->render('/Front/Appointment/ListAp.html.twig', [
+        'appointments' => $appointments,
+    ]);
+    }
+
+
+    #[Route('/modify_apf{id}', name: 'app_modify_apf')]
+    public function modifyApF(Request $request, AppointmentRepository $appointmentRepository, int $id): Response
+    {
+        $appointment = $appointmentRepository->find($id);
+    
+        if (!$appointment) {
+            throw $this->createNotFoundException('Appointment not found');
+        }
+    
+        $form = $this->createForm(AppointmentTypef::class, $appointment); // Use Appointment entity in form
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Appointment updated successfully.');
+            return $this->redirectToRoute('app_listApF'); // Adjust the route name as necessary
+        }
+    
+        return $this->render('/Front/Appointment/modifyAP.html.twig', [
+            'form' => $form->createView(),
+            'id' => $appointment->getAppointmentId(), // Correct method to get the appointment ID
+        ]);
+    }
+
+
+    #[Route('/add_rf', name: 'app_add_RF')]
+    public function addRF(Request $request): Response
+    {
+        $rapport = new Rapport();
+        $form = $this->createForm(RapportType::class, $rapport);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($rapport);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Rapport added successfully.');
+    
+            // Redirect to the list of reports after adding a new report
+            return $this->redirectToRoute('app_listRF');
+        }
+    
+        return $this->render('Front/Appointment/addRp.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+
 }
 
