@@ -1,5 +1,4 @@
 <?php
-// RegisterType.php
 
 namespace App\Form;
 
@@ -13,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RegisterType extends AbstractType
 {
@@ -53,6 +53,7 @@ class RegisterType extends AbstractType
                 ->add('Role', ChoiceType::class, [
                     'choices' => [
                         'Select role' => null,
+                        'User' => 'user',
                         'Admin' => 'admin',
                         'Veterinary' => 'veterinary',
                     ],
@@ -66,12 +67,18 @@ class RegisterType extends AbstractType
         if ($options['is_update_form'] && $options['include_account_status_field']) {
             $builder->add('Account_Status', ChoiceType::class, [
                 'choices' => [
+                    'Select Status' => '',
                     'Pending' => 'pending',
                     'Active' => 'active',
                     'Blocked' => 'blocked',
                 ],
                 'attr' => [
                     'class' => 'form-control',
+                ],
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Status cannot be empty',
+                    ]),
                 ],
             ]);
         }

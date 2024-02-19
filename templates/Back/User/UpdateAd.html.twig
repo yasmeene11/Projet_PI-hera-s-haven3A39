@@ -519,7 +519,7 @@
                   </div>
                 </div>
               </div>
-{{ form_start(form, { 'attr': {'id': 'formRegister', 'class': 'mb-3'} }) }}
+{{ form_start(form, { 'attr': {'id': 'formRegister', 'class': 'mb-3','novalidate': 'novalidate'} }) }}
 
 <div class="form-floating form-floating-outline mb-3">
     {{ form_widget(form.Name, { 'attr': {'class': 'form-control', 'placeholder': 'Enter your name'} }) }}
@@ -534,7 +534,7 @@
 </div>
 
 <div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Gender, { 'attr': {'class': 'form-control'} }) }}
+    {{ form_widget(form.Gender, { 'attr': {'class': 'form-control'}}) }}
     <label for="gender">Gender</label>
     {{ form_errors(form.Gender) }}
 </div>
@@ -558,13 +558,13 @@
 </div>
 
 <div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Account_Status, { 'attr': {'class': 'form-control'} }) }}
+    {{ form_widget(form.Account_Status, { 'attr': {'class': 'form-control'}}) }}
     <label for="account_status">Account Status</label>
     {{ form_errors(form.Account_Status) }}
 </div>
 
 <div class="form-floating form-floating-outline mb-3">
-    {{ form_widget(form.Role, { 'attr': {'class': 'form-control'} }) }}
+    {{ form_widget(form.Role, { 'attr': {'class': 'form-control'}}) }}
     <label for="role">Role</label>
     {{ form_errors(form.Role) }}
 </div>
@@ -572,6 +572,8 @@
 <button id="registerButton" type="submit" class="btn btn-primary d-grid w-100">Sign up</button>
 
 {{ form_end(form) }}
+
+
 
 
 

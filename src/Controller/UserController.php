@@ -11,9 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Mime\Address;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+use Symfony\Component\Form\Extension\Core\Type\EmailType; // Added
 class UserController extends AbstractController
 {
     #[Route('/ListUsers', name: 'app_listU')]
@@ -329,5 +338,121 @@ public function removeAf(AccountRepository $repo, $UserId, ManagerRegistry $mr, 
     return $this->redirectToRoute('app_Login_F');
 }
 
+/////////////////password 
+
+
+
+#[Route('/forgot-password', name: 'app_forgot_password')]
+public function forgotPassword(Request $request, AccountRepository $userRepository): Response
+{
+    $form = $this->createFormBuilder()
+        ->add('email', EmailType::class)
+        ->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $email = $form->get('email')->getData();
+        $user = $userRepository->findOneBy(['Email' => $email]);
+
+        if ($user) {
+            // Generate a unique token
+            $token = md5(uniqid());
+
+            // Store the token and timestamp in the user's record
+            $user->setResetToken($token);
+            $user->setResetTokenRequestedAt(new \DateTimeImmutable());
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Generate the reset link
+            $resetLink = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            // Send email with reset link using PHPMailer
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
+                $mail->Port = 587; // Port for STARTTLS
+                $mail->SMTPSecure = 'tls'; // Enable encryption
+                $mail->SMTPAuth = true;
+                $mail->Username = 'adembg0@gmail.com'; // Your Gmail address
+                $mail->Password = 'msul wxkj qdws hfna'; // Your Gmail password
+                $mail->setFrom('your@gmail.com', 'Your Name'); // Sender's email address and name
+                $mail->addAddress($user->getEmail(), $user->getName()); // Recipient's email address and name
+                $mail->Subject = 'Password Reset';
+                $mail->msgHTML(
+                    $this->renderView(
+                        'index_login/forgot_password.html.twig',
+                        ['resetLink' => $resetLink]
+                    )
+                );
+
+                $mail->send();
+                $this->addFlash('success', 'Check your email for the password reset link.');
+            } catch (Exception $e) {
+                $this->addFlash('error', 'An error occurred while sending the email.');
+                // Log the error or handle it appropriately
+            }
+
+            return $this->redirectToRoute('app_login');
+        } else {
+            $this->addFlash('error', 'No user found with that email address.');
+        }
+    }
+
+    return $this->render('index_Login/resetpasswordinterface.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+
+#[Route('/reset-password/{token}', name: 'app_reset_password')]
+public function resetPassword(Request $request, string $token, AccountRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder): Response
+{
+    $user = $userRepository->findOneBy(['resetToken' => $token]);
+
+    if (!$user || $user->getResetTokenRequestedAt()->diff(new \DateTimeImmutable())->h > 2) {
+        $this->addFlash('error', 'Invalid or expired reset token.');
+        return $this->redirectToRoute('app_forgot_password');
+    }
+
+    $form = $this->createFormBuilder()
+        ->add('password', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'invalid_message' => 'The password fields must match.',
+            'first_options' => ['label' => 'New password'],
+            'second_options' => ['label' => 'Repeat new password'],
+        ])
+        ->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $password = $form->get('password')->getData();
+
+        // Encode and set the new password
+        $user->setPassword($passwordEncoder->encodePassword($user, $password));
+        $user->setResetToken(null);
+        $user->setResetTokenRequestedAt(null);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Your password has been reset successfully.');
+
+        return $this->redirectToRoute('app_login');
+    }
+
+    return $this->render('index_Login/reset_password.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+
+  
+    
 
 }

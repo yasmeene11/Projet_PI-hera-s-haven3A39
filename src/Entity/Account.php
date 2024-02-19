@@ -7,38 +7,57 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 class Account implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:'accountId')]
+    #[ORM\Column(name: 'accountId')]
     private ?int $accountId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable: false)]
+    #[Assert\NotNull(message: "Name cannot be empty")]
     private ?string $Name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: "Surname cannot be empty")]
     private ?string $Surname = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: "Gender cannot be empty")]
     private ?string $Gender = null;
 
-    #[ORM\Column]
-    private ?int $Phone_Number = null;
+    #[ORM\Column(nullable: false)]
+    #[Assert\Regex(pattern: "/^\d{8}$/", message: "Phone number must be 8 digits")]
+    #[Assert\NotNull(message: "Phone number cannot be empty")]
+    private ?string $Phone_Number = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: "Address cannot be empty")]
     private ?string $Address = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: "Email cannot be empty")]
+    #[Assert\Email(message: "Invalid email format")]
     private ?string $Email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: "Password cannot be empty")]
+    #[Assert\Length(
+        min: 6,
+        minMessage: "Password must be at least {{ limit }} characters long"
+    )]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$/',
+        message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol, and must be at least 6 characters long'
+    )]
     private ?string $Password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: "Role cannot be empty")]
     private ?string $Role = null;
-
 
     #[ORM\OneToMany(mappedBy: 'Account_Key', targetEntity: Boarding::class)]
     private Collection $boardings;
@@ -55,11 +74,14 @@ class Account implements UserInterface
     #[ORM\OneToMany(mappedBy: 'Account_Key', targetEntity: DonationP::class)]
     private Collection $donationPs;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $Account_Status = null;
 
-  
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $resetTokenRequestedAt = null; 
 
     public function __construct()
     {
@@ -80,7 +102,7 @@ class Account implements UserInterface
         return $this->Name;
     }
 
-    public function setName(string $Name): static
+    public function setName(?string $Name): static
     {
         $this->Name = $Name;
 
@@ -92,7 +114,7 @@ class Account implements UserInterface
         return $this->Surname;
     }
 
-    public function setSurname(string $Surname): static
+    public function setSurname(?string $Surname): static
     {
         $this->Surname = $Surname;
 
@@ -104,7 +126,7 @@ class Account implements UserInterface
         return $this->Gender;
     }
 
-    public function setGender(string $Gender): static
+    public function setGender(?string $Gender): static
     {
         $this->Gender = $Gender;
 
@@ -116,7 +138,7 @@ class Account implements UserInterface
         return $this->Phone_Number;
     }
 
-    public function setPhoneNumber(string $Phone_Number): static
+    public function setPhoneNumber(?string $Phone_Number): static
     {
         $this->Phone_Number = $Phone_Number;
 
@@ -128,7 +150,7 @@ class Account implements UserInterface
         return $this->Address;
     }
 
-    public function setAddress(string $Address): static
+    public function setAddress(?string $Address): static
     {
         $this->Address = $Address;
 
@@ -140,7 +162,7 @@ class Account implements UserInterface
         return $this->Email;
     }
 
-    public function setEmail(string $Email): static
+    public function setEmail(?string $Email): static
     {
         $this->Email = $Email;
 
@@ -152,7 +174,7 @@ class Account implements UserInterface
         return $this->Password;
     }
 
-    public function setPassword(string $Password): static
+    public function setPassword(?string $Password): static
     {
         $this->Password = $Password;
 
@@ -164,7 +186,7 @@ class Account implements UserInterface
         return $this->Role;
     }
 
-    public function setRole(string $Role): static
+    public function setRole(?string $Role): static
     {
         $this->Role = $Role;
 
@@ -194,10 +216,6 @@ class Account implements UserInterface
         // For example, clear plaintext password
         $this->Password = null;
     }
-
-    
-
-   
 
     /**
      * @return Collection<int, Boarding>
@@ -360,5 +378,27 @@ class Account implements UserInterface
 
         return $this;
     }
-}
 
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetTokenRequestedAt(): ?\DateTimeImmutable
+    {
+        return $this->resetTokenRequestedAt;
+    }
+
+    public function setResetTokenRequestedAt(?\DateTimeImmutable $resetTokenRequestedAt): static
+    {
+        $this->resetTokenRequestedAt = $resetTokenRequestedAt;
+        return $this;
+    }
+}
