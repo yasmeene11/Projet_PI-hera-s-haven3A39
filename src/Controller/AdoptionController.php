@@ -62,8 +62,6 @@ public function updateAd(ManagerRegistry $mr, Request $req, $adoptionId): Respon
 
     if ($form->isSubmitted() && $form->isValid()) {
         $em = $mr->getManager();
-
-        // Check if the adoption status is updated to "Cancelled"
         if ($adoption->getAdoptionStatus() === 'Cancelled') {
             $animal = $adoption->getAnimalKey();
             $animal->setAnimalStatus('Available');
@@ -114,8 +112,6 @@ public function updateAd(ManagerRegistry $mr, Request $req, $adoptionId): Respon
         $adoption->setAnimalKey($animal);
     
         $form = $this->createForm(AdoptionType::class, $adoption, ['is_admin' => false]);
-    
-        
         dump('Form data before handling request:', $form->getData());
     
         $form->handleRequest($req);

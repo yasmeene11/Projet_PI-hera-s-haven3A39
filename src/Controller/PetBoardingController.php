@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Boarding;
+use App\Entity\Animal;
+use App\Entity\Account;
 use App\Repository\BoardingRepository;
 use App\Form\BoardingType;
+use App\Repository\AnimalRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,25 +24,27 @@ class PetBoardingController extends AbstractController
             'result' => $result,
         ]);
     }
+
+    
     #[Route('/add_b', name: 'app_add_B')]
-    public function AddB(ManagerRegistry $mr, Request $req): Response
-    {
-        $s = new Boarding();  //1 -instance
+    public function AddB(ManagerRegistry $mr, Request $req, AnimalRepository $animalRepository): Response
+{
+    $s = new Boarding();
 
-        $form = $this->createForm(BoardingType::class, $s);
+    $form = $this->createForm(BoardingType::class, $s, ['animalRepository' => $animalRepository],['is_admin' => true]);
 
-        $form->handleRequest($req);
-        if ($form->isSubmitted()) {
-            $em = $mr->getManager();
-            $em->persist($s);
-            $em->flush();
-            return $this->redirectToRoute('app_listB');
-        }
-
-        return $this->render('/Back/Animal/AddB.html.twig', [
-            'formBoarding' => $form->createView(),
-        ]);
+    $form->handleRequest($req);
+    if ($form->isSubmitted()) {
+        $em = $mr->getManager();
+        $em->persist($s);
+        $em->flush();
+        return $this->redirectToRoute('app_listB');
     }
+
+    return $this->render('/Back/Animal/AddB.html.twig', [
+        'formBoarding' => $form->createView(),
+    ]);
+}
 
     #[Route('/update_b/{boardingId}', name: 'app_update_B')]
     public function updateB(ManagerRegistry $mr, Request $req, $boardingId): Response
@@ -47,7 +52,7 @@ class PetBoardingController extends AbstractController
         $em = $mr->getManager();
         $s = $em->getRepository(Boarding::class)->find($boardingId);
 
-        $form = $this->createForm(BoardingType::class, $s);
+        $form = $this->createForm(BoardingType::class, $s,['is_admin' => true]);
 
         $form->handleRequest($req);
 
@@ -76,10 +81,41 @@ class PetBoardingController extends AbstractController
    return $this-> redirectToRoute('app_listB');
    }
 
+   #[Route('/add_ba{animalId}', name: 'app_listBa')]
+public function AddBa(ManagerRegistry $mr, Request $request, $animalId,AnimalRepository $animalRepository): Response
+{
+    $animal = $mr->getRepository(Animal::class)->find($animalId);
+    $s = new Boarding();
+    $s->setBoardingStatus('Pending');
+    $s->setBoardingFee(200);
 
-    #[Route('/List_bf', name: 'app_listBF')]
-    public function ListBF(): Response
-    {
-        return $this->render('/Front/Animal/ListB.html.twig', []);
+    $accountId = 1;
+    $user = $mr->getRepository(Account::class)->find($accountId);
+    $s->setAccountKey($user);
+    
+    $s->setAnimalKey($animal);
+    $form = $this->createForm(BoardingType::class, $s, ['animalRepository' => $animalRepository],['is_admin' => false]);
+    
+    $form->handleRequest($request); // Use $request instead of $req
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        dump('Form data after handling request:', $form->getData());
+
+        $em = $mr->getManager();
+        $em->persist($s);   
+        $em->flush();
+
+        return $this->redirectToRoute('app_home');
+    } else {
+        dump('Form errors:', $form->getErrors(true, false));
     }
+
+    return $this->render('/Front/Animal/ListBa.html.twig', [
+        'formBoarding' => $form->createView(),
+        'animalId' => $animalId,
+    ]);
+}
+
+   
+
 }

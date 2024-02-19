@@ -68,14 +68,14 @@ class AdoptionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Adoption::class,
-            // Add a custom option to pass the role/context information
+           
             'is_admin' => false,
-            // Specify validation group based on the context
+            
             'validation_groups' => function (FormInterface $form) {
                 $groups = ['Default'];
 
                 if ($form->getConfig()->getOption('is_admin')) {
-                    // Add an additional validation group for the admin context
+                    
                     $groups[] = 'admin';
                 }
 

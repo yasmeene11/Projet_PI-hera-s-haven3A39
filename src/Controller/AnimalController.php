@@ -36,7 +36,7 @@ class AnimalController extends AbstractController
     public function AddA(ManagerRegistry $mr, Request $req): Response
     {
         $animal = new Animal();
-        $form = $this->createForm(AnimalType::class, $animal);
+        $form = $this->createForm(AnimalType::class, $animal, ['is_admin' => true]);
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,7 +70,7 @@ class AnimalController extends AbstractController
         $em = $mr->getManager();
         $animal = $em->getRepository(Animal::class)->find($animalId);
 
-        $form = $this->createForm(AnimalType::class, $animal);
+        $form = $this->createForm(AnimalType::class, $animal, ['is_admin' => true]);
 
         $form->handleRequest($req);
 
@@ -152,5 +152,43 @@ class AnimalController extends AbstractController
         ]);
     }
 
+
+    #[Route('/List_bf', name: 'app_listBF')]
+    public function ListBF(ManagerRegistry $mr, Request $req): Response
+    {
+        $animal = new Animal();
+        $form = $this->createForm(AnimalType::class, $animal, ['is_admin' => false]);
+        $form->handleRequest($req);
     
+        if ($form->isSubmitted() && $form->isValid()) {
+            $animal->setAnimalStatus('Here for Boarding');
+            $imageFile = $form->get('Animal_Image')->getData();
+    
+            if ($imageFile instanceof UploadedFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/animal_images/',
+                    $newFilename
+                );
+                $animal->setAnimalImage($newFilename);
+            }
+    
+            $em = $mr->getManager();
+            $em->persist($animal);
+            $em->flush();
+    
+            // Redirect to the next page and pass the animal ID as a query parameter
+            return $this->redirectToRoute('app_listBa', ['animalId' => $animal->getanimalId()]);
+        }
+    
+        return $this->render('/Front/Animal/ListB.html.twig', [
+            'formAnimal' => $form->createView(),
+        ]);
+    }
+    
+
+
+    
+    
+   
 }

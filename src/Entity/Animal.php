@@ -57,15 +57,11 @@ class Animal
         $this->appointments = new ArrayCollection();
         $this->adoptions = new ArrayCollection();
     }
-    
-
    
     public function __toString(): string
     {
         return $this->Animal_Image;
     }
-   
-    
 
     public function getanimalId(): ?int
     {
@@ -136,13 +132,14 @@ class Animal
     {
         return $this->Enrollement_Date;
     }
-
+    
     public function setEnrollementDate(?\DateTimeInterface $Enrollement_Date): static
     {
         $this->Enrollement_Date = $Enrollement_Date;
-
+    
         return $this;
     }
+    
 
     public function getAnimalImage(): ?string
     {
