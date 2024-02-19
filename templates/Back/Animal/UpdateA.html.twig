@@ -466,34 +466,41 @@
                     <hr class="my-0" />
                     <hr class="my-0" />
                     <div class="card-body">
-                        {{ form_start(formAnimal, {'attr': {'class': 'your-custom-form-class'}}) }}
+                        {{ form_start(formAnimal, {'attr': {'class': 'your-custom-form-class','novalidate': 'novalidate'}}) }}
                         <div class="mb-3">
                             {{ form_label(formAnimal.Animal_Name) }}
                             {{ form_widget(formAnimal.Animal_Name, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Animal_Name, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAnimal.Animal_Breed) }}
                             {{ form_widget(formAnimal.Animal_Breed, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Animal_Breed, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAnimal.Animal_Status) }}
                             {{ form_widget(formAnimal.Animal_Status, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Animal_Status, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAnimal.Animal_Type) }}
                             {{ form_widget(formAnimal.Animal_Type, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Animal_Type, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAnimal.Age) }}
                             {{ form_widget(formAnimal.Age, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Age, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAnimal.Enrollement_Date) }}
                             {{ form_widget(formAnimal.Enrollement_Date, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Enrollement_Date, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                          <div class="mb-3">
                             {{ form_label(formAnimal.Animal_Description) }}
                             {{ form_widget(formAnimal.Animal_Description, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Animal_Description, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formAnimal.Animal_Image) }}
@@ -501,6 +508,7 @@
                                 <img src="{{ asset('/public/animal_images/' ~ formAnimal.Animal_Image.vars.value) }}" alt="Animal Image" class="img-thumbnail">
                             {% endif %}
                             {{ form_widget(formAnimal.Animal_Image, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formAnimal.Animal_Image, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <button type="submit" class="btn btn-sm btn-primary">Save Animal</button>
                         {{ form_end(formAnimal) }}

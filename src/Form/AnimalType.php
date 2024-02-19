@@ -72,7 +72,7 @@ class AnimalType extends AbstractType
             if (is_string($value)) {
                 // Adjust the container access based on your implementation
                 // Example: $uploadDirectory = $options['container']->getParameter('kernel.project_dir') . '/public/animal_images/';
-                $uploadDirectory = ''; // Update with the correct path
+                $uploadDirectory = $this->container->getParameter('kernel.project_dir') . '/public/animal_images/';
                 $filePath = $uploadDirectory . $value;
 
                 if (file_exists($filePath)) {

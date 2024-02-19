@@ -19,15 +19,17 @@ class AnimalController extends AbstractController
     public function ListA(AnimalRepository $repo): Response
     {
         $result = $repo->findAll();
-        $totalAnimals = $repo->count([]);  // Count total animals
+        $totalAnimals = $repo->count([]);  
         $adoptedAnimals = $repo->count(['Animal_Status' => 'Adopted']);
-        $availableAnimals = $repo->count(['Animal_Status' => 'Available']);  // Count adopted animals
+        $availableAnimals = $repo->count(['Animal_Status' => 'Available']);
+        $boardingAnimals = $repo->count(['Animal_Status' => 'Here for Boarding']);  // Count adopted animals
     
         return $this->render('/Back/Animal/ListA.html.twig', [
             'result' => $result,
             'totalAnimals' => $totalAnimals,
             'adoptedAnimals' => $adoptedAnimals,
             'availableAnimals' => $availableAnimals,
+            'boardingAnimals' => $boardingAnimals,
         ]);
     }
     
@@ -75,8 +77,8 @@ class AnimalController extends AbstractController
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle file upload
-            $imageFile = $form->get('Animal_Image')->getData(); // Changed 'imageFile' to 'Animal_Image'
+          
+            $imageFile = $form->get('Animal_Image')->getData();
 
             if ($imageFile instanceof UploadedFile) {
                 $newFilename = uniqid().'.'.$imageFile->guessExtension();
@@ -130,16 +132,16 @@ class AnimalController extends AbstractController
     $availableAnimals = $repo->findBy(['Animal_Status' => 'Available']);
     $totalAnimals = $repo->count([]);
     $adoptedAnimals = $repo->count(['Animal_Status' => 'Adopted']);
+    $boardingAnimals = $repo->count(['Animal_Status' => 'Here for Boarding']);
 
     return $this->render('/Front/Animal/ListA.html.twig', [
         'result' => $result,
         'totalAnimals' => $totalAnimals,
         'availableAnimals' => $availableAnimals,
         'adoptedAnimals' => $adoptedAnimals,
+        'boardingAnimals' => $boardingAnimals,
     ]);
 }
-
-
 
       #[Route('/desc_a{animalId}', name: 'app_descA')]
     public function DescA(AnimalRepository $repo, int $animalId): Response
@@ -157,11 +159,21 @@ class AnimalController extends AbstractController
     public function ListBF(ManagerRegistry $mr, Request $req): Response
     {
         $animal = new Animal();
+
+        $animal->setAnimalStatus('Here for Boarding');
+
+       
+
         $form = $this->createForm(AnimalType::class, $animal, ['is_admin' => false]);
+        
+       
+        dump('Form data before handling request:', $form->getData());
+       
         $form->handleRequest($req);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $animal->setAnimalStatus('Here for Boarding');
+            
+            dump('Form data after handling request:', $form->getData());
             $imageFile = $form->get('Animal_Image')->getData();
     
             if ($imageFile instanceof UploadedFile) {
@@ -172,13 +184,15 @@ class AnimalController extends AbstractController
                 );
                 $animal->setAnimalImage($newFilename);
             }
-    
             $em = $mr->getManager();
             $em->persist($animal);
             $em->flush();
     
-            // Redirect to the next page and pass the animal ID as a query parameter
+            
             return $this->redirectToRoute('app_listBa', ['animalId' => $animal->getanimalId()]);
+        }else {
+            
+            dump('Form errors:', $form->getErrors(true, false));
         }
     
         return $this->render('/Front/Animal/ListB.html.twig', [

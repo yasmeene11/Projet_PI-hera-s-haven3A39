@@ -5,6 +5,12 @@ namespace App\Entity;
 use App\Repository\BoardingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+use DateTime;
 
 #[ORM\Entity(repositoryClass: BoardingRepository::class)]
 class Boarding
@@ -14,22 +20,59 @@ class Boarding
     #[ORM\Column(name:'boardingId')]
     private ?int $boardingId = null;
 
+      /**
+     * @Assert\NotBlank(message="Date is required.")
+     *  @Assert\GreaterThanOrEqual("today", message="The date cannot be in the past.")
+     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $Start_Date = null;
 
+      /**
+     * @Assert\NotBlank(message="Date is required.")
+     * @Assert\GreaterThanOrEqual("today", message="The date cannot be in the past.")
+     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $End_Date = null;
 
+    /**
+     * @Assert\Callback
+     */
+    public function validateDateRange(ExecutionContextInterface $context, $payload)
+    {
+        if ($this->Start_Date > $this->End_Date) {
+            $context->buildViolation('Start date cannot be after the end date.')
+                ->atPath('Start_Date')
+                ->addViolation();
+        }
+    }
+    
+    /**
+ * @Assert\NotBlank(message="Boarding status is required.")
+ * 
+ */
     #[ORM\Column(length: 255)]
     private ?string $Boarding_Status = null;
 
+    /**
+     * @ORM\Column(type="float")
+     * @Assert\NotBlank(message="Boarding fee is required.")
+     * @Assert\Positive(message="Boarding fee must be a positive number.")
+     */
     #[ORM\Column]
     private ?float $Boarding_Fee = null;
 
+    
+   /**
+ * @Assert\NotNull(message="Animal ID is required.")
+ */
     #[ORM\ManyToOne(inversedBy: 'boardings')]
     #[ORM\JoinColumn(nullable: false, name: 'Animal_Key', referencedColumnName: 'animalId')]
     private ?Animal $Animal_Key = null;
 
+    
+   /**
+ * @Assert\NotNull(message="Account ID is required.")
+ */
     #[ORM\ManyToOne(inversedBy: 'boardings')]
     #[ORM\JoinColumn(nullable: false, name: 'Account_Key', referencedColumnName: 'accountId')]
     private ?Account $Account_Key = null;
@@ -44,7 +87,7 @@ class Boarding
         return $this->Start_Date;
     }
 
-    public function setStartDate(\DateTimeInterface $Start_Date): static
+    public function setStartDate(?\DateTimeInterface $Start_Date): static
     {
         $this->Start_Date = $Start_Date;
 
@@ -56,7 +99,7 @@ class Boarding
         return $this->End_Date;
     }
 
-    public function setEndDate(\DateTimeInterface $End_Date): static
+    public function setEndDate(?\DateTimeInterface $End_Date): static
     {
         $this->End_Date = $End_Date;
 
@@ -110,4 +153,7 @@ class Boarding
 
         return $this;
     }
+
+    
+
 }

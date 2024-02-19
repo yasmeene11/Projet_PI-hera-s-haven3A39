@@ -18,29 +18,61 @@ class Animal
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'animalId')]
     private ?int $animalId = null;
-
+     
+     /**
+ * @Assert\NotBlank(message="Animal Name is required.")
+ * 
+ */  
     #[ORM\Column(length: 255)]
     private ?string $Animal_Name = null;
 
+     /**
+ * @Assert\NotBlank(message="Animal Breed is required.")
+ * 
+ */
     #[ORM\Column(length: 255)]
     private ?string $Animal_Breed = null;
 
+    /**
+ * @Assert\NotBlank(message="Animal status is required.")
+ * 
+ */
     #[ORM\Column(length: 255)]
     private ?string $Animal_Status = null;
 
+    /**
+ * @Assert\NotBlank(message="Animal Type is required.")
+ * 
+ */
     #[ORM\Column(length: 255)]
     private ?string $Animal_Type = null;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Age is required.")
+     * @Assert\Positive(message="Age must be a positive number.")
+     */
     #[ORM\Column]
     private ?int $Age = null;
 
+     /**
+     * @Assert\NotBlank(message="Date is required.")
+     *  @Assert\GreaterThanOrEqual("today", message="The date cannot be in the past.")
+     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $Enrollement_Date = null;
 
+     /**
+ * @Assert\NotBlank(message="Animal Image is required.")
+ * 
+ */
     #[ORM\Column(length: 255)]
     private ?string $Animal_Image = null;
     
-    
+     /**
+ * @Assert\NotBlank(message="Animal Description is required.")
+ * 
+ */
     #[ORM\Column(length: 1000)]
     private ?string $Animal_Description = null;
 

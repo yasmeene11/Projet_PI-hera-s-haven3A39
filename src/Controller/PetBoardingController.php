@@ -20,21 +20,50 @@ class PetBoardingController extends AbstractController
     public function ListB(BoardingRepository $repo): Response
     {
         $result = $repo->findAll();
+        $pendingBoarding = $repo->count(['Boarding_Status' => 'Pending']);
+        $totalBoarding = $repo->count([]);
+        $cancelledBoarding = $repo->count(['Boarding_Status' => 'Cancelled']);
+        $completedBoarding= $repo->count(['Boarding_Status' => 'Completed']);
+
         return $this->render('/Back/Animal/ListB.html.twig', [
             'result' => $result,
+            'totalBoarding' => $totalBoarding,
+        'completedBoarding' => $completedBoarding,
+        'pendingBoarding' => $pendingBoarding,
+        'cancelledBoarding' => $cancelledBoarding,
         ]);
     }
 
+    #[Route('/boarding_statistics', name: 'app_boarding_statistics')]
+    public function boardingStatistics(BoardingRepository $repo): Response
+{
+    $pendingBoarding = $repo->findBy(['Boarding_Status' => 'Pending']);
+    $totalBoarding = $repo->count([]);
+    $cancelledBoarding = $repo->count(['Boarding_Status' => 'Cancelled']);
+    $completedBoarding= $repo->count(['Boarding_Status' => 'Completed']);
+
+    return $this->render('/Front/Animal/ListB.html.twig', [
+        'result' => $result,
+        'totalBoarding' => $totalBoarding,
+        'completedBoarding' => $completedBoarding,
+        'pendingBoarding' => $pendingBoarding,
+        'cancelledBoarding' => $cancelledBoarding,
+    ]);
+}
     
     #[Route('/add_b', name: 'app_add_B')]
     public function AddB(ManagerRegistry $mr, Request $req, AnimalRepository $animalRepository): Response
 {
     $s = new Boarding();
 
-    $form = $this->createForm(BoardingType::class, $s, ['animalRepository' => $animalRepository],['is_admin' => true]);
+    $form = $this->createForm(BoardingType::class, $s, [
+        'animalRepository' => $animalRepository,
+        'is_admin' => true,
+    ]);
+    
 
     $form->handleRequest($req);
-    if ($form->isSubmitted()) {
+    if ($form->isSubmitted() && $form->isValid()) {
         $em = $mr->getManager();
         $em->persist($s);
         $em->flush();
@@ -47,12 +76,15 @@ class PetBoardingController extends AbstractController
 }
 
     #[Route('/update_b/{boardingId}', name: 'app_update_B')]
-    public function updateB(ManagerRegistry $mr, Request $req, $boardingId): Response
+    public function updateB(ManagerRegistry $mr, Request $req, $boardingId,AnimalRepository $animalRepository): Response
     {
         $em = $mr->getManager();
         $s = $em->getRepository(Boarding::class)->find($boardingId);
 
-        $form = $this->createForm(BoardingType::class, $s,['is_admin' => true]);
+        $form = $this->createForm(BoardingType::class, $s, [
+            'animalRepository' => $animalRepository,
+            'is_admin' => true,
+        ]);
 
         $form->handleRequest($req);
 

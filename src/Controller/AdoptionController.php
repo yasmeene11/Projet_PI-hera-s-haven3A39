@@ -28,6 +28,18 @@ class AdoptionController extends AbstractController
         ]);
     }
 
+/*
+    #[Route('/update_animal_status', name: 'app_animal_status')]
+    private function updateAnimalStatus(Adoption $adoption, Animal $animal): void
+    {
+        $currentDate = new DateTime();
+        if ($adoption->getAdoptionDate() > $currentDate) {
+            $animal->setAnimalStatus('Adopted');
+        } else {
+            $animal->setAnimalStatus('Pending');
+        }
+    }
+*/
     #[Route('/add_ad', name: 'app_add_Ad')]
     public function AddAd(ManagerRegistry $mr, Request $req): Response
     {

@@ -96,7 +96,7 @@ class BoardingType extends AbstractType
             },
         ]);
 
-        // Add the custom option for AnimalRepository if needed
+       
         $resolver->setRequired('animalRepository');
     }
 }

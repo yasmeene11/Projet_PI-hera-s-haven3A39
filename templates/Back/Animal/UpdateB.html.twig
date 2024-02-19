@@ -467,30 +467,36 @@
                     <hr class="my-0" />
                     <hr class="my-0" />
                     <div class="card-body">
-                        {{ form_start(formBoarding, {'attr': {'class': 'your-custom-form-class'}}) }}
+                        {{ form_start(formBoarding, {'attr': {'class': 'your-custom-form-class','novalidate': 'novalidate'}}) }}
                         <div class="mb-3">
                             {{ form_label(formBoarding.Start_Date) }}
                             {{ form_widget(formBoarding.Start_Date, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formBoarding.Start_Date, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formBoarding.End_Date) }}
                             {{ form_widget(formBoarding.End_Date, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formBoarding.End_Date, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formBoarding.Boarding_Status) }}
                             {{ form_widget(formBoarding.Boarding_Status, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formBoarding.Boarding_Status, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formBoarding.Boarding_Fee) }}
                             {{ form_widget(formBoarding.Boarding_Fee, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formBoarding.Boarding_Fee, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formBoarding.Animal_Key) }}
                             {{ form_widget(formBoarding.Animal_Key, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formBoarding.Animal_Key, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         <div class="mb-3">
                             {{ form_label(formBoarding.Account_Key) }}
                             {{ form_widget(formBoarding.Account_Key, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(formBoarding.Account_Key, {'attr': {'class': 'text-danger'}}) }}
                         </div>
                         
                         <button type="submit" class="btn btn-sm btn-primary">Save Pet Boarding</button>

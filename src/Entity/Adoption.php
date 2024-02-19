@@ -34,7 +34,7 @@ class Adoption
     private ?string $Adoption_Status = 'null';
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Adoption fee is required.")
      * @Assert\Positive(message="Adoption fee must be a positive number.")
      */
@@ -65,18 +65,13 @@ class Adoption
         return $this->Adoption_Date;
     }
 
-    public function setAdoptionDate(\DateTimeInterface|string $Adoption_Date): static
-    {
-        
-        if (is_string($Adoption_Date)) {
-            $Adoption_Date = new \DateTime($Adoption_Date);
-        }
     
+    public function setAdoptionDate(?\DateTimeInterface $Adoption_Date): static
+    {
         $this->Adoption_Date = $Adoption_Date;
     
         return $this;
     }
-    
     
 
     public function getAdoptionStatus(): ?string
