@@ -45,17 +45,17 @@ class DonationP
 
     private ?string $donation_product_label = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE,nullable:false)]
     #[Assert\GreaterThanOrEqual(value: "+2 weeks", message: "Expiration date should be at least two weeks from today.")]
-    #[Assert\NotBlank( message: "You must enter the product expiration date ")]
+    #[Assert\NotNull( message: "You must enter the product expiration date ")]
 
     private ?\DateTimeInterface $donation_product_expiration_date = null;
 
     
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE,nullable: false)]
     #[Assert\EqualTo("today", message: "The donation date should be today")]
-    #[Assert\NotBlank( message: "You must enter the donation date")]
+    #[Assert\NotNull( message: "You must enter the donation date")]
 
     private ?\DateTimeInterface $donationP_date = null;
 
@@ -133,7 +133,7 @@ class DonationP
         return $this->donation_product_expiration_date;
     }
 
-    public function setDonationProductExpirationDate(\DateTimeInterface $donation_product_expiration_date): static
+    public function setDonationProductExpirationDate(?\DateTimeInterface $donation_product_expiration_date): static
     {
         $this->donation_product_expiration_date = $donation_product_expiration_date;
 
@@ -147,7 +147,7 @@ class DonationP
         return $this->donationP_date;
     }
 
-    public function setDonationPDate(\DateTimeInterface $donationP_date): static
+    public function setDonationPDate(?\DateTimeInterface $donationP_date): static
     {
         $this->donationP_date = $donationP_date;
 

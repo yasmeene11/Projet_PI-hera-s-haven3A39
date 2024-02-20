@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DonationM;
 use App\Entity\Account;
+use App\Entity\CashRegister;
 
 use App\Repository\DonationMRepository;
 use App\Repository\DonationPRepository;
@@ -51,8 +52,25 @@ class DonationMController extends AbstractController
         $form->handleRequest($req);
         if ($form->isSubmitted()&& $form->isValid()) {
             $em = $mr->getManager();
+            
             $em->persist($s);
             $em->flush();
+            $cashRegister = new CashRegister();
+            $cashRegister->setType("donationM");
+            $cashRegister->setInput(1);
+            $cashRegister->setOutput(0);
+
+
+            $cashRegister->setSomme($s->getDonationAmount());
+            $cashRegister->setDateTransaction(new \DateTime());
+            
+            // Assurez-vous d'ajuster l'idEntity en fonction de vos besoins
+            $cashRegister->setIdEntity($s->getdonationMId());
+
+            // Ajouter le CashRegister à l'EntityManager
+            $em->persist($cashRegister);
+            $em->flush();
+
             return $this->redirectToRoute('app_listD');
         }
 
@@ -116,7 +134,21 @@ public function addFront(Request $request, ManagerRegistry $managerRegistry): Re
             $entityManager->persist($donationM);
             $entityManager->flush();
             //dd( $donationM);
+            $cashRegister = new CashRegister();
+            $cashRegister->setType("donationM");
+            $cashRegister->setInput(1);
+            $cashRegister->setOutput(0);
 
+
+            $cashRegister->setSomme($donationM->getDonationAmount());
+            $cashRegister->setDateTransaction(new \DateTime());
+            
+            // Assurez-vous d'ajuster l'idEntity en fonction de vos besoins
+            $cashRegister->setIdEntity($donationM->getdonationMId());
+
+            // Ajouter le CashRegister à l'EntityManager
+            $entityManager->persist($cashRegister);
+            $entityManager->flush();
 
             return $this->redirectToRoute('home');
         }

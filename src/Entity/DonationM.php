@@ -24,9 +24,9 @@ class DonationM
 
     private ?float $Donation_Amount = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank( message: "You must enter the donation date")]
-    #[Assert\NotNull(message: "The donation date cannot be null")]
+    #[ORM\Column(type: Types::DATE_MUTABLE,nullable:false)]
+    
+    #[Assert\NotNull(message: "You must enter the donation date")]
 
     #[Assert\EqualTo("today", message: "You must make a donation today")]
     private ?\DateTimeInterface $donationM_Date = null;
@@ -59,7 +59,7 @@ class DonationM
         return $this->donationM_Date;
     }
 
-    public function setDonationMDate(\DateTimeInterface $donationM_Date): static
+    public function setDonationMDate(?\DateTimeInterface $donationM_Date): static
     {
         $this->donationM_Date = $donationM_Date;
 

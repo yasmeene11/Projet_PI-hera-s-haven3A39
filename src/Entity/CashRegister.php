@@ -102,7 +102,7 @@ class CashRegister
         return $this->idEntity;
     }
 
-    public function setIdEntity(int $idEntity): static
+    public function setIdEntity(?int $idEntity): static
     {
         $this->idEntity = $idEntity;
 

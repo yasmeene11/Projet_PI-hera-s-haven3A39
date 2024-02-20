@@ -125,7 +125,7 @@
                     <div data-i18n="Products">Products</div>
                   </a>
                    </li>
-                    <li class="menu-item active">
+                    <li class="menu-item ">
                   <a href="{{ path('donation') }}"" class="menu-link">
                     <div data-i18n="Donations">Donations</div>
                   </a>
@@ -135,9 +135,9 @@
                     <div data-i18n="Appointments">Appointments</div>
                   </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item active">
                   <a href="{{ path('cashRegister') }}"" class="menu-link">
-                    <div data-i18n="cashRegister">Cash Register</div>
+                    <div data-i18n="Cash Register">Cash Register</div>
                   </a>
                    </li>
                </ul>
@@ -453,11 +453,7 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
- <div class="dt-buttons">
-            <a href="{{ path('app_addDonationM') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Donation Money</span></span>
-            </a>
-        </div>
+ 
     </div>
             <div class="container-xxl flex-grow-1 container-p-y">
               <h2 class="py-3 mb-4">Cash Register Informations</h4>
@@ -485,23 +481,29 @@
     <thead class="table-light">
         <tr>
             <th>ID</th>
-            <th>Balance</th>
-            <th>Expenses</th>
-            <th>Donations Total</th>
-            <th>Adoption Fee Total</th>
-            <th>Boarding Fee Total</th>
+           
+            <th>Input</th>
+            <th>Output </th>
+            <th>Date Transaction</th>
+            <th>Type</th>
+            <th>Somme</th>
+            <th>Id Entity</th>
 
-            <th class="cell-fit">Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for cashRegister in result %}
             <tr>
                 <td>{{ cashRegister.getcashRegisterId() }}</td>
-                <td>{{ cashRegister.getExpenses() }}</td>
-                <td>{{ cashRegister.getDonationTotal() }}</td>
-                <td>{{ cashRegister.getAdoptionFeeTotal() }}</td>
-                <td>{{ cashRegister.getBoardingFeeTotal() }}</td>
+                <td>{{ cashRegister.getInput() }}</td>
+                <td>{{ cashRegister.getOutput() }}</td>
+                <td>{{ cashRegister.getDateTransaction() |date('Y-m-d')}}</td>
+                <td>{{ cashRegister.getType() }}</td>
+                <td>{{ cashRegister.getSomme() }}</td>
+
+                <td>{{ cashRegister.getIdEntity() }}</td>
+
+
                 <td>
                     <!-- Add your actions here, e.g., edit, delete -->
                
