@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 class AnimalController extends AbstractController
@@ -101,11 +102,37 @@ class AnimalController extends AbstractController
     }
 
     #[Route('/delete_a/{animalId}', name: 'app_delete_A')]
-    public function removeA(AnimalRepository $repo, $animalId, ManagerRegistry $mr): Response
+    public function removeA(AnimalRepository $repo, $animalId, EntityManagerInterface $em): Response
     {
         $animal = $repo->find($animalId);
-        $em = $mr->getManager();
+
+        if (!$animal) {
+            // Handle the case where the animal is not found
+            throw $this->createNotFoundException('Animal not found');
+        }
+
+        // Check the Animal status
+        $animalStatus = $animal->getAnimalStatus();
+
+        // Remove associated entities based on the Animal status
+        if ($animalStatus === 'Adopted' || $animalStatus === 'Pending'|| $animalStatus === 'Available' ) {
+            // Remove associated adoptions
+            $adoptions = $animal->getAdoptions();
+            foreach ($adoptions as $adoption) {
+                $em->remove($adoption);
+            }
+        } elseif ( $animalStatus === 'Here for Boarding') {
+            // Remove associated boardings
+            $boardings = $animal->getBoardings();
+            foreach ($boardings as $boarding) {
+                $em->remove($boarding);
+            }
+        }
+
+        
         $em->remove($animal);
+
+       
         $em->flush();
 
         return $this->redirectToRoute('app_listA');

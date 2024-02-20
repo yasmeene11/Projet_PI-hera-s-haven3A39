@@ -48,10 +48,14 @@ class Animal
     private ?string $Animal_Type = null;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="Age is required.")
-     * @Assert\Positive(message="Age must be a positive number.")
-     */
+ * @ORM\Column(type="integer")
+ * @Assert\NotBlank(message="Age is required.")
+ * @Assert\Range(
+ *      min = 0,
+ *      max = 15,
+ *      notInRangeMessage = "Age must be between {{ min }} and {{ max }}",
+ * )
+ */
     #[ORM\Column]
     private ?int $Age = null;
 
@@ -82,12 +86,14 @@ class Animal
     #[ORM\OneToMany(mappedBy: 'Animal_Key', targetEntity: Adoption::class)]
     private Collection $adoptions;
 
-  
+    #[ORM\OneToMany(mappedBy: 'Animal_Key', targetEntity: Boarding::class)]
+    private Collection $boardings;
 
     public function __construct()
     {
         $this->appointments = new ArrayCollection();
         $this->adoptions = new ArrayCollection();
+        $this->Boardings = new ArrayCollection();
     }
    
     public function __toString(): string
@@ -238,7 +244,7 @@ class Animal
     public function removeAdoption(Adoption $adoption): static
     {
         if ($this->adoptions->removeElement($adoption)) {
-            // set the owning side to null (unless already changed)
+           
             if ($adoption->getAnimalKey() === $this) {
                 $adoption->setAnimalKey(null);
             }
@@ -255,6 +261,35 @@ class Animal
     public function setAnimalDescription(string $Animal_Description): static
     {
         $this->Animal_Description = $Animal_Description;
+
+        return $this;
+    }
+     /**
+     * @return Collection<int, Boarding>
+     */
+    public function getBoardings(): Collection
+    {
+        return $this->boardings;
+    }
+
+    public function addBoarding(Boarding $boarding): static
+    {
+        if (!$this->boardings->contains($boarding)) {
+            $this->boardings->add($boarding);
+            $boarding->setAnimalKey($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoarding(Boarding $boarding): static
+    {
+        if ($this->boardings->removeElement($boarding)) {
+            // set the owning side to null (unless already changed)
+            if ($boarding->getAnimalKey() === $this) {
+                $boarding->setAnimalKey(null);
+            }
+        }
 
         return $this;
     }
