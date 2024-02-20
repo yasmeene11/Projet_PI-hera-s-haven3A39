@@ -47,6 +47,7 @@ private ?string $Product_Name = null;
     /**
      * @Assert\GreaterThanOrEqual(value="+2 weeks", 
      * message="Expiration date should be at least two weeks from today.")
+     * @Assert\NotBlank(message="Please don't left it blank")
      */
     private ?\DateTimeInterface $Expiration_Date = null;
   

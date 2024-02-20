@@ -508,9 +508,11 @@
         </td>
     </tr>
     <tr>
-            <td></td><label>{{ form_label(formProduct.Expiration_Date, "Date d'expiration") }}</label>
+            <label>{{ form_label(formProduct.Expiration_Date, "Date d'expiration") }}</label>
        <div>
-        <label> {{ form_widget(formProduct.Expiration_Date) }}
+        <label> 
+             
+             {{ form_widget(formProduct.Expiration_Date, {'attr': {'class': 'form-control'}}) }}
              {{ form_errors(formProduct.Expiration_Date) }}</label> 
              </div>
           </td>

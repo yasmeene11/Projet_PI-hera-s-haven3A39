@@ -54,13 +54,25 @@ class CategoryController extends AbstractController
         'formCategory'=>$form
     ]);
 }
-    #[Route('/remove/{categoryId}', name: 'removecat')]
-    public function removecat($categoryId,ManagerRegistry $mr, CategoryRepository $repo) :Response
-    {
-       $category=$repo->find($categoryId); 
-        $em=$mr->getManager();
-        $em->remove($category);
-        $em->flush();
-        return $this->redirectToRoute('app_listcat');
+#[Route('/remove/{categoryId}', name: 'removecat')]
+public function removecat($categoryId, ManagerRegistry $mr, CategoryRepository $repo): Response
+{
+    $em = $mr->getManager();
+    $category = $repo->find($categoryId);
+
+    if (!$category) {
+        throw $this->createNotFoundException('Category not found');
     }
+
+    foreach ($category->getProducts() as $product) {
+        $em->remove($product);
+    }
+
+    
+    $em->remove($category);
+    $em->flush();
+
+    return $this->redirectToRoute('app_listcat');
+}
+
 }

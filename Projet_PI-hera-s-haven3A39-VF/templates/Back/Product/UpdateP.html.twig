@@ -478,60 +478,59 @@
   {{ form_start(formProduct,{'attr': {'novalidate': 'novalidate'}} ) }}
 
 
-    <table>
-        <tr>
-            <td>
-                <label for="inputText">Name</label>
-                <div>
-                    {{ form_widget(formProduct.Product_Name, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(formProduct.Product_Name, {'attr': {'class': 'text-danger'}}) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="inputText">Quantity</label>
-                <div>
-                    {{ form_widget(formProduct.Product_Quantity, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(formProduct.Product_Quantity, {'attr': {'class': 'text-danger'}}) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="inputText">Label</label>
-                <div>
-                    {{ form_widget(formProduct.Product_Label, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(formProduct.Product_Label, {'attr': {'class': 'text-danger'}}) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>{{ form_label(formProduct.Expiration_Date, "Date d'expiration") }}</label>
-                <td>{{ form_widget(formProduct.Expiration_Date) }}</td>
-                <td>{{ form_errors(formProduct.Expiration_Date) }}</td>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="mb-3">
-                    {{ form_label(formProduct.Category_Key) }}
-                    {{ form_widget(formProduct.Category_Key, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="mb-3">
-                {{ form_label(formProduct.donationProducts) }}
-                {{ form_widget(formProduct.donationProducts, {'attr': {'class': 'form-control'}}) }}
+   <table>
+    <tr>
+        <td>
+            <label for="inputText">Name</label>
+            <div>
+                {{ form_widget(formProduct.Product_Name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Name, {'attr': {'class': 'text-danger'}}) }}
             </div>
         </td>
-        </tr>
-              
-    </table>
+        
+    </tr>
+    <tr>
+        <td>
+            <label for="inputText">Quantity</label>
+            <div>
+                {{ form_widget(formProduct.Product_Quantity, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Quantity, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="inputText">Label</label>
+            <div>
+                {{ form_widget(formProduct.Product_Label, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Label, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+            <label>{{ form_label(formProduct.Expiration_Date, "Date d'expiration") }}</label>
+       <div>
+        <label> {{ form_widget(formProduct.Expiration_Date,{'attr': {'class': 'form-control'}}) }}
+             {{ form_errors(formProduct.Expiration_Date) }}</label> 
+             </div>
+          </td>
 
+    </tr>
+    <tr>
+        <td>
+            <div class="mb-3">
+                {{ form_label(formProduct.Category_Key) }}
+                {{ form_widget(formProduct.Category_Key, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div class="card-body">
+    <button type="submit" class="btn btn-sm btn-primary">Save Product</button>
+    {{ form_end(formProduct) }}
+    <!-- /Invoice Add-->
+</div>
 
                           </div>
                           
@@ -547,17 +546,7 @@
                     </div>
                     <hr class="my-0" />
                     
-                    <hr class="my-0" />
-                    <div class="card-body">
-                       <button type="submit" class="btn btn-sm btn-primary">Save Product</button>
-                                     
-                     {{form_end(formProduct)}}
-                <!-- /Invoice Add-->
-
-                
-              </div>
-
-              
+                    <hr class="my-0" />              
             </div>
             <!-- / Content -->
 
