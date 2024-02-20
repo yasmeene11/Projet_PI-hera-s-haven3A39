@@ -107,22 +107,17 @@ class AnimalController extends AbstractController
         $animal = $repo->find($animalId);
 
         if (!$animal) {
-            // Handle the case where the animal is not found
             throw $this->createNotFoundException('Animal not found');
         }
 
-        // Check the Animal status
         $animalStatus = $animal->getAnimalStatus();
 
-        // Remove associated entities based on the Animal status
         if ($animalStatus === 'Adopted' || $animalStatus === 'Pending'|| $animalStatus === 'Available' ) {
-            // Remove associated adoptions
             $adoptions = $animal->getAdoptions();
             foreach ($adoptions as $adoption) {
                 $em->remove($adoption);
             }
         } elseif ( $animalStatus === 'Here for Boarding') {
-            // Remove associated boardings
             $boardings = $animal->getBoardings();
             foreach ($boardings as $boarding) {
                 $em->remove($boarding);
@@ -131,8 +126,6 @@ class AnimalController extends AbstractController
 
         
         $em->remove($animal);
-
-       
         $em->flush();
 
         return $this->redirectToRoute('app_listA');
@@ -189,11 +182,7 @@ class AnimalController extends AbstractController
 
         $animal->setAnimalStatus('Here for Boarding');
 
-       
-
         $form = $this->createForm(AnimalType::class, $animal, ['is_admin' => false]);
-        
-       
         dump('Form data before handling request:', $form->getData());
        
         $form->handleRequest($req);

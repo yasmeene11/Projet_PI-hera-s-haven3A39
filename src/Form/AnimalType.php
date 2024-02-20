@@ -12,7 +12,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormInterface; // Added this line
+use Symfony\Component\Form\FormInterface; 
 
 class AnimalType extends AbstractType
 {
@@ -52,7 +52,6 @@ class AnimalType extends AbstractType
             'required' => false,
         ]);
 
-    // Add the missing semicolon
     $builder->get('Animal_Image')->addModelTransformer(new class() implements DataTransformerInterface {
         public function transform($value)
         {
@@ -70,8 +69,6 @@ class AnimalType extends AbstractType
             }
 
             if (is_string($value)) {
-                // Adjust the container access based on your implementation
-                // Example: $uploadDirectory = $options['container']->getParameter('kernel.project_dir') . '/public/animal_images/';
                 $uploadDirectory = $this->container->getParameter('kernel.project_dir') . '/public/animal_images/';
                 $filePath = $uploadDirectory . $value;
 
@@ -97,7 +94,6 @@ class AnimalType extends AbstractType
                 'required' => true,
             ]);
         } else {
-            // For the front office, set fields as not mapped or use HiddenType
             $builder
                 ->add('Animal_Status', HiddenType::class, [
                     'mapped' => false,

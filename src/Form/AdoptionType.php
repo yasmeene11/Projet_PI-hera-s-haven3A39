@@ -48,7 +48,6 @@ class AdoptionType extends AbstractType
                     'required' => true,
                 ]);
         } else {
-            // For the front office, set fields as not mapped or use HiddenType
             $builder
                 ->add('Adoption_Status', HiddenType::class, [
                     'mapped' => false,

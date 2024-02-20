@@ -214,7 +214,6 @@ class Animal
     public function removeAppointment(Appointment $appointment): static
     {
         if ($this->appointments->removeElement($appointment)) {
-            // set the owning side to null (unless already changed)
             if ($appointment->getAnimalKey() === $this) {
                 $appointment->setAnimalKey(null);
             }
@@ -285,7 +284,6 @@ class Animal
     public function removeBoarding(Boarding $boarding): static
     {
         if ($this->boardings->removeElement($boarding)) {
-            // set the owning side to null (unless already changed)
             if ($boarding->getAnimalKey() === $this) {
                 $boarding->setAnimalKey(null);
             }
