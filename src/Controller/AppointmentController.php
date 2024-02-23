@@ -24,13 +24,27 @@ class AppointmentController extends AbstractController
             'appointments' => $appointments,
         ]);
     }
+    private function getNumberOfReports(): int {
+        $entityManager = $this->getDoctrine()->getManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
+    
+        return (int) $queryBuilder
+            ->select('COUNT(a)')
+            ->from('App\Entity\Appointment', 'a')
+            ->leftJoin('a.rapport', 'r')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
     #[Route('/List_ap', name: 'app_listAp')]
     public function listAp(): Response
     {
         $appointments = $this->getDoctrine()->getRepository(Appointment::class)->findAll();
+        $numberOfReports = $this->getNumberOfReports(); // Call the new method here
+
         return $this->render('/Back/Appointment/ListAp.html.twig', [
             'appointments' => $appointments,
+            'numberOfReports' => $numberOfReports,
         ]);
     }
 
@@ -166,6 +180,9 @@ class AppointmentController extends AbstractController
     }
 
 
+   
+
+    
 
 }
 

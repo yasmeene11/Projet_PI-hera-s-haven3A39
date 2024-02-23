@@ -11,12 +11,24 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ReportController extends AbstractController
 {
+
+    private function getNumberOfReports(): int {
+        $rapportRepository = $this->getDoctrine()->getRepository(Rapport::class);
+        return $rapportRepository->createQueryBuilder('r')
+            ->select('COUNT(r.rapportId)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     #[Route('/List_r', name: 'app_listR')]
     public function listR(): Response
     {
         $rapports = $this->getDoctrine()->getRepository(Rapport::class)->findAll();
+        $numberOfReports = $this->getNumberOfReports(); 
         return $this->render('Back/Appointment/ListR.html.twig', [
             'rapports' => $rapports,
+            'numberOfReports' => $numberOfReports,
+
         ]);
     }
 
