@@ -45,4 +45,12 @@ class DonationPRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findByProductName($donation_product_name)
+{
+    return $this->createQueryBuilder('d')
+        ->andWhere('d.donation_product_name LIKE :donation_product_name')
+        ->setParameter('donation_product_name', '%' . $donation_product_name . '%')
+        ->getQuery()
+        ->getResult();
+}
 }

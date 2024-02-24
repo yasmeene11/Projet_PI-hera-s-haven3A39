@@ -485,8 +485,16 @@
     <thead class="table-light">
         <tr>
             <th>ID</th>
-            <th>Donation Amount</th>
-            <th class="text-truncate">Donation Date</th>
+           <th>
+            <a href="{{ path('app_listD', {'sort': 'Donation_Amount', 'direction': 'asc'}) }}">Donation Amount &#9650;</a> | 
+            <a href="{{ path('app_listD', {'sort': 'Donation_Amount', 'direction': 'desc'}) }}">&#9660;</a>
+        </th>
+        <!-- En-tête de colonne pour la date de la donation avec liens de tri -->
+        <th>
+            <a href="{{ path('app_listD', {'sort': 'donationM_Date', 'direction': 'asc'}) }}">Donation Date &#9650;</a> | 
+            <a href="{{ path('app_listD', {'sort': 'donationM_Date', 'direction': 'desc'}) }}">&#9660;</a>
+            <th>Donator </th>
+
             <th class="cell-fit">Actions</th>
         </tr>
     </thead>
@@ -497,6 +505,8 @@
                 <td>{{ donationM.getDonationAmount() }}</td>
                
                 <td>{{ donationM.getDonationMDate()|date('Y-m-d') }}</td>
+                <td>{{ donationM.getAccountKey() }}</td>
+
                 <td>
                     <!-- Add your actions here, e.g., edit, delete -->
                <a href="{{ path('app_update_donationM', {'donationMId': donationM.getdonationMId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
@@ -529,6 +539,14 @@
             
 
                 </div>
+                <a></a>
+                <h4>Are you searching for a specific donation?</h4>
+                <form action="{{ path('search_donationM') }}" method="get" class="mb-4">
+    <div class="input-group">
+      <input type="search" name="donationAmount" class="form-control" placeholder="Search Donation by Amount" aria-label="Search Donation by Amount">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
             <!-- / Content -->
 
             <!-- Footer -->

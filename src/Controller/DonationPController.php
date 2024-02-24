@@ -134,5 +134,15 @@ public function thankYouCard1($accountId, $productName,EntityManagerInterface $e
             'productName' => $productName,
         ]);
     }
-
+    #[Route('/search_donationP', name: 'search_donationP')]
+    public function searchDonationP(Request $request, DonationPRepository $donationPRepository): Response
+    {
+        $donation_product_name = $request->query->get('donation_product_name');
+    
+        $donations = $donationPRepository->findByProductName($donation_product_name);
+    
+        return $this->render('Back/DonationP/searchDonationP.html.twig', [
+            'results' => $donations,
+        ]);
+    }
 }

@@ -45,4 +45,13 @@ class DonationMRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findByDonationAmount($donationAmount)
+{
+    return $this->createQueryBuilder('d')
+        ->andWhere('d.Donation_Amount LIKE :donationAmount')
+        ->setParameter('donationAmount', '%' . $donationAmount . '%')
+        ->getQuery()
+        ->getResult();
+}
+
 }
