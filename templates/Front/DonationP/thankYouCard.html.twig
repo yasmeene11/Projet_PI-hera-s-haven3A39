@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carte de Remerciement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #fff0f0; /* Fond plus doux */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .card {
+        background: linear-gradient(145deg, #ffffff, #ffe8e8); /* Gradient plus doux */
+        border-radius: 15px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    }
+    .card-header {
+        background-color: #d9534f; /* Rouge Bootstrap */
+        background: linear-gradient(to right, #c9302c, #e74c3c); /* Gradient rouge */
+        color: #ffffff;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .card-body {
+        padding: 20px;
+        color: #333;
+        line-height: 1.6;
+        text-align: center;
+    }
+    .card-body img {
+       
+width: 50%;
+margin: 0 auto 20px;
+border-radius: 10px;
+transition: transform 0.3s ease;
+}
+.card-body img:hover {
+transform: scale(1.05);
+}
+.btn-primary {
+background-color: #d9534f; /* Rouge Bootstrap /
+background: linear-gradient(to right, #c9302c, #e74c3c); / Gradient rouge /
+color: #ffffff;
+padding: 10px 20px;
+text-decoration: none;
+border-radius: 20px;
+display: inline-block;
+transition: background 0.3s ease;
+}
+.btn-primary:hover {
+background: linear-gradient(to right, #e74c3c, #c9302c); / Inversion du gradient pour l'effet hover */
+}
+.btn-primary {
+        background-color: #d9534f; /* Rouge Bootstrap */
+        border-color: #d43f3a; /* Bordure un peu plus foncée pour du contraste */
+        color: #ffffff; /* Texte blanc pour une bonne lisibilité */
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px; /* Bordures arrondies */
+        display: inline-block;
+        transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out; /* Transition douce */
+    }
+
+    .btn-primary:hover, .btn-primary:focus {
+        background-color: #c9302c; /* Un rouge légèrement plus foncé au survol */
+        border-color: #ac2925; /* Bordure encore plus foncée au survol */
+        color: #ffffff; /* Garde le texte blanc */
+        text-decoration: none; /* Évite le soulignement */
+    }
+</style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            Merci !
+        </div>
+        <div class="card-body">
+            <img src="https://i.pinimg.com/originals/73/81/a9/7381a9437a51046824187b64fd66924f.gif" alt="Merci">
+            <h5>Merci pour votre généreux don, {{ account }}!</h5>
+            <p>Votre don de "{{ productName }}" est grandement apprécié. Grâce à votre soutien, nous pouvons continuer notre mission et faire une réelle différence. Chaque contribution nous aide à avancer vers notre objectif commun.</p>
+            <a href="{{ path('donationPFront') }}" class="btn-primary">Faire un autre don</a>
+        </div>
+    </div>
+</body>
+</html>

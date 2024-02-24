@@ -16,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 
 class DonationMController extends AbstractController
@@ -64,10 +66,8 @@ class DonationMController extends AbstractController
             $cashRegister->setSomme($s->getDonationAmount());
             $cashRegister->setDateTransaction(new \DateTime());
             
-            // Assurez-vous d'ajuster l'idEntity en fonction de vos besoins
             $cashRegister->setIdEntity($s->getdonationMId());
 
-            // Ajouter le CashRegister à l'EntityManager
             $em->persist($cashRegister);
             $em->flush();
 
@@ -116,21 +116,19 @@ class DonationMController extends AbstractController
 public function addFront(Request $request, ManagerRegistry $managerRegistry): Response
 {
     
-        // Obtenez l'Account d'id 1
         $entityManager = $this->getDoctrine()->getManager();
         $account = $entityManager->getRepository(Account::class)->find(1);
 
-        // Créez une nouvelle instance de DonationM avec l'Account prérempli
         $donationM = new DonationM();
         $donationM->setAccountKey($account);
-        // Créez le formulaire avec l'instance de DonationM préremplie
         $form = $this->createForm(DonationMFrontType::class, $donationM);
         
 
         $form->handleRequest($request);
 //dd($form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
-            // Enregistrez l'entité dans la base de données
+            $donationAmount = $donationM->getDonationAmount(); 
+
             $entityManager->persist($donationM);
             $entityManager->flush();
             //dd( $donationM);
@@ -143,14 +141,13 @@ public function addFront(Request $request, ManagerRegistry $managerRegistry): Re
             $cashRegister->setSomme($donationM->getDonationAmount());
             $cashRegister->setDateTransaction(new \DateTime());
             
-            // Assurez-vous d'ajuster l'idEntity en fonction de vos besoins
             $cashRegister->setIdEntity($donationM->getdonationMId());
 
-            // Ajouter le CashRegister à l'EntityManager
             $entityManager->persist($cashRegister);
             $entityManager->flush();
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('thankYouCard', ['accountId' => $account, 
+            'donationAmount' => $donationAmount]);
         }
     
 
@@ -158,6 +155,17 @@ public function addFront(Request $request, ManagerRegistry $managerRegistry): Re
         'formDonationM' => $form->createView(),
     ]);
 }
+#[Route('/thankYouCard/{accountId}/{donationAmount}', name: 'thankYouCard')]
+
+public function thankYouCard($accountId, $donationAmount,EntityManagerInterface $entityManager)
+    {
+        //$account = $entityManager->getRepository(Account::class)->find($accountId);
+        $account=$accountId;
+        return $this->render('Front/DonationM/thankYouCard.html.twig', [
+            'account' => $account,
+            'donationAmount' => $donationAmount,
+        ]);
+    }
 
 
 }

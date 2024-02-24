@@ -25,7 +25,6 @@ class DonationMFrontType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
             ]);
-        // Ne pas ajouter le champ Account_Key
     }
 
     public function configureOptions(OptionsResolver $resolver): void

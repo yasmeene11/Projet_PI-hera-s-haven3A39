@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Persistence\ManagerRegistry;
 
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DonationPController extends AbstractController
 {
@@ -96,33 +97,42 @@ class DonationPController extends AbstractController
 public function addFront(Request $request, ManagerRegistry $managerRegistry): Response
 {
     
-        // Obtenez l'Account d'id 1
         $entityManager = $this->getDoctrine()->getManager();
         $account = $entityManager->getRepository(Account::class)->find(1);
 
-        // Créez une nouvelle instance de DonationM avec l'Account prérempli
         $donationP = new DonationP();
         $donationP->setAccountKey($account);
-        // Créez le formulaire avec l'instance de DonationM préremplie
         $form = $this->createForm(DonationPFrontType::class, $donationP);
         
 
         $form->handleRequest($request);
 //dd($form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
-            // Enregistrez l'entité dans la base de données
+            $productName = $donationP->getDonationProductName(); 
+
             $entityManager->persist($donationP);
             $entityManager->flush();
             //dd( $donationM);
 
 
-            return $this->redirectToRoute('home');
-        }
+            return $this->redirectToRoute('thankYouCard1', ['accountId' => $account, 
+            'productName' => $productName]);        }
    
 
     return $this->render('/Front/DonationP/addDonationP.html.twig', [
         'formDonationP' => $form->createView(),
     ]);
 }
+#[Route('/thankYouCard1/{accountId}/{productName}', name: 'thankYouCard')]
+
+public function thankYouCard1($accountId, $productName,EntityManagerInterface $entityManager)
+    {
+        //$account = $entityManager->getRepository(Account::class)->find($accountId);
+        $account=$accountId;
+        return $this->render('Front/DonationP/thankYouCard.html.twig', [
+            'account' => $account,
+            'productName' => $productName,
+        ]);
+    }
 
 }
