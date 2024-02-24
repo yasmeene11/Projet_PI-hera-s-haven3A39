@@ -123,7 +123,7 @@ public function addFront(Request $request, ManagerRegistry $managerRegistry): Re
         'formDonationP' => $form->createView(),
     ]);
 }
-#[Route('/thankYouCard1/{accountId}/{productName}', name: 'thankYouCard')]
+#[Route('/thankYouCard1/{accountId}/{productName}', name: 'thankYouCard1')]
 
 public function thankYouCard1($accountId, $productName,EntityManagerInterface $entityManager)
     {
