@@ -40,7 +40,6 @@ class DonationMController extends AbstractController
         $sortDirection = $sortDirection === 'desc' ? 'DESC' : 'ASC';
     
         // Modifier le champ de tri pour correspondre exactement au nom de l'attribut dans l'entité
-        // Assurez-vous que les noms des champs dans les liens de tri correspondent exactement aux noms des attributs dans votre entité DonationM
         $sortFieldMapping = [
             'donationM_Date' => 'donationM_Date', // Assurez-vous que c'est le nom correct de l'attribut
             'Donation_Amount' => 'Donation_Amount'
@@ -57,9 +56,32 @@ class DonationMController extends AbstractController
     }
     
     #[Route('/listDonationMFront', name: 'listDonationMFront')]
-    public function ListDFront(DonationMRepository $repo): Response
+    public function ListDFront(DonationMRepository $repo, Request $request): Response
     {
-        $result = $repo->findAll();
+        $sortField = $request->query->get('sort', 'donationM_Date'); 
+    
+        // Assurer que le champ de tri est un des champs valides, sinon utiliser 'donationM_Date' comme champ par défaut
+        if (!in_array($sortField, ['donationM_Date', 'Donation_Amount'])) {
+            $sortField = 'donationM_Date';
+        }
+    
+        // Récupérer la direction du tri depuis la requête, avec 'asc' comme valeur par défaut
+        $sortDirection = $request->query->get('direction', 'asc');
+        
+        // Valider la direction du tri
+        $sortDirection = $sortDirection === 'desc' ? 'DESC' : 'ASC';
+    
+        // Modifier le champ de tri pour correspondre exactement au nom de l'attribut dans l'entité
+        $sortFieldMapping = [
+            'donationM_Date' => 'donationM_Date', // Assurez-vous que c'est le nom correct de l'attribut
+            'Donation_Amount' => 'Donation_Amount'
+        ];
+    
+        $sortField = $sortFieldMapping[$sortField] ?? 'donationM_Date';
+    
+        // Utiliser le champ et la direction pour trier les résultats
+        $result = $repo->findBy([], [$sortField => $sortDirection]);
+    
         return $this->render('/Front/DonationM/listDonationM.html.twig', [
             'result' => $result,
         ]);
@@ -203,6 +225,16 @@ public function thankYouCard($accountId, $donationAmount,EntityManagerInterface 
             'results' => $donations,
         ]);
     }
+    #[Route('/search_donationMFront', name: 'search_donationMFront')]
+    public function search_donationMFront(Request $request, DonationMRepository $donationMRepository): Response
+    {
+        $donationAmount = $request->query->get('donationAmount');
     
+        $donations = $donationMRepository->findByDonationAmount($donationAmount);
+    
+        return $this->render('Front/DonationM/searchDonationM.html.twig', [
+            'results' => $donations,
+        ]);
+    }
 
 }

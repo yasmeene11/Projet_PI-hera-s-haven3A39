@@ -26,10 +26,33 @@ class DonationPController extends AbstractController
         ]);
     }
     #[Route('/list_donationP', name: 'app_list_donationP')]
-    public function ListDP(DonationPRepository $repo): Response
+    public function ListDP(DonationPRepository $repo, Request $request): Response
     {
-        $result = $repo->findAll();
-        return $this->render('/Back/DonationP/list_donationP.twig', [
+// Récupérer le champ par lequel trier depuis la requête, avec 'donationM_Date' comme valeur par défaut
+$sortField = $request->query->get('sort', 'donation_product_quantity'); 
+    
+// Assurer que le champ de tri est un des champs valides, sinon utiliser 'donationM_Date' comme champ par défaut
+if (!in_array($sortField, ['donation_product_quantity', 'donation_product_expiration_date'])) {
+    $sortField = 'donation_product_quantity';
+}
+
+// Récupérer la direction du tri depuis la requête, avec 'asc' comme valeur par défaut
+$sortDirection = $request->query->get('direction', 'asc');
+
+// Valider la direction du tri
+$sortDirection = $sortDirection === 'desc' ? 'DESC' : 'ASC';
+
+// Modifier le champ de tri pour correspondre exactement au nom de l'attribut dans l'entité
+$sortFieldMapping = [
+    'donation_product_quantity' => 'donation_product_quantity', // Assurez-vous que c'est le nom correct de l'attribut
+    'donation_product_expiration_date' => 'donation_product_expiration_date'
+];
+
+$sortField = $sortFieldMapping[$sortField] ?? 'donation_product_quantity';
+
+// Utiliser le champ et la direction pour trier les résultats
+$result = $repo->findBy([], [$sortField => $sortDirection]); 
+       return $this->render('/Back/DonationP/list_donationP.twig', [
             'result' => $result,
         ]);
     }

@@ -490,9 +490,15 @@
         <tr>
             <th>ID</th>
             <th>Product Name</th>
-            <th>Product Quantity</th>
+            <th>
+            <a href="{{ path('app_list_donationP', {'sort': 'donation_product_quantity', 'direction': 'asc'}) }}">Product Quantity &#9650;</a> | 
+            <a href="{{ path('app_list_donationP', {'sort': 'donation_product_quantity', 'direction': 'desc'}) }}">&#9660;</a>
+        </th>
             <th>Product Label</th>
-            <th>Product Expiration Date </th>
+            <th>
+            <a href="{{ path('app_list_donationP', {'sort': 'donation_product_expiration_date', 'direction': 'asc'}) }}">Product Expiration Date  &#9650;</a> | 
+            <a href="{{ path('app_list_donationP', {'sort': 'donation_product_expiration_date', 'direction': 'desc'}) }}">&#9660;</a>
+        </th>
             <th class="text-truncate">Donation Date</th>
             <th>Product Type</th>
             <th>Donator </th>

@@ -31,4 +31,13 @@ class CashRegisterController extends AbstractController
             'result' => $result,
         ]);
     }
+    #[Route('/statistics', name: 'app_statistics')]
+    public function statisticts(CashRegisterRepository $cashRegisterRepository): Response
+    {
+    $statistics = $cashRegisterRepository->getStatisticsByType();
+
+    return $this->render('/Back/CashRegister/statistics.html.twig', [
+        'statistics' => $statistics,
+    ]);
+    }
 }

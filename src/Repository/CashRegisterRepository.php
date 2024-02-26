@@ -45,4 +45,12 @@ class CashRegisterRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function getStatisticsByType()
+{
+    $qb = $this->createQueryBuilder('cr')
+        ->select('cr.type, SUM(cr.somme) as totalSomme, COUNT(cr.type) as totalCount')
+        ->groupBy('cr.type');
+
+    return $qb->getQuery()->getResult();
+}
 }
