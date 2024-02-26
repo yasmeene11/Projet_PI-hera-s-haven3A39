@@ -506,79 +506,135 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
-                <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                    <label><input type="search" class="form-control" placeholder="Search appointment" aria-controls="DataTables_Table_0"></label>
-                </div>
-                <div class="invoice_status mb-3 mb-md-0"></div>
+          <div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
+            <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                <form id="searchForm" style="margin-bottom: 20px;">
+                    <label>
+                        <input type="search" id="searchInput" class="form-control" placeholder="Search appointment" aria-controls="DataTables_Table_0" onkeyup="searchAppointments()">
+                    </label>
+                </form>
             </div>
         </div>
-   <form id="sortForm" style="text-align: center;">
-    <button type="button" onclick="sortAppointments()" class="btn btn-primary">Sort by Next Appointment</button>
-</form>
-        
-<div class="table-responsive pt-4">
-    <table class="invoice-list-table table">
-        <thead class="table-light">
-            <tr>
-                <th>ID</th>
-                <th>Veterinarian</th>
-                <th>Animal Name</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Actions</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            {% for appointment in appointments %}
-            <tr>
-                <!-- Corrected to use getAppointmentId for Appointment ID -->
-                <td>{{ appointment.getAppointmentId() }}</td>
-                <!-- Correct method names based on your entity -->
-                <td>{{ appointment.getAccountKey().getName() }} {{ appointment.getAccountKey().getSurname() }}</td>
-                <td>{{ appointment.getAnimalKey().getAnimalName() }}</td>
-                <!-- Correct date and time formatting -->
-                <td>{{ appointment.getAppointmentDate()|date('Y-m-d') }}</td>
-                <td>{{ appointment.getAppointmentTime()|date('H:i') }}</td>
-                <!-- Directly accessing the status property -->
-                <td>{{ appointment.getAppointmentStatus() }}</td>
-                <td>
-                    <!-- Buttons for actions -->
-                    <a href="#" class="btn btn-sm btn-info">View</a>
-<a href="{{ path('app_modify_ap', {'id': appointment.getAppointmentId()}) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <!-- Delete button form -->
-                      <form action="{{ path('app_delete_Ap', {'id': appointment.getAppointmentId()}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this appointment?')" style="display: inline;">
-                          <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ appointment.getAppointmentId()) }}">
-                          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                      </form>
-                </td> 
-                
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <form id="sortForm" style="text-align: center; margin-top: 20px;">
+                <button type="button" onclick="sortAppointments()" class="btn btn-primary">Sort by Next Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive pt-4">
+                <table class="invoice-list-table table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Veterinarian</th>
+                            <th>Animal Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.getAppointmentId() }}</td>
+                            <td>{{ appointment.getAccountKey().getName() }} {{ appointment.getAccountKey().getSurname() }}</td>
+                            <td>{{ appointment.getAnimalKey().getAnimalName() }}</td>
+                            <td>{{ appointment.getAppointmentDate()|date('Y-m-d') }}</td>
+                            <td>{{ appointment.getAppointmentTime()|date('H:i') }}</td>
+                            <td>{{ appointment.getAppointmentStatus() }}</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-info">View</a>
+                                <a href="{{ path('app_modify_ap', {'id': appointment.getAppointmentId()}) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ path('app_delete_Ap', {'id': appointment.getAppointmentId()}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this appointment?')" style="display: inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ appointment.getAppointmentId()) }}">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
 function sortAppointments() {
-    // JavaScript function content here
     var tbody = document.querySelector('.invoice-list-table tbody');
     var rows = Array.from(tbody.querySelectorAll('tr'));
 
-    rows.sort(function(a, b) {
-        var dateA = new Date(a.querySelector('td:nth-child(4)').innerText);
+    // Filter out rows with "Cancelled" status before sorting
+    var filteredRows = rows.filter(function(row) {
+        var status = row.querySelector('td:nth-child(6)').innerText; // Assuming status is in the 6th column
+        return status.trim().toLowerCase() !== 'cancelled';
+    });
+
+    // Now, sort only the filtered rows based on the date
+    filteredRows.sort(function(a, b) {
+        var dateA = new Date(a.querySelector('td:nth-child(4)').innerText); // Date in the 4th column
         var dateB = new Date(b.querySelector('td:nth-child(4)').innerText);
         return dateA - dateB;
     });
 
-    rows.forEach(function(row) {
+    // First, clear the existing rows in tbody
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+
+    // Then, append the sorted rows that are not cancelled
+    filteredRows.forEach(function(row) {
+        tbody.appendChild(row);
+    });
+
+    // Optionally, you can re-append cancelled appointments at the end without sorting
+    var cancelledRows = rows.filter(function(row) {
+        var status = row.querySelector('td:nth-child(6)').innerText;
+        return status.trim().toLowerCase() === 'cancelled';
+    });
+
+    cancelledRows.forEach(function(row) {
         tbody.appendChild(row);
     });
 }
-</script>
 
+function searchAppointments() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.querySelector(".invoice-list-table");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1]; // Veterinarian column
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+                continue;
+            }
+        }
+        td = tr[i].getElementsByTagName("td")[2]; // Animal Name column
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+</script>
 
 
 
@@ -618,22 +674,7 @@ function sortAppointments() {
 
 
 
-            <div class="col-sm-12 col-md-6">
-                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                    <ul class="pagination">
-                        <li class="paginate_button page-item previous disabled">
-                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                        </li>
-                        <!-- Pagination dynamically generated here -->
-                        <li class="paginate_button page-item next">
-                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">Next</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+           
 
 
             <!-- / Content -->
