@@ -59,6 +59,8 @@
   </head>
 
   <body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -471,6 +473,7 @@
       <div>
         <h3 class="mb-1">{{ numberOfReports }}</h3>
         <p class="mb-0">Number of Appointments</p>
+
       </div>
     </div>
   </div>
@@ -510,6 +513,10 @@
                 <div class="invoice_status mb-3 mb-md-0"></div>
             </div>
         </div>
+   <form id="sortForm" style="text-align: center;">
+    <button type="button" onclick="sortAppointments()" class="btn btn-primary">Sort by Next Appointment</button>
+</form>
+        
 <div class="table-responsive pt-4">
     <table class="invoice-list-table table">
         <thead class="table-light">
@@ -521,6 +528,7 @@
                 <th>Time</th>
                 <th>Status</th>
                 <th>Actions</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -546,12 +554,30 @@
                           <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                       </form>
                 </td> 
+                
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 
+<script>
+function sortAppointments() {
+    // JavaScript function content here
+    var tbody = document.querySelector('.invoice-list-table tbody');
+    var rows = Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort(function(a, b) {
+        var dateA = new Date(a.querySelector('td:nth-child(4)').innerText);
+        var dateB = new Date(b.querySelector('td:nth-child(4)').innerText);
+        return dateA - dateB;
+    });
+
+    rows.forEach(function(row) {
+        tbody.appendChild(row);
+    });
+}
+</script>
 
 
 
@@ -559,8 +585,39 @@
 
 
 
-        <div class="row mx-2">
-            
+
+     <div class="row mx-2" style="display: flex; justify-content: center;">
+    <!-- Adjust width and height directly on the canvas element -->
+    <canvas id="appointmentStatusChart" style="max-width: 200px; max-height: 200px; width: 100%; height: auto;"></canvas>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('appointmentStatusChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: {{ statuses | json_encode | raw }},
+                datasets: [{
+                    data: {{ statusCounts | json_encode | raw }},
+                    backgroundColor: ['#FFCE56', '#0B6623', '#C70039'],
+                    borderColor: ['#FFCE56', '#0B6623', '#C70039'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+    });
+</script>
+<div style="max-width: 100px; margin: 0 auto;"></div>
+
+
+
+
+
+
+
             <div class="col-sm-12 col-md-6">
                 <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
                     <ul class="pagination">

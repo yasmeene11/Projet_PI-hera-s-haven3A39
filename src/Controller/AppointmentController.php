@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AppointmentRepository;
 use Doctrine\ORM\EntityManagerInterface; 
+use CMixin\Chart\Chartjs\Chart;
 
 class AppointmentController extends AbstractController
 {
@@ -38,15 +39,30 @@ class AppointmentController extends AbstractController
 
     #[Route('/List_ap', name: 'app_listAp')]
     public function listAp(): Response
-    {
-        $appointments = $this->getDoctrine()->getRepository(Appointment::class)->findAll();
-        $numberOfReports = $this->getNumberOfReports(); // Call the new method here
+{
+    $appointmentRepository = $this->getDoctrine()->getRepository(Appointment::class);
+    $appointments = $appointmentRepository->findAll();
+    $numberOfReports = $this->getNumberOfReports(); // Assuming this method exists and works correctly
 
-        return $this->render('/Back/Appointment/ListAp.html.twig', [
-            'appointments' => $appointments,
-            'numberOfReports' => $numberOfReports,
-        ]);
-    }
+    // Count appointments by status
+    $statuses = ['Pending', 'Confirmed', 'Cancelled'];
+    $appointmentsByStatus = [
+        'Pending' => $appointmentRepository->count(['Appointment_Status' => 'pending']),
+        'Confirmed' => $appointmentRepository->count(['Appointment_Status' => 'confirmed']),
+        'Cancelled' => $appointmentRepository->count(['Appointment_Status' => 'cancelled']),
+    ];
+
+    // Prepare chart data
+    $statusCounts = array_values($appointmentsByStatus);
+
+    return $this->render('/Back/Appointment/ListAp.html.twig', [
+        'appointments' => $appointments,
+        'numberOfReports' => $numberOfReports,
+        'statusCounts' => $statusCounts,
+        'statuses' => $statuses,
+    ]);
+}
+
 
     #[Route('/add_ap', name: 'app_add_Ap')]
     public function addAp(Request $request): Response
@@ -179,8 +195,37 @@ class AppointmentController extends AbstractController
         ]);
     }
 
+//////////////stats//////////////////////////////////
 
-   
+public function appointmentStatusChart(): Response
+{
+    $statuses = ['Pending', 'Confirmed', 'Cancelled'];
+    $appointmentsByStatus = [
+        'Pending' => $this->getDoctrine()->getRepository(Appointment::class)->countByStatus('pending'),
+        'Confirmed' => $this->getDoctrine()->getRepository(Appointment::class)->countByStatus('confirmed'),
+        'Cancelled' => $this->getDoctrine()->getRepository(Appointment::class)->countByStatus('cancelled'),
+    ];
+
+    $chart = new Chart('pie');
+    $chart->setData([
+        'labels' => $statuses,
+        'datasets' => [
+            [
+                'data' => array_values($appointmentsByStatus),
+                'backgroundColor' => [
+                    '#FF6384', // Pending
+                    '#36A2EB', // Confirmed
+                    '#FFCE56', // Cancelled
+                ],
+            ],
+        ],
+    ]);
+
+    return $this->render('/Back/Appointment/ListAp.html.twig', [
+        'chart' => $chart,
+    ]);
+}
+   ///////////////////filter/////////////////////////////////////////
 
     
 
