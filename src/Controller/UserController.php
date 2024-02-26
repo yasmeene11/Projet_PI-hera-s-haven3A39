@@ -182,80 +182,90 @@ public function loginFront(Request $request, UserPasswordEncoderInterface $passw
 
         if (!$user) {
             // User not found
-            $this->addFlash('error', 'Invalid credentials.');
+            $this->addFlash('error', 'User does not exist.');
             return $this->redirectToRoute('app_Login_F');
+        } elseif (!$passwordEncoder->isPasswordValid($user, $password)) {
+            // Invalid password
+            $this->addFlash('error', 'Incorrect password.');
+            return $this->redirectToRoute('app_Login_F');
+        } elseif ($user->getRole() !== 'user' || $user->getAccountStatus() !== 'active') {
+            // Account status is not 'active' or role is not 'user'
+            $this->addFlash('error', 'Your account is not active.');
+            return $this->redirectToRoute('app_Login_F');
+        } else {
+            // Password is correct, login successful
+            // Start a session and store the user ID
+            $session->set('user_id', $user->getaccountId());
+            
+            // You can add more user information to the session if needed
+
+            $this->addFlash('success', 'Login successful.');
+            return $this->redirectToRoute('testuser');
         }
-
-        // Check if the provided password is correct
-        if ($passwordEncoder->isPasswordValid($user, $password)) {
-            // Check if user role is 'user' and account status is 'active'
-            if ($user->getRole() === 'user' && $user->getAccountStatus() === 'active') {
-                // Password is correct, login successful
-                // Start a session and store the user ID
-                $session->set('user_id', $user->getaccountId());
-                
-                // You can add more user information to the session if needed
-
-                $this->addFlash('success', 'Login successful.');
-                return $this->redirectToRoute('app_listU');
-            } else {
-                // Role is not 'user' or account status is not 'active'
-                $this->addFlash('error', 'Invalid credentials.');
-                return $this->redirectToRoute('app_Login_F');
-            }
-        }
-
-        // Invalid password
-        $this->addFlash('error', 'Invalid credentials.');
-        return $this->redirectToRoute('app_Login_F');
     }
 
     // Render the login form
     return $this->render('/index_login/Login.html.twig');
 }
 
-
 #[Route('/RegisterFront', name: 'app_Register_F')]
-public function registerf(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+public function registerFront(Request $request, UserPasswordEncoderInterface $passwordEncoder,SessionInterface $session): Response
 {
     $errorMessage = '';
 
-    // Create a new instance of Account entity
-    $user = new Account();
-    $user->setAccountStatus("active");
-    $user->setRole("user");
+    // Retrieve submitted data
+    $name = $request->request->get('name');
+    $surname = $request->request->get('surname');
+    $email = $request->request->get('email');
+    $password = $request->request->get('password');
+    $phoneNumber = $request->request->get('phone_number');
+    $address = $request->request->get('address');
+    $gender = $request->request->get('gender');
 
-    // Create the form with the role field excluded
-    $form = $this->createForm(RegisterType::class, $user, [
-        'include_role_field' => false,
-    ]);
-
-    // Handle form submission
-    $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Check if the user already exists with the same email
-        $existingUser = $this->getDoctrine()->getRepository(Account::class)->findOneBy(['Email' => $user->getEmail()]);
-        if ($existingUser) {
-            $errorMessage = 'User with this email already exists.';
+    // Check if any required field is empty
+    if (empty($name) || empty($surname) || empty($email) || empty($password) || empty($phoneNumber) || empty($address) || empty($gender)) {
+        
+    } else {
+        // Check if email is valid
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errorMessage = 'Please enter a valid email address.';
         } else {
-            // Encode the password
-            $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($encodedPassword);
+            // Check if the user already exists with the same email
+            $existingUser = $this->getDoctrine()->getRepository(Account::class)->findOneBy(['Email' => $email]);
+            if ($existingUser) {
+                $errorMessage = 'User already exists.';
+            } else {
+                // Encode the password
+                $user = new Account();
+                $encodedPassword = $passwordEncoder->encodePassword($user, $password); // Here was the issue, $user variable was not defined
 
-            // Save the user
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+                // Create a new instance of Account entity
+                
+                $user->setAccountStatus("active");
+                $user->setRole("user");
+                $user->setName($name);
+                $user->setSurname($surname);
+                $user->setEmail($email);
+                $user->setPassword($encodedPassword);
+                $user->setPhoneNumber($phoneNumber);
+                $user->setAddress($address);
+                $user->setGender($gender);
 
-            // Redirect to appropriate page
-            $this->addFlash('success', 'Registration successful.');
-            return $this->redirectToRoute('app_listU');
+                // Save the user
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                // Redirect to appropriate page
+                $session->set('user_id', $user->getaccountId());
+                $this->addFlash('success', 'Registration successful.');
+                return $this->redirectToRoute('testuser');
+            }
         }
     }
 
-    // Render the Twig template with the form
+    // Render the Twig template with error message
     return $this->render('/index_login/register.html.twig', [
-        'form' => $form->createView(),
         'errorMessage' => $errorMessage,
     ]);
 }
@@ -379,7 +389,7 @@ public function forgotPassword(Request $request, AccountRepository $userReposito
                 $mail->SMTPAuth = true;
                 $mail->Username = 'adembg0@gmail.com'; // Your Gmail address
                 $mail->Password = 'msul wxkj qdws hfna'; // Your Gmail password
-                $mail->setFrom('your@gmail.com', 'Your Name'); // Sender's email address and name
+                $mail->setFrom('UnitedPets2024@gmail.com', 'United Pets'); // Sender's email address and name
                 $mail->addAddress($user->getEmail(), $user->getName()); // Recipient's email address and name
                 $mail->Subject = 'Password Reset';
                 $mail->msgHTML(

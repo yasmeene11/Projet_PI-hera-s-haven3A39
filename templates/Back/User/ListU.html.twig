@@ -536,6 +536,7 @@
                 <th>Email</th>
                 <th>Password</th>
                 <th>Role</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -551,6 +552,7 @@
                     <td>{{ user.getEmail() }}</td>
                     <td>{{ user.getPassword() }}</td>
                     <td>{{ user.getRole() }}</td>
+                    <td>{{ user.getAccountStatus() }}</td>
                     <td>
                       <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
