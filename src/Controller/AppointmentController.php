@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AppointmentRepository;
 use Doctrine\ORM\EntityManagerInterface; 
 use CMixin\Chart\Chartjs\Chart;
+use App\Repository\RapportRepository;
 
 class AppointmentController extends AbstractController
 {
@@ -194,6 +195,44 @@ class AppointmentController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+////////////////////////////////appointmentdetails!!////////////////////////////// 
+
+//still in beta! hh
+
+
+    
+#[Route('/appointment/view/{id}', name: 'appointment_view')]
+public function viewAppointment(AppointmentRepository $appointmentRepository, int $id): Response
+{
+    $appointment = $appointmentRepository->find($id);
+
+    if (!$appointment) {
+        throw $this->createNotFoundException('No appointment found for id ' . $id);
+    }
+
+    // Assuming you have a method to get the report for a specific appointment
+    $report = $appointment->getRapport();
+
+    // If you have additional data to pass to the view, like status counts or other, calculate them here
+
+    return $this->render('Back/Appointment/ListAp.view.html.twig', [
+        'appointment' => $appointment,
+        'report' => $report,
+        // Include any additional variables you need in the view
+    ]);
+}
+
+
+
+
+
+
+
+
+
+
+
 
 //////////////stats//////////////////////////////////
 
