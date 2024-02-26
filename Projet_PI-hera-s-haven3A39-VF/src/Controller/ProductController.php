@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\FormProductType;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +39,17 @@ class ProductController extends AbstractController
         $form=$this->createForm(FormProductType::class,$s);
         $form->handleRequest($req);
         if($form->isSubmitted()&& ($form->isValid())){
+            $imageFile = $form->get('Product_Image')->getData(); 
+
+            if ($imageFile instanceof UploadedFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/Product_images/',
+                    $newFilename
+                );
+                $s->setProductImage($newFilename);
+            }
+
          $em=$mr->getManager();
          $em->persist($s);
          $em->flush();
@@ -54,6 +67,17 @@ class ProductController extends AbstractController
     $form=$this->createForm(FormProductType::class,$s) ; 
         $form->handleRequest($req);
     if($form->isSubmitted()&& ($form->isValid()))  {
+        $imageFile = $form->get('Product_Image')->getData();
+
+        if ($imageFile instanceof UploadedFile) {
+            $newFilename = uniqid().'.'.$imageFile->guessExtension();
+            $imageFile->move(
+                $this->getParameter('kernel.project_dir').'/public/Product_images/',
+                $newFilename
+            );
+            $s->setProductImage($newFilename);
+        }
+
         $em=$mr->getManager();
         $em->persist($s);
         $em->flush();
@@ -89,12 +113,22 @@ public function searchP(Request $request, ProductRepository $repo): Response
     return $this->redirectToRoute('app_listP');
 }
 #[Route('/triP', name: 'triP')]
-public function votreStatistique(ProductRepository $repo): Response
-    {
-        $statistics = $repo->getQuantityStatistics();
+public function triP(ProductRepository $repo, Request $request): Response
+{
+    $productType = $request->get('productType', null);
+    $result = $repo->findAllOrderedByCategory($productType);
 
-        return $this->render('votre_statistique_template.html.twig', [
-            'statistics' => $statistics,
-        ]);
-    }
+    return $this->render('/Front/Product/ListP.html.twig', [
+        'result' => $result,
+    ]);
+}
+
+#[Route('/triPn', name: 'triPn')]
+public function triPn(ProductRepository $repo):Response
+{
+    $result = $repo->orderbyNameDESC();
+    return $this->render('/Back/Product/ListP.html.twig', [
+        'result' => $result,
+    ]);
+}
 }

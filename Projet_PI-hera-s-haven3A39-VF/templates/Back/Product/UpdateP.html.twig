@@ -524,6 +524,18 @@
             </div>
         </td>
     </tr>
+    <tr>
+    <td>
+         <div class="mb-3">
+                            {{ form_label(formProduct.Product_Image) }}
+                            {% if formProduct.Product_Image.vars.value %}
+                                <img src="{{ asset('/public/Product_images/' ~ formProduct.Product_Image.vars.value) }}" alt="Product_Image" class="img-thumbnail">
+                            {% endif %}
+                            {{ form_widget(formProduct.Product_Image, {'attr': {'class': 'form-control'}}) }}
+                             {{ form_errors(formProduct.Product_Image, {'attr': {'class': 'text-danger'}}) }}
+                        </div>
+    </td>
+    </tr>
 </table>
 
 <div class="card-body">

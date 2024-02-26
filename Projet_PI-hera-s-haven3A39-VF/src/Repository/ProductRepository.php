@@ -28,6 +28,27 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findAllOrderedByCategory($productType = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.Category_Key', 'c')
+            ->orderBy('c.Product_Type', 'ASC');
+    
+        if ($productType !== null) {
+            $queryBuilder->andWhere('c.Product_Type = :productType')
+                ->setParameter('productType', $productType);
+        }
+    
+        return $queryBuilder->getQuery()->getResult();
+    }
+    
+    public function orderbyNameDESC()
+    {
+        return $this->createQueryBuilder('p')
+        ->orderBy('p.Product_Name', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

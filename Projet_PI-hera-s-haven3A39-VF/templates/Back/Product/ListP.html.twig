@@ -502,6 +502,16 @@
                 <div class="card">
                     <div class="card-datatable table-responsive">
                         <div class="dt-action-buttons text-start mt-md-0 mt-3">
+                    <div class="dt-buttons">
+        <a href="{{ path('triPn') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+            <span><i class="mdi  me-md-1"></i><span class="d-md-inline-block d-none">trier Product par nom et decroissant</span></span>
+        </a>
+    </div>  
+                        <div class="dt-buttons">
+        <a href="{{ path('triP') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+            <span><i class="mdi  me-md-1"></i><span class="d-md-inline-block d-none">trier Product par category</span></span>
+        </a>
+    </div>       
     <div class="dt-buttons">
         <a href="{{ path('app_add_P') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
             <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Product</span></span>
@@ -520,6 +530,7 @@
             <th class="text-truncate">Expiration Date</th>
             <th>Category</th>
             <th>Donation</th>
+            <th>Image</th>
             <th class="cell-fit">Actions</th>
         </tr>
     </thead>
@@ -540,7 +551,13 @@
 {% else %}
     <td></td>
 {% endif %}
-
+<td>
+                                    {% if product.getProductImage() %}
+                                        <img src="{{ asset('Product_images/' ~ product.getProductImage()) }}" alt="Product_Image" style="width: 250px; height: 250px; object-fit: cover;">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
                 <td>
                     <!-- Add your actions here, e.g., edit, delete -->
                     <a href="{{ path('updateP', { 'productId': product.productId }) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>

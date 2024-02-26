@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -58,6 +59,9 @@ private ?string $Product_Name = null;
 
     #[ORM\OneToMany(mappedBy: 'Product_Key', targetEntity: DonationProduct::class)]
     private Collection $donationProducts;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Product_Image = null;
 
     public function __construct()
     {
@@ -161,6 +165,18 @@ private ?string $Product_Name = null;
                 $donationProduct->setProductKey(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProductImage(): ?string
+    {
+        return $this->Product_Image;
+    }
+
+    public function setProductImage(string $Product_Image): static
+    {
+        $this->Product_Image = $Product_Image;
 
         return $this;
     }    
