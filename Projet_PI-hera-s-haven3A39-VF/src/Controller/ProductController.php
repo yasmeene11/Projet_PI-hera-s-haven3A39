@@ -64,12 +64,37 @@ class ProductController extends AbstractController
     ]);
 }
 #[Route('/removeP/{productId}', name: 'removeP')]
-public function removeP($productId,ManagerRegistry $mr,ProductRepository $repo) : Response {
-$product=$repo->find($productId);
-$em=$mr->getManager();
-$em->remove($product);
-$em->flush();
-return $this->redirectToRoute('app_listP');
+public function removeP($productId, ManagerRegistry $mr, ProductRepository $repo): Response
+{
+    $product = $repo->find($productId);
+    $donationProducts = $product->getDonationProducts();
+    $em = $mr->getManager();
+    foreach ($donationProducts as $donationProduct) {
+        $em->remove($donationProduct);
+    }
+    $em->remove($product);
+    $em->flush();
+    return $this->redirectToRoute('app_listP');
 }
+#[Route('/searchP', name: 'searchP')]
+public function searchP(Request $request, ProductRepository $repo): Response
+{
+    $test = $request->request->get('test');
 
+    $result = $repo->searchP($test);
+
+    return $this->render('/Back/Product/ListP.html.twig', [
+        'result' => $result,
+    ]);
+    return $this->redirectToRoute('app_listP');
+}
+#[Route('/triP', name: 'triP')]
+public function votreStatistique(ProductRepository $repo): Response
+    {
+        $statistics = $repo->getQuantityStatistics();
+
+        return $this->render('votre_statistique_template.html.twig', [
+            'statistics' => $statistics,
+        ]);
+    }
 }

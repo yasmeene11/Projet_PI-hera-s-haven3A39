@@ -19,7 +19,7 @@ class Product
 
     #[ORM\Column(length: 255)]
 /**
- * @Assert\NotBlank(message="Please don't left it blank")
+ * @Assert\NotBlank(message="Please don't leave it blank")
  * @Assert\Length(min=4, 
  * minMessage="Min length is 4 caracters")
  */
@@ -27,7 +27,7 @@ private ?string $Product_Name = null;
 
     #[ORM\Column]
     /**
-     * @Assert\NotBlank(message="Please don't left it blank")
+     * @Assert\NotBlank(message="Please don't leave it blank")
      * @Assert\Positive()
      * @Assert\GreaterThan(value=0, 
      * message="Quantity should be greater than 0.")
@@ -36,7 +36,7 @@ private ?string $Product_Name = null;
 
     #[ORM\Column(length: 255)]
     /**
-     * @Assert\NotBlank(message="Please don't left it blank")
+     * @Assert\NotBlank(message="Please don't leave it blank")
     * @Assert\Regex(pattern="/\d/", 
     * match=false,
     * message="The product label should not contain any digits.")
@@ -47,7 +47,7 @@ private ?string $Product_Name = null;
     /**
      * @Assert\GreaterThanOrEqual(value="+2 weeks", 
      * message="Expiration date should be at least two weeks from today.")
-     * @Assert\NotBlank(message="Please don't left it blank")
+     * @Assert\NotBlank(message="Please don't leave it blank")
      */
     private ?\DateTimeInterface $Expiration_Date = null;
   
