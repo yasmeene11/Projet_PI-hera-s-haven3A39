@@ -143,7 +143,24 @@ class AnimalController extends AbstractController
             'result' => $availableAnimals,
         ]);
     }
+
+
     
+    #[Route('/filter', name: 'app_filter')]
+    public function filterbyType(AnimalRepository $repo, Request $request): Response
+    {
+        $type = $request->get('type', null);
+    
+        $result = $repo->findBy(['Animal_Type' => $type, 'Animal_Status' => 'available']);
+    
+        return $this->render('/Front/Animal/ListA.html.twig', [
+            'result' => $result,
+        ]);
+    }
+    
+
+    
+
 
 
     #[Route('/animal_statistics', name: 'app_animal_statistics')]
@@ -217,7 +234,8 @@ class AnimalController extends AbstractController
     }
     
 
-
+  
+    
     
     
    

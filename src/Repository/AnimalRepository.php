@@ -36,4 +36,18 @@ class AnimalRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    public function findbytype($type = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->orderBy('a.Animal_Type', 'ASC');
+    
+        if ($type !== null) {
+            $queryBuilder->andWhere('a.Animal_Type = :type')
+                ->setParameter('type', $type);
+        }
+    
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

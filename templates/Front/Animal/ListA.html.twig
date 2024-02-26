@@ -254,17 +254,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
        <a  class="btn btn-primary" href={{ path('app_HistAd') }}  >Adoption History </a>
        <a  class="btn btn-primary"  href={{ path('app_HistB') }}>Pet Boarding History </a>
     <!-- centered Gallery navigation -->
-    <ul class="nav nav-pills category-isotope center-nav mt-5">
-        <li class="nav-item">
-            <a class="nav-link active" href="#" data-bs-toggle="tab" data-filter="*">All</a>
+   
+<div class="text-center">
+    <ul class="list-inline d-flex justify-content-center">
+        <li class="list-inline-item">
+            <a href="{{ path('app_filter', {'type': 'Dog'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Dogs Only</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="tab" data-filter=".dogs">Dogs Only</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="tab" data-filter=".cats">Cats Only</a>
+        <li class="list-inline-item">
+            <a href="{{ path('app_filter', {'type': 'Cat'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Cats Only</a>
         </li>
     </ul>
+</div>
+
     <!-- /ul -->
     <!-- Gallery -->
      <div id="gallery-isotope" class="row row-eq-height mt-lg-5">
