@@ -42,7 +42,7 @@ class ProductController extends AbstractController
         );
 
         return $this->render('/Front/Product/ListP.html.twig', [
-            'pagination' => $pagination,
+            'result' => $pagination,
         ]);
     }
     #[Route('/add_p', name: 'app_add_P')]
@@ -126,15 +126,25 @@ public function searchP(Request $request, ProductRepository $repo): Response
     return $this->redirectToRoute('app_listP');
 }
 #[Route('/triP', name: 'triP')]
-public function triP(ProductRepository $repo, Request $request): Response
+public function triP(ProductRepository $repo, Request $request, PaginatorInterface $paginator): Response
 {
     $productType = $request->get('productType', null);
     $result = $repo->findAllOrderedByCategory($productType);
 
+    $totalItems = count($result);
+    $itemsPerPage = max(1, ceil($totalItems * 0.2));
+
+    $pagination = $paginator->paginate(
+        $result,
+        $request->query->getInt('page', 1),
+        $itemsPerPage
+    );
+
     return $this->render('/Front/Product/ListP.html.twig', [
-        'result' => $result,
+        'result' => $pagination,
     ]);
 }
+
 #[Route('/search', name: 'search_page')]
     public function searchPage(): Response
     {
@@ -149,5 +159,19 @@ public function triP(ProductRepository $repo, Request $request): Response
 
         return $this->json($result);
     }
+    #[Route('/update-rating/{productId}/{rating}', name: 'update_rating')]
+    public function updateRating($productId, $rating,EntityManagerInterface $entityManager,ManagerRegistry $mr): JsonResponse
+    {
+        $product = $entityManager->getRepository(Product::class)->find($productId);
 
+        if (!$product instanceof Product) {
+            return $this->json(['success' => false, 'message' => 'Product not found'], 404);
+        }
+        $product->setRating($rating);
+
+        $entityManager=$mr->getManager();
+        $entityManager->persist($product);
+        $entityManager->flush();
+        return $this->json(['success' => true]);
+    }
 }

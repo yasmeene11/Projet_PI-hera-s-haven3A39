@@ -521,6 +521,7 @@
             <th>Category</th>
             <th>Donation</th>
             <th>Image</th>
+            <th>Rating</th>
             <th class="cell-fit">Actions</th>
         </tr>
     </thead>
@@ -548,6 +549,14 @@
                                         No Image
                                     {% endif %}
                                 </td>
+                                   
+     <td>{% if product.Rating > 0 %}
+    <td>
+        {{ product.Rating }} Star{% if product.Rating != 1 %}s{% endif %}
+    </td>
+{% else %}
+    <td></td>
+{% endif %}</td>
                 <td>
                     <!-- Add your actions here, e.g., edit, delete -->
                     <a href="{{ path('updateP', { 'productId': product.productId }) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>

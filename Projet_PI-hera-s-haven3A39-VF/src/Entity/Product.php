@@ -63,6 +63,9 @@ private ?string $Product_Name = null;
     #[ORM\Column(length: 255)]
     private ?string $Product_Image = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $Rating = null;
+
     public function __construct()
     {
         $this->donationProducts = new ArrayCollection();
@@ -177,6 +180,18 @@ private ?string $Product_Name = null;
     public function setProductImage(string $Product_Image): static
     {
         $this->Product_Image = $Product_Image;
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->Rating;
+    }
+
+    public function setRating(?float $Rating): static
+    {
+        $this->Rating = $Rating;
 
         return $this;
     }    
