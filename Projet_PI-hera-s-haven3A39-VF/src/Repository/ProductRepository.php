@@ -24,6 +24,8 @@ class ProductRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.Product_Name LIKE :test')
+            ->orWhere('p.Product_Label LIKE :test')
+            ->orWhere('p.Product_Quantity LIKE :test')
             ->setParameter('test', '%'.$test.'%')
             ->getQuery()
             ->getResult();
@@ -41,14 +43,16 @@ class ProductRepository extends ServiceEntityRepository
     
         return $queryBuilder->getQuery()->getResult();
     }
-    
-    public function orderbyNameDESC()
+    public function searchPF($searchValue)
     {
+        // Implement your search logic here, for example:
         return $this->createQueryBuilder('p')
-        ->orderBy('p.Product_Name', 'DESC')
-        ->getQuery()
-        ->getResult();
+            ->andWhere('p.Product_Name LIKE :searchValue')
+            ->setParameter('searchValue', '%' . $searchValue . '%')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY); // Return results as an array
     }
+
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

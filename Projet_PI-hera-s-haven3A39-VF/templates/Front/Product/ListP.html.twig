@@ -249,6 +249,66 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </div>
     
 {% block content %}
+    <div class="sidebar-search">
+        <div class="input-group custom-search-form">
+            <input type="text" id="search" class="form-control" placeholder="Search here">
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Label</th>
+                <th>Expiration Date</th>
+                <th>Category</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody id="t">
+            {# Your products will be dynamically inserted here through JavaScript #}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('search');
+            var tbody = document.getElementById('t');
+
+            searchInput.addEventListener('keyup', function() {
+                var value = searchInput.value;
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', "{{ path('search_result') }}?searchValue=" + encodeURIComponent(value), true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        updateTable(response);
+                    }
+                };
+
+                xhr.send();
+            });
+
+            function updateTable(products) {
+                tbody.innerHTML = '';
+
+                if (products.length > 0) {
+                    products.forEach(function(product) {
+                        tbody.innerHTML += '<tr><td>' + product.productId + '</td><td>' + product.Product_Name + '</td>' +
+                            '<td>' + product.Product_Quantity + '</td><td>' + product.Product_Label + '</td>' +
+                            '<td>' + (product.Expiration_Date ? product.Expiration_Date : '') + '</td>' +
+                            '<td>' + (product.Category_Key ? product.Category_Key.Product_Type : '') + '</td>' +
+                            '<td>' + product.Product_Image + '</td>' ;
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="8">no records found</td></tr>';
+                }
+            }
+        });
+    </script>
 <div class="page container">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row invoice-add">
@@ -273,52 +333,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <a href="{{ path('triP', {'productType': 'Hygienic'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Hygienic</a>
 
                 </td>
-                        <table class="invoice-list-table table">
-        
-           <thead class="table-light">
-            <tr>
-                <th>Name</th>
-                <th>Label</th>
-                <th>Category</th>
-                <th>Image</th>
-                <th class="cell-fit">Actions</th>
-            </tr>
-           </thead>
-        <tbody>
-            {% for product in result %}
-            <tr>
-                <td>{{ product.getProductName() }}</td>
-                <td>{{ product.getProductLabel() }}</td>
-                <td>{{ product.getCategoryKey().getProductType() }}</td>
-                <td>
+                      <table class="invoice-list-table table">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Category</th>
+            <th>Image</th>
+            <th class="cell-fit">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in pagination %}
+        <tr>
+            <td>{{ product.getProductName() }}</td>
+            <td>{{ product.getProductLabel() }}</td>
+            <td>{{ product.getCategoryKey().getProductType() }}</td>
+            <td>
                 {% if product.getProductImage() %}
-                <img src="{{ asset('Product_images/' ~ product.getProductImage()) }}" alt="Product_Image" style="width: 250px; height: 250px; object-fit: cover;">
-               {% else %}
-               No Image
+                    <img src="{{ asset('Product_images/' ~ product.getProductImage()) }}" alt="Product_Image" style="width: 250px; height: 250px; object-fit: cover;">
+                {% else %}
+                    No Image
                 {% endif %}
-                 </td>
-                 <td>
-            <a class="dt-button btn btn-primary waves-effect waves-light text-white"
-               tabindex="0" aria-controls="DataTables_Table_0" type="button"
-               {% if product.getCategoryKey().getProductType() == 'food' %}
-                   href="https://zanimo.tn/category/1/products"
+            </td>
+            <td>
+                <a class="dt-button btn btn-primary waves-effect waves-light text-white"
+                   tabindex="0" aria-controls="DataTables_Table_0" type="button"
+                   {% if product.getCategoryKey().getProductType() == 'food' %}
+                       href="https://zanimo.tn/category/1/products"
+                   {% elseif product.getCategoryKey().getProductType() == 'hygienic' %}
+                       href="https://zanimo.tn/category/33/products"
+                   {% else %}
+                       href="https://zanimo.tn/category/31/products"
                    {% endif %}
-               {% if product.getCategoryKey().getProductType() == 'hygienic' %}
-                   href="https://zanimo.tn/category/33/products"
-               {% else %}
-                  href="https://zanimo.tn/category/31/products"
-                   {% endif %}
-            >See</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                >See</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center align-items-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+  {{ knp_pagination_render(pagination) }}
+        </ul>
+    </nav>
 </div>
 {% endblock %}
 

@@ -8,11 +8,15 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Knp\Component\Pager\PaginatorInterface;
 class ProductController extends AbstractController
+
 {
     #[Route('/List_p', name: 'app_listP')]
     public function ListP(ProductRepository $repo): Response
@@ -24,14 +28,23 @@ class ProductController extends AbstractController
     }
     
     #[Route('/List_pf', name: 'app_listPF')]
-    public function ListPF(ProductRepository $repo): Response
+    public function ListPF(ProductRepository $repo, Request $req, PaginatorInterface $paginator): Response
     {
         $result = $repo->findAll();
+
+        $totalItems = count($result);
+        $itemsPerPage = max(1, ceil($totalItems * 0.2));
+
+        $pagination = $paginator->paginate(
+            $result,
+            $req->query->getInt('page', 1),
+            $itemsPerPage
+        );
+
         return $this->render('/Front/Product/ListP.html.twig', [
-            'result' => $result,
+            'pagination' => $pagination,
         ]);
     }
-
     #[Route('/add_p', name: 'app_add_P')]
     public function AddP(ManagerRegistry $mr,Request $req): Response
     {
@@ -122,13 +135,19 @@ public function triP(ProductRepository $repo, Request $request): Response
         'result' => $result,
     ]);
 }
+#[Route('/search', name: 'search_page')]
+    public function searchPage(): Response
+    {
+        return $this->render('Front/Product/listP.html.twig');
+    }
 
-#[Route('/triPn', name: 'triPn')]
-public function triPn(ProductRepository $repo):Response
-{
-    $result = $repo->orderbyNameDESC();
-    return $this->render('/Back/Product/ListP.html.twig', [
-        'result' => $result,
-    ]);
-}
+    #[Route('/search/result', name: 'search_result')]
+    public function searchResult(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $query = $request->query->get('searchValue');
+        $result = $entityManager->getRepository(Product::class)->searchPF($query);
+
+        return $this->json($result);
+    }
+
 }
