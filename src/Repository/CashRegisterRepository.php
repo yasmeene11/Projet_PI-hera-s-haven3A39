@@ -53,4 +53,12 @@ public function getStatisticsByType()
 
     return $qb->getQuery()->getResult();
 }
+public function getTotal()
+{
+    $qb = $this->createQueryBuilder('cr')
+        ->select(' SUM(cr.somme) as totalSomme')
+        ;
+
+    return $qb->getQuery()->getResult();
+}
 }

@@ -60,26 +60,21 @@ class DonationMController extends AbstractController
     {
         $sortField = $request->query->get('sort', 'donationM_Date'); 
     
-        // Assurer que le champ de tri est un des champs valides, sinon utiliser 'donationM_Date' comme champ par défaut
         if (!in_array($sortField, ['donationM_Date', 'Donation_Amount'])) {
             $sortField = 'donationM_Date';
         }
     
-        // Récupérer la direction du tri depuis la requête, avec 'asc' comme valeur par défaut
         $sortDirection = $request->query->get('direction', 'asc');
         
-        // Valider la direction du tri
         $sortDirection = $sortDirection === 'desc' ? 'DESC' : 'ASC';
     
-        // Modifier le champ de tri pour correspondre exactement au nom de l'attribut dans l'entité
         $sortFieldMapping = [
-            'donationM_Date' => 'donationM_Date', // Assurez-vous que c'est le nom correct de l'attribut
+            'donationM_Date' => 'donationM_Date', 
             'Donation_Amount' => 'Donation_Amount'
         ];
     
         $sortField = $sortFieldMapping[$sortField] ?? 'donationM_Date';
     
-        // Utiliser le champ et la direction pour trier les résultats
         $result = $repo->findBy([], [$sortField => $sortDirection]);
     
         return $this->render('/Front/DonationM/listDonationM.html.twig', [

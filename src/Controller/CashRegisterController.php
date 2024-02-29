@@ -27,8 +27,10 @@ class CashRegisterController extends AbstractController
     public function listCashRegister(CashRegisterRepository $repo): Response
     {
         $result = $repo->findAll();
+        $total = $repo->getTotal();
         return $this->render('/Back/CashRegister/listCashRegister.html.twig', [
             'result' => $result,
+            'total'=> $total,
         ]);
     }
     #[Route('/statistics', name: 'app_statistics')]
@@ -40,4 +42,5 @@ class CashRegisterController extends AbstractController
         'statistics' => $statistics,
     ]);
     }
+   
 }
