@@ -122,7 +122,7 @@ class Appointment
 
         return $this;
     }
-    
+ 
     #[Assert\Callback]
     public function validateTime(ExecutionContextInterface $context, $payload): void
 {
@@ -144,6 +144,9 @@ class Appointment
         }
     }
 }
+//chatgptcore//
+
+
 
 
 

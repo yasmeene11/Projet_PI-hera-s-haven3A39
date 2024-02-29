@@ -14,6 +14,9 @@ use App\Repository\AppointmentRepository;
 use Doctrine\ORM\EntityManagerInterface; 
 use CMixin\Chart\Chartjs\Chart;
 use App\Repository\RapportRepository;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Twilio\Rest\Client;
 
 class AppointmentController extends AbstractController
 {
@@ -264,9 +267,65 @@ public function appointmentStatusChart(): Response
         'chart' => $chart,
     ]);
 }
-   ///////////////////filter/////////////////////////////////////////
+   ///////////////////phone number notif/////////////////////////////////////////
+   #[Route('/send-reminders', name: 'send_reminders')]
+public function sendReminders(): Response
+{
+    // Your Twilio credentials
+    $accountSid = 'AC8e74911161f2389f7b7c71bdcf84acf7';
+    $authToken = '5f386f568ff2a372f162450fbc94708e'; // Use your actual Twilio Auth Token
+    $twilioNumber = '+19782212650';
 
-    
+    // Initialize Twilio client
+    $twilioClient = new Client($accountSid, $authToken);
+
+    // Get tomorrow's date
+    $tomorrowDate = new \DateTime('tomorrow');
+
+    // Query appointments for tomorrow
+    $appointments = $this->getDoctrine()->getRepository(Appointment::class)->findBy(['Appointment_Date' => $tomorrowDate]);
+
+    foreach ($appointments as $appointment) {
+        // Retrieve the account phone number
+        $phoneNumber = $appointment->getAccountKey()->getPhoneNumber();
+
+        // Ensure the phone number includes the country code +216
+        if (!str_starts_with($phoneNumber, '+')) {
+            $phoneNumber = '+216' . $phoneNumber;
+        }
+
+        // Compose the message
+        $message = "Hello " . $appointment->getAccountKey()->getName() . "! This is a reminder that you have an appointment tomorrow at " . $appointment->getAppointmentTime()->format('H:i') . ".";
+
+        try {
+            // Send the message
+            $twilioClient->messages->create(
+                $phoneNumber, // to
+                [
+                    'from' => $twilioNumber,
+                    'body' => $message
+                ]
+            );
+        } catch (\Twilio\Exceptions\RestException $e) {
+            // Log or handle the error as needed
+            return new Response("Error sending reminder to {$phoneNumber}: " . $e->getMessage());
+        }
+    }
+
+    // Add a flash message
+    $this->addFlash(
+        'success',
+        'Reminders sent successfully!'
+    );
+
+    return new JsonResponse(['message' => 'A reminder has been sent for the appointments that are set for tomorrow.']);
 
 }
+   
+   
 
+
+
+
+   
+}

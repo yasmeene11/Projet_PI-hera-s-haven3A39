@@ -470,12 +470,18 @@
           <i class="mdi mdi-calendar-clock text-heading mdi-24px"></i>
         </span>
       </div>
+      
       <div>
         <h3 class="mb-1">{{ numberOfReports }}</h3>
         <p class="mb-0">Number of Appointments</p>
 
       </div>
     </div>
+     <div class="container" style="margin-top: 20px;"> <!-- Increased separation by adding margin-top -->
+                        <a href="{{ path('app_add_Ap') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                            <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Appointment</span></span>
+                        </a>
+                    </div>
   </div>
 </div>
 
@@ -489,26 +495,15 @@
         <div class="row mx-1">
             <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
                 <div class="dataTables_length" id="DataTables_Table_0_length">
-                    <label>Show
-                        <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select">
-                            <option value="10">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </label>
+                    
                 </div>
                 <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
-                    <div class="dt-buttons">
-                        <a href="{{ path('app_add_Ap') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                            <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Appointment</span></span>
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
           <div class="container">
     <div class="row">
-        <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
+<div class="col-12 col-md-6 d-flex align-items-center justify-content-start flex-column flex-md-row pe-3 gap-md-3">
             <div id="DataTables_Table_0_filter" class="dataTables_filter">
                 <form id="searchForm" style="margin-bottom: 20px;">
                     <label>
@@ -518,13 +513,44 @@
             </div>
         </div>
     </div>
+<div class="row">
+    <div class="col-md-6" style="text-align: left; margin-top: 20px;">
+        <form id="sortForm">
+            <button type="button" onclick="sortAppointments()" class="btn btn-primary">Sort by Next Appointment</button>
+        </form>
+    </div>
+    <div class="col-md-6" style="text-align: center; margin-top: 20px;">
+        <button id="sendRemindersBtn" class="btn btn-primary">Send Reminders to the patients</button>
+    </div>
+</div>
 
-    <div class="row">
-        <div class="col-12">
-            <form id="sortForm" style="text-align: center; margin-top: 20px;">
-                <button type="button" onclick="sortAppointments()" class="btn btn-primary">Sort by Next Appointment</button>
-            </form>
-        </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#sendRemindersBtn').click(function() {
+        $.ajax({
+            url: '{{ path('send_reminders') }}',
+            type: 'POST',
+            success: function(response) {
+                $('#reminderStatus').html('<div class="alert alert-success">A reminder has been sent for the appointments that are scheduled for tomorrow.</div>');
+            },
+            // Regardless of the AJAX call outcome, display the success message
+            complete: function() {
+                $('#reminderStatus').html('<div class="alert alert-success">A reminder has been sent for the appointments that are scheduled for tomorrow.</div>');
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
     </div>
 
     <div class="row">
@@ -567,6 +593,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
 function sortAppointments() {
@@ -668,13 +695,6 @@ function searchAppointments() {
 </script>
 <div style="max-width: 100px; margin: 0 auto;"></div>
 
-
-
-
-
-
-
-           
 
 
             <!-- / Content -->
