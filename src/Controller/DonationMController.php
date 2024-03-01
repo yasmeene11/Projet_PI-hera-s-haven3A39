@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-
+use App\Controller\JsonResponse;
 
 
 class DonationMController extends AbstractController
@@ -209,16 +209,24 @@ public function thankYouCard($accountId, $donationAmount,EntityManagerInterface 
             'donationAmount' => $donationAmount,
         ]);
     }
-    #[Route('/search_donationM', name: 'search_donationM')]
+    #[Route('/search_donationM', name: 'search_donationM', methods: ['GET'])]
     public function searchDonationM(Request $request, DonationMRepository $donationMRepository): Response
     {
         $donationAmount = $request->query->get('donationAmount');
     
         $donations = $donationMRepository->findByDonationAmount($donationAmount);
     
-        return $this->render('Back/DonationM/searchDonationM.html.twig', [
+       return $this->render('Back/DonationM/searchDonationM.html.twig', [
             'results' => $donations,
         ]);
+    }
+    #[Route('/search/result', name: 'search_result')]
+    public function searchResult(Request $request, DonationMRepository $donationMRepository): JsonResponse
+    {
+        $query = $request->query->get('searchValue');
+        $result =  $donationMRepository->searchMF($query);
+
+        return $this->json($result);
     }
     #[Route('/search_donationMFront', name: 'search_donationMFront')]
     public function search_donationMFront(Request $request, DonationMRepository $donationMRepository): Response

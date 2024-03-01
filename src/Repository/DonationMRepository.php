@@ -53,5 +53,14 @@ public function findByDonationAmount($donationAmount)
         ->getQuery()
         ->getResult();
 }
+public function searchMF($searchValue)
+    {
+        // Implement your search logic here, for example:
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.Donation_Amount LIKE :searchValue')
+            ->setParameter('searchValue', '%' . $searchValue . '%')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY); // Return results as an array
+    }
 
 }

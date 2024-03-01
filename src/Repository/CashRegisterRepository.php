@@ -61,4 +61,17 @@ public function getTotal()
 
     return $qb->getQuery()->getResult();
 }
+public function getStatisticsByDateRange(string $type, \DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+    {
+        return $this->createQueryBuilder('cr')
+            ->select('cr.type, COUNT(cr) as totalCount, SUM(cr.somme) as totalAmount')
+            ->andWhere('cr.type = :type')
+            ->andWhere('cr.dateTransaction BETWEEN :startDate AND :endDate')
+            ->setParameter('type', $type)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->groupBy('cr.type')
+            ->getQuery()
+            ->getResult();
+    }
 }

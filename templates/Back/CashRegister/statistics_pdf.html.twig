@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics PDF</title>
+    <!-- Inclure Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Ajouter du style CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        .chart-container {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+        <img class="logo" src="img/logo.png" alt="Logo">
+    
+    <h1>Statistics</h1>
+
+    <!-- Graphique pour donationM -->
+    <h2>donationM</h2>
+    <div class="chart-container">
+        <canvas id="donationMChart"></canvas>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Total Count</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stat in statisticsDonationM %}
+                <tr>
+                    <td>{{ stat.type }}</td>
+                    <td>{{ stat.totalCount }}</td>
+                    <td>{{ stat.totalAmount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Graphique pour boarding -->
+    <h2>boarding</h2>
+    <div class="chart-container">
+        <canvas id="boardingChart"></canvas>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Total Count</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stat in statisticsBoarding %}
+                <tr>
+                    <td>{{ stat.type }}</td>
+                    <td>{{ stat.totalCount }}</td>
+                    <td>{{ stat.totalAmount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Graphique pour adoption -->
+    <h2>adoption</h2>
+    <div class="chart-container">
+        <canvas id="adoptionChart"></canvas>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Total Count</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stat in statisticsAdoption %}
+                <tr>
+                    <td>{{ stat.type }}</td>
+                    <td>{{ stat.totalCount }}</td>
+                    <td>{{ stat.totalAmount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Script JavaScript pour dessiner les graphiques -->
+    <script>
+        // Données pour les graphiques (à remplacer par vos données réelles)
+        const donationMData = {
+            labels: ['Total Amount'],
+            datasets: [{
+                label: 'donationM',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                data: [{% for stat in statisticsDonationM %}{{ stat.totalAmount }},{% endfor %}] // Montants pour donationM
+            }]
+        };
+
+        const boardingData = {
+            labels: ['Total Amount'],
+            datasets: [{
+                label: 'boarding',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: [{% for stat in statisticsBoarding %}{{ stat.totalAmount }},{% endfor %}] // Montants pour boarding
+            }]
+        };
+
+        const adoptionData = {
+            labels: ['Total Amount'],
+            datasets: [{
+                label: 'adoption',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                data: [{% for stat in statisticsAdoption %}{{ stat.totalAmount }},{% endfor %}] // Montants pour adoption
+            }]
+        };
+
+        // Options pour les graphiques
+        const options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        // Dessiner les graphiques
+        new Chart(document.getElementById('donationMChart').getContext('2d'), {
+            type: 'bar',
+            data: donationMData,
+            options: options
+        });
+
+        new Chart(document.getElementById('boardingChart').getContext('2d'), {
+            type: 'bar',
+            data: boardingData,
+            options: options
+        });
+
+        new Chart(document.getElementById('adoptionChart').getContext('2d'), {
+            type: 'bar',
+            data: adoptionData,
+            options: options
+        });
+    </script>
+</body>
+</html>
