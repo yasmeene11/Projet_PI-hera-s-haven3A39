@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Mime\Address;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -209,38 +210,55 @@ public function loginFront(Request $request, UserPasswordEncoderInterface $passw
 }
 
 #[Route('/RegisterFront', name: 'app_Register_F')]
-public function registerFront(Request $request, UserPasswordEncoderInterface $passwordEncoder,SessionInterface $session): Response
+public function registerPage(?string $errorMessage): Response
 {
-    $errorMessage = '';
+    return $this->render('/index_login/register.html.twig', [
+        'errorMessage' => $errorMessage,
+    ]);
+}
 
-    // Retrieve submitted data
-    $name = $request->request->get('name');
-    $surname = $request->request->get('surname');
-    $email = $request->request->get('email');
-    $password = $request->request->get('password');
-    $phoneNumber = $request->request->get('phone_number');
-    $address = $request->request->get('address');
-    $gender = $request->request->get('gender');
-
-    // Check if any required field is empty
-    if (empty($name) || empty($surname) || empty($email) || empty($password) || empty($phoneNumber) || empty($address) || empty($gender)) {
-        
-    } else {
-        // Check if email is valid
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errorMessage = 'Please enter a valid email address.';
+    #[Route('/registerb', name: 'register_submit', methods: ['POST'])]
+    public function registerSubmit(Request $request, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session): Response
+    {
+        $errorMessage = '';
+    
+        // Retrieve submitted data
+        $name = $request->request->get('name');
+        $surname = $request->request->get('surname');
+        $email = $request->request->get('email');
+        $password = $request->request->get('password');
+        $phoneNumber = $request->request->get('phone_number');
+        $address = $request->request->get('address');
+        $gender = $request->request->get('gender');
+        $recaptchaResponse = $request->request->get('g-recaptcha-response');
+    
+        // Validate reCAPTCHA
+        $isValidRecaptcha = $this->validateRecaptcha($recaptchaResponse);
+    
+        if (!$isValidRecaptcha) {
+            $errorMessage = 'Please complete the reCAPTCHA.';
         } else {
+            // Proceed with form validation and registration logic
+            // Check if any required field is empty
+            if (empty($name) || empty($surname) || empty($email) || empty($password) || empty($phoneNumber) || empty($address) || empty($gender)) {
+                $errorMessage = 'Please fill in all the required fields.';
+            }
+    
+            // Check if email is valid
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errorMessage = 'Please enter a valid email address.';
+            }
+    
             // Check if the user already exists with the same email
             $existingUser = $this->getDoctrine()->getRepository(Account::class)->findOneBy(['Email' => $email]);
             if ($existingUser) {
                 $errorMessage = 'User already exists.';
-            } else {
-                // Encode the password
+            }
+    
+            // Encode the password and save the user
+            if (empty($errorMessage)) {
                 $user = new Account();
-                $encodedPassword = $passwordEncoder->encodePassword($user, $password); // Here was the issue, $user variable was not defined
-
-                // Create a new instance of Account entity
-                
+                $encodedPassword = $passwordEncoder->encodePassword($user, $password);
                 $user->setAccountStatus("active");
                 $user->setRole("user");
                 $user->setName($name);
@@ -250,25 +268,56 @@ public function registerFront(Request $request, UserPasswordEncoderInterface $pa
                 $user->setPhoneNumber($phoneNumber);
                 $user->setAddress($address);
                 $user->setGender($gender);
-
+    
                 // Save the user
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
-
-                // Redirect to appropriate page
+    
+                // Redirect or display success message
                 $session->set('user_id', $user->getaccountId());
                 $this->addFlash('success', 'Registration successful.');
                 return $this->redirectToRoute('testuser');
             }
         }
+    
+        // Render the Twig template with error message
+        return $this->render('/index_login/register.html.twig', [
+            'errorMessage' => $errorMessage,
+        ]);
+    }
+    
+
+    private function validateRecaptcha($recaptchaResponse)
+{
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $secret = '6LfGv4ApAAAAAOVyYesOfQOZKKntP4dIrFWyF0au'; // Replace with your actual secret key
+
+    $data = [
+        'secret' => $secret,
+        'response' => $recaptchaResponse,
+    ];
+
+    $options = [
+        'http' => [
+            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method' => 'POST',
+            'content' => http_build_query($data),
+        ],
+    ];
+
+    $context = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+
+    if ($result === false) {
+        return false; // Error fetching reCAPTCHA response
     }
 
-    // Render the Twig template with error message
-    return $this->render('/index_login/register.html.twig', [
-        'errorMessage' => $errorMessage,
-    ]);
+    $response = json_decode($result, true);
+
+    return $response['success'] ?? false;
 }
+
 
 
 //////////////test
@@ -353,7 +402,7 @@ public function removeAf(AccountRepository $repo, $UserId, ManagerRegistry $mr, 
 
 
 #[Route('/forgot-password', name: 'app_forgot_password')]
-public function forgotPassword(Request $request, AccountRepository $userRepository): Response
+public function forgotPassword(Request $request, AccountRepository $userRepository, Packages $assetPackages): Response
 {
     $form = $this->createFormBuilder()
         ->add('email', EmailType::class)
@@ -366,36 +415,68 @@ public function forgotPassword(Request $request, AccountRepository $userReposito
         $user = $userRepository->findOneBy(['Email' => $email]);
 
         if ($user) {
-            // Generate a unique token
             $token = md5(uniqid());
-
-            // Store the token and timestamp in the user's record
             $user->setResetToken($token);
             $user->setResetTokenRequestedAt(new \DateTimeImmutable());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Generate the reset link
             $resetLink = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
-            // Send email with reset link using PHPMailer
+            // Read images as base64
+            $imageHeader = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/header3.png');
+            $imageHeaderBase64 = base64_encode($imageHeader);
+            
+            $imageLogo = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/Design_sans_titre_4.png');
+            $imageLogoBase64 = base64_encode($imageLogo);
+            
+            $imageBeefree = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/background_2.png');
+            $imageBeefreeBase64 = base64_encode($imageBeefree);
+            
+           
+            
+            $imageUnitedPets = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/Design_sans_titre_4.png');
+            $imageUnitedPetsBase64 = base64_encode($imageUnitedPets);
+            
+            $imageFacebook = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/facebook2x.png');
+            $imageFacebookBase64 = base64_encode($imageFacebook);
+            
+            $imageInstagram = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/instagram2x.png');
+            $imageInstagramBase64 = base64_encode($imageInstagram);
+            
+            $imageTwitter = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/twitter2x.png');
+            $imageTwitterBase64 = base64_encode($imageTwitter);
+
+            $backgroundImage = file_get_contents($this->getParameter('kernel.project_dir').'/public/images/background_2.png');
+$backgroundImageBase64 = base64_encode($backgroundImage);
+
+            // Send email
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
-                $mail->Port = 587; // Port for STARTTLS
-                $mail->SMTPSecure = 'tls'; // Enable encryption
+                $mail->Host = 'smtp.gmail.com';
+                $mail->Port = 587;
+                $mail->SMTPSecure = 'tls';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'adembg0@gmail.com'; // Your Gmail address
-                $mail->Password = 'msul wxkj qdws hfna'; // Your Gmail password
-                $mail->setFrom('UnitedPets2024@gmail.com', 'United Pets'); // Sender's email address and name
-                $mail->addAddress($user->getEmail(), $user->getName()); // Recipient's email address and name
+                $mail->Username = 'adembg0@gmail.com';
+                $mail->Password = 'msul wxkj qdws hfna';
+                $mail->setFrom('UnitedPets2024@gmail.com', 'United Pets');
+                $mail->addAddress($user->getEmail(), $user->getName());
                 $mail->Subject = 'Password Reset';
                 $mail->msgHTML(
                     $this->renderView(
                         'index_login/forgot_password.html.twig',
-                        ['resetLink' => $resetLink]
+                        [
+                            'resetLink' => $resetLink,
+                            'imageHeader' => $imageHeaderBase64,
+                            'imageLogo' => $imageLogoBase64,
+                            'imageBeefree' => $imageBeefreeBase64,
+                            'imageFacebook' => $imageFacebookBase64,
+                            'imageInstagram' => $imageInstagramBase64,
+                            'imageTwitter' => $imageTwitterBase64,
+                            'backgroundImage' => $backgroundImageBase64,
+                        ]
                     )
                 );
 
@@ -403,10 +484,7 @@ public function forgotPassword(Request $request, AccountRepository $userReposito
                 $this->addFlash('success', 'Check your email for the password reset link.');
             } catch (Exception $e) {
                 $this->addFlash('error', 'An error occurred while sending the email.');
-                // Log the error or handle it appropriately
             }
-
-            return $this->redirectToRoute('app_login');
         } else {
             $this->addFlash('error', 'No user found with that email address.');
         }
@@ -416,7 +494,6 @@ public function forgotPassword(Request $request, AccountRepository $userReposito
         'form' => $form->createView(),
     ]);
 }
-
 
 #[Route('/reset-password/{token}', name: 'app_reset_password')]
 public function resetPassword(Request $request, string $token, AccountRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder): Response
@@ -453,7 +530,7 @@ public function resetPassword(Request $request, string $token, AccountRepository
 
         $this->addFlash('success', 'Your password has been reset successfully.');
 
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_forgot_password');
     }
 
     return $this->render('index_Login/reset_password.html.twig', [

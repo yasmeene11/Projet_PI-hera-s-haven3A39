@@ -8,6 +8,16 @@
     <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css">
     <link rel="stylesheet" type="text/css" href="css/iofrm-style.css">
     <link rel="stylesheet" type="text/css" href="css/iofrm-theme5.css">
+
+
+
+
+   
+
+
+   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Your code -->
+
     <style>
         .error-message {
             display: none;
@@ -47,7 +57,7 @@
                             {{ errorMessage }}
                         </div>
                         {% endif %}
-                        <form id="registerForm" method="post" action="{{ path('app_Register_F') }}">
+                        <form id="registerForm" method="post" action="{{ path('register_submit') }}">
                             <div class="form-group">
                                 <input type="text" id="name" name="name" class="form-control" placeholder="Name">
                                 <div class="error-message alert alert-danger" id="nameError"></div>
@@ -80,6 +90,7 @@
                                 </select>
                                 <div class="error-message alert alert-danger select-error" id="genderError"></div>
                             </div>
+                             <div class="g-recaptcha" data-sitekey="6LfGv4ApAAAAAHYlbP2f6jbal4_jjHSRbUYKhf6e"></div>
                             <div class="form-button">
                                 <button id="submit" type="submit" class="ibtn">Register</button>
                             </div>
