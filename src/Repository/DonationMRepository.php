@@ -49,6 +49,7 @@ public function findByDonationAmount($donationAmount)
 {
     return $this->createQueryBuilder('d')
         ->andWhere('d.Donation_Amount LIKE :donationAmount')
+        ->orWhere('d.donationM_Date LIKE :donationAmount')
         ->setParameter('donationAmount', '%' . $donationAmount . '%')
         ->getQuery()
         ->getResult();

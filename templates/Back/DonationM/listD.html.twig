@@ -547,55 +547,13 @@
         </div>
     </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Donation Amount </th>
-                <th>Donation Date</th>
-            </tr>
-        </thead>
-        <tbody id="t">
-            {# Your products will be dynamically inserted here through JavaScript #}
-        </tbody>
-    </table>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchInput = document.getElementById('search');
-            var tbody = document.getElementById('t');
-
-            searchInput.addEventListener('keyup', function() {
-                var value = searchInput.value;
-                var xhr = new XMLHttpRequest();
-
-                xhr.open('GET', "{{ path('search_result') }}?searchValue=" + encodeURIComponent(value), true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        updateTable(response);
-                    }
-                };
-
-                xhr.send();
-            });
-
-            function updateTable(donations) {
-                tbody.innerHTML = '';
-
-                if (donations.length > 0) {
-                    donations.forEach(function(donation) {
-                        tbody.innerHTML += '<tr><td>' + donation.donationMId + '</td><td>' + donation.donationAmount + '</td>' +
-                            
-                            '<td>' + (donation.donationM_Date ? donation.donationM_Date : '') + '</td>' ;
-                          
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="8">no records found</td></tr>';
-                }
-            }
-        });
-    </script>
+    <h4>Are you searching for a specific donation?</h4>
+                <form action="{{ path('search_donationM') }}" method="get" class="mb-4">
+    <div class="input-group">
+      <input type="search" name="donationAmount" class="form-control" placeholder="Search Donation by amount or date " aria-label="Search Donation by amount or date">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
             <!-- / Content -->
 
             <!-- Footer -->

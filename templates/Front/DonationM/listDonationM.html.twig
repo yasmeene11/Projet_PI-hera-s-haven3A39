@@ -274,27 +274,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <!-- ==== Slider ==== -->
      
             <!-- /container-fluid -->
-            <div class="container mt-5 mb-3">
-  <form action="{{ path('search_donationMFront') }}" method="get" class="form-inline">
-    <div class="input-group mb-3">
-      <input type="text" name="donationAmount" class="form-control" placeholder="Search by donation amount" aria-label="Search by amount or date" aria-describedby="button-addon2">
-      <button class="btn btn-primary btn-search btn-spacing-left" type="submit" style="margin-left: 15px;">Search</button>
-    </div>
-  </form>
-</div>
+            
       <div class="container mt-5">
     <table class="invoice-list-table table" style="margin-top: -10px;">
       <thead class="table-light">
         <tr>
           <th style="color: red;">ID</th>
            <th style="color: red;" >
-            <a href="{{ path('listDonationMFront', {'sort': 'Donation_Amount', 'direction': 'asc'}) }}">Donation Amount(DT) &#9650;</a> | 
-            <a href="{{ path('listDonationMFront', {'sort': 'Donation_Amount', 'direction': 'desc'}) }}">&#9660;</a>
+            Donation Amount
         </th>
         <!-- En-tête de colonne pour la date de la donation avec liens de tri -->
         <th style="color: red;" class="text-truncate">
-            <a href="{{ path('listDonationMFront', {'sort': 'donationM_Date', 'direction': 'asc'}) }}">Donation Date &#9650;</a> | 
-            <a href="{{ path('listDonationMFront', {'sort': 'donationM_Date', 'direction': 'desc'}) }}">&#9660;</a>
+            Donation Date
          </th>
           
         </tr>

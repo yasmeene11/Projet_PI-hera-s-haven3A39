@@ -487,21 +487,22 @@
 
                 </div>
                <!-- Date inputs -->
-<div class="date-inputs text-center">
+<div class="date-inputs text-center mx-auto"> <!-- Ajout de la classe mx-auto pour centrer les éléments -->
     <form action="{{ path('generate-pdf') }}" method="post">
-        <div class="mb-3" style="margin-left: 50px;"> <!-- Ajout de la marge -->
+        <div class="mb-3" style="width: 200px; margin: 0 auto;"> <!-- Utilisation de la propriété width pour définir la largeur et margin: 0 auto; pour centrer -->
             <label for="start_date" class="form-label">Start Date:</label>
-            <input type="date" id="start_date" name="start_date" class="form-control form-control-sm"> <!-- Utilisation de la classe form-control-sm pour rendre l'input plus petit -->
+            <input type="date" id="start_date" name="start_date" class="form-control form-control-sm" style="width: 100%;"> <!-- Utilisation de la propriété width pour occuper toute la largeur disponible -->
         </div>
 
-        <div class="mb-3" style="margin-left: 50px;"> <!-- Ajout de la marge -->
+        <div class="mb-3" style="width: 200px; margin: 0 auto;"> <!-- Utilisation de la propriété width pour définir la largeur et margin: 0 auto; pour centrer -->
             <label for="end_date" class="form-label">End Date:</label>
-            <input type="date" id="end_date" name="end_date" class="form-control form-control-sm"> <!-- Utilisation de la classe form-control-sm pour rendre l'input plus petit -->
+            <input type="date" id="end_date" name="end_date" class="form-control form-control-sm" style="width: 100%;"> <!-- Utilisation de la propriété width pour occuper toute la largeur disponible -->
         </div>
 
         <button type="submit" class="btn btn-primary">Generate PDF</button>
     </form>
 </div>
+
 <!-- /Date inputs -->
 
 

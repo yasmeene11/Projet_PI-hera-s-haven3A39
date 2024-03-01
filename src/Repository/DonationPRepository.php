@@ -49,6 +49,10 @@ public function findByProductName($donation_product_name)
 {
     return $this->createQueryBuilder('d')
         ->andWhere('d.donation_product_name LIKE :donation_product_name')
+        ->orWhere('d.donation_product_quantity LIKE :donation_product_name')
+        ->orWhere('d.donation_product_label LIKE :donation_product_name')
+
+        ->orWhere('d.donationP_type LIKE :donation_product_name')
         ->setParameter('donation_product_name', '%' . $donation_product_name . '%')
         ->getQuery()
         ->getResult();
