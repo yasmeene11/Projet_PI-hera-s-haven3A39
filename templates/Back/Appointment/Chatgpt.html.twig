@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with FAQ Bot</title>
+    <!-- Add any additional CSS or JS you need here -->
+</head>
+<body>
+
+<div id="chat-container">
+    <div id="chat-box">
+        {# This is where the chat messages will be displayed #}
+    </div>
+    <input type="text" id="user-input" placeholder="Type your message here...">
+    <button id="send-button">Send</button>
+</div>
+
+<script>
+document.getElementById('send-button').addEventListener('click', function() {
+    var userInput = document.getElementById('user-input').value;
+
+    // Clear the input after sending
+    document.getElementById('user-input').value = '';
+
+    if (userInput.trim() === '') {
+        alert('Please enter a message.');
+        return;
+    }
+
+    var chatBox = document.getElementById('chat-box');
+    var userMessage = document.createElement('div');
+    userMessage.textContent = "You: " + userInput;
+    chatBox.appendChild(userMessage);
+
+    // Make an AJAX request to your Symfony backend
+    fetch('{{ path('app_inquiry') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({inquiry_message: userInput})
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        var botResponse = document.createElement('div');
+        botResponse.textContent = "Bot: " + data.answer;
+        chatBox.appendChild(botResponse);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+</script>
+
+</body>
+</html>

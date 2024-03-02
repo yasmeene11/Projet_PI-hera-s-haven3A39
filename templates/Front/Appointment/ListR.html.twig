@@ -156,60 +156,66 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                <!-- /container -->
             </div>
             <!-- End Top bar -->
-            <!-- Navbar Starts -->
-            <div class="navbar container-fluid">
-               <div class="container ">
-                  <!-- logo -->
-                  <a class="nav-brand" href="index.html">
-                  <img src="img/logo.png" alt="" class="img-fluid">
-                  </a>
-                  <!-- Navbartoggler -->
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggle-icon">
-                  <i class="fas fa-bars"></i>
-                  </span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarResponsive">
-                     <ul class="navbar-nav ms-auto">
-                        <!-- menu item -->
-                        <li class="nav-item home-menu">
-                           <a class="nav-link " href={{ path('app_home') }}>Home
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a   class="nav-link"   href={{ path('app_listAF') }}>
-                           Animals
-                           </a>
-                          
-                        </li>
-                        <!-- menu item -->
-                       
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listBF') }}>
-                           Pet Boarding
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listPF') }}>
-                           Products
-                           </a>
-                           
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link dropdown-toggle"  id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Donate
-                           </a>
-                           <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
-                              <a  class="dropdown-item"  href={{ path('app_listDpF') }}>Product donation</a>
-                              <a  class="dropdown-item"  href={{ path('app_listDmF') }}>Financial contributions</a>
-            
-                           </div>
-                        </li>
-                        <li class="nav-item dropdown">
+           <!-- Navbar Starts -->
+<div class="navbar container-fluid">
+    <div class="container">
+        <!-- Logo -->
+        <a class="nav-brand" >
+            <img src="img/logo.png" alt="" class="img-fluid">
+        </a>
+
+        <!-- Navbar Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggle-icon">
+                <i class="fas fa-bars"></i>
+            </span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <!-- Home -->
+                <li class="nav-item home-menu">
+                    <a class="nav-link" href={{ path('app_home') }}>Home</a>
+                </li>
+
+                <!-- Animals -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listAF') }}>Animals</a>
+                </li>
+
+                <!-- Pet Boarding -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listBF') }}>Pet Boarding</a>
+                </li>
+
+                <!-- Products -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listPF') }}>Products</a>
+                </li>
+
+                <!-- Donate -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="contact-dropdown" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Donate</a>
+                    <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
+                        <a class="dropdown-item" href={{ path('listDonationPFront') }}>Product donation</a>
+                        <a class="dropdown-item" href={{ path('listDonationMFront') }}>Financial contributions</a>
+                    </div>
+                </li>
+                {% if user.Role == 'user' %}
+            <!-- User-specific items for 'user' role -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link" >About</a>
+                </li>
+            </li>
+        {% elseif user.Role == 'veterinary' %}
+            <!-- User-specific items for 'veterinary' role -->
+            <li class="nav-item navbar-dropdown-veterinary dropdown-user dropdown">
+              <li class="nav-item dropdown">
                            <a class="nav-link dropdown-toggle"  id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Appointments
                            </a>
@@ -219,24 +225,107 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
                            </div>
                         </li>
-                        
+            </li>
+        {% endif %}
+              
+    
 
+              
 
-                     </ul>
-                     <!--/ul -->
-                  </div>
-                  <!--collapse -->
-               </div>
-               <!-- /container -->
-            </div>
-         <!-- /navbar -->
+               <!-- User Dropdown -->
+<li class="nav-item navbar-dropdown dropdown-user dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+        <!-- Display the user's name -->
+        {{ user.Name }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <a class="dropdown-item" href="pages-account-settings-account.html">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <!-- You can add the user's profile picture here if available -->
+                    </div>
+                    <div class="flex-grow-1">
+                        <!-- Display the user's name and role -->
+                        <span class="fw-medium d-block">{{ user.Name }}</span>
+                        <small class="text-muted">{{ user.Role }}</small>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <div class="dropdown-divider"></div>
+        </li>
+        <li>
+            <a class="dropdown-item"href={{ path('testuser') }} >
+                <i class="mdi mdi-account-outline me-2" ></i>
+                <span class="align-middle">My Profile</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" target="_blank"href={{ path('logout') }}>
+                <i class="mdi mdi-logout me-2" ></i>
+                <span class="align-middle">Log Out</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<!--/ User Dropdown -->
+
+            </ul>
+        </div>
+        <!-- Navbar Collapse -->
+    </div>
+    <!-- Container -->
+</div>
+<!-- Navbar -->
       </nav>
       <!-- /nav -->
       <!-- ==== Slider ==== -->
-      <div class="container-fluid p-0">
-         <div id="slider" class="overlay-parallax-slider" style="width:1200px;height:650px;margin:0 auto;margin-bottom: 0px;">
-            
+      <div class="jumbotron jumbotron-fluid">
+         <div class="container" >
+            <div class="jumbo-heading" data-aos="fade-up">
+               <h1>Report</h1>
+               <!-- Breadcrumbs -->
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href={{ path('app_home') }}>Home</a></li>
+                    <li class="breadcrumb-item active"><a >Report</a></li>
+                  </ol>
+               </nav>
+            </div>
          </div>
+         <!-- /jumbo-heading -->
+  </div>
+    <div class="container" style="margin-top: 170px;">
+    <table class="table">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Appointment Key</th>
+                <th class="cell-fit">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in rapports %}
+                <tr>
+                    <td>{{ report.rapportId }}</td>
+                    <td>{{ report.description }}</td>
+                    <td>{{ report.appointmentKey.appointmentId }}</td>
+                    <td>
+<a href="{{ path('app_edit_RF', {'id': report.rapportId}) }}" class="btn btn-primary btn-sm">Edit</a>
+                       
+                      <a href="{{ path('app_delete_Rf', {'id': report.rapportId}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+              <a href="{{ path('app_add_RF') }}" class="btn btn-success">Add Rapport</a>
+</div>
+        </tbody>
+    </table>
+</div>
+
          <!-- /slider -->
       </div>
       <!-- /container-fluid -->

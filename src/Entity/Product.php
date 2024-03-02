@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -17,16 +19,39 @@ class Product
     private ?int $productId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Product_Name = null;
+/**
+ * @Assert\NotBlank(message="Please don't leave it blank")
+ * @Assert\Length(min=4, 
+ * minMessage="Min length is 4 caracters")
+ */
+private ?string $Product_Name = null;
 
     #[ORM\Column]
+    /**
+     * @Assert\NotBlank(message="Please don't leave it blank")
+     * @Assert\Positive()
+     * @Assert\GreaterThan(value=0, 
+     * message="Quantity should be greater than 0.")
+     */
     private ?int $Product_Quantity = null;
 
     #[ORM\Column(length: 255)]
+    /**
+     * @Assert\NotBlank(message="Please don't leave it blank")
+    * @Assert\Regex(pattern="/\d/", 
+    * match=false,
+    * message="The product label should not contain any digits.")
+     */
     private ?string $Product_Label = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    /**
+     * @Assert\GreaterThanOrEqual(value="+2 weeks", 
+     * message="Expiration date should be at least two weeks from today.")
+     * @Assert\NotBlank(message="Please don't leave it blank")
+     */
     private ?\DateTimeInterface $Expiration_Date = null;
+  
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false, name: 'Category_Key', referencedColumnName: 'categoryId')]
@@ -35,24 +60,16 @@ class Product
     #[ORM\OneToMany(mappedBy: 'Product_Key', targetEntity: DonationProduct::class)]
     private Collection $donationProducts;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Product_Image = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $Rating = null;
+
     public function __construct()
     {
         $this->donationProducts = new ArrayCollection();
     }
-
-   
-
-   
-
-
-
-   
-
-   
-
-  
-
-    
 
     public function getproductId(): ?int
     {
@@ -64,7 +81,7 @@ class Product
         return $this->Product_Name;
     }
 
-    public function setProductName(string $Product_Name): static
+    public function setProductName(?string $Product_Name): static
     {
         $this->Product_Name = $Product_Name;
 
@@ -76,7 +93,7 @@ class Product
         return $this->Product_Quantity;
     }
 
-    public function setProductQuantity(int $Product_Quantity): static
+    public function setProductQuantity(?int $Product_Quantity): static
     {
         $this->Product_Quantity = $Product_Quantity;
 
@@ -88,7 +105,7 @@ class Product
         return $this->Product_Label;
     }
 
-    public function setProductLabel(string $Product_Label): static
+    public function setProductLabel(?string $Product_Label): static
     {
         $this->Product_Label = $Product_Label;
 
@@ -100,13 +117,16 @@ class Product
         return $this->Expiration_Date;
     }
 
-    public function setExpirationDate(\DateTimeInterface $Expiration_Date): static
-    {
-        $this->Expiration_Date = $Expiration_Date;
-
-        return $this;
+    public function setExpirationDate($Expiration_Date): static
+{
+    if (is_string($Expiration_Date)) {
+        $Expiration_Date = new \DateTime($Expiration_Date);
     }
 
+    $this->Expiration_Date = $Expiration_Date;
+
+    return $this;
+}
     public function getCategoryKey(): ?Category
     {
         return $this->Category_Key;
@@ -118,7 +138,10 @@ class Product
 
         return $this;
     }
-
+    public function __toString()
+    {
+        return $this->Product_Name;
+    }
     /**
      * @return Collection<int, DonationProduct>
      */
@@ -149,15 +172,27 @@ class Product
         return $this;
     }
 
-  
+    public function getProductImage(): ?string
+    {
+        return $this->Product_Image;
+    }
 
-  
+    public function setProductImage(string $Product_Image): static
+    {
+        $this->Product_Image = $Product_Image;
 
-   
+        return $this;
+    }
 
-  
+    public function getRating(): ?float
+    {
+        return $this->Rating;
+    }
 
-   
+    public function setRating(?float $Rating): static
+    {
+        $this->Rating = $Rating;
 
-    
+        return $this;
+    }    
 }

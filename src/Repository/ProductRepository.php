@@ -20,6 +20,39 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
+    public function searchP($test)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.Product_Name LIKE :test')
+            ->orWhere('p.Product_Label LIKE :test')
+            ->orWhere('p.Product_Quantity LIKE :test')
+            ->setParameter('test', '%'.$test.'%')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllOrderedByCategory($productType = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.Category_Key', 'c')
+            ->orderBy('c.Product_Type', 'ASC');
+    
+        if ($productType !== null) {
+            $queryBuilder->andWhere('c.Product_Type = :productType')
+                ->setParameter('productType', $productType);
+        }
+    
+        return $queryBuilder->getQuery()->getResult();
+    }
+    public function searchPF($searchValue)
+    {
+        // Implement your search logic here, for example:
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.Product_Name LIKE :searchValue')
+            ->setParameter('searchValue', '%' . $searchValue . '%')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY); // Return results as an array
+    }
+
 
 //    /**
 //     * @return Product[] Returns an array of Product objects

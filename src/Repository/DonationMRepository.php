@@ -45,4 +45,23 @@ class DonationMRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findByDonationAmount($donationAmount)
+{
+    return $this->createQueryBuilder('d')
+        ->andWhere('d.Donation_Amount LIKE :donationAmount')
+        ->orWhere('d.donationM_Date LIKE :donationAmount')
+        ->setParameter('donationAmount', '%' . $donationAmount . '%')
+        ->getQuery()
+        ->getResult();
+}
+public function searchMF($searchValue)
+    {
+        // Implement your search logic here, for example:
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.Donation_Amount LIKE :searchValue')
+            ->setParameter('searchValue', '%' . $searchValue . '%')
+            ->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY); // Return results as an array
+    }
+
 }

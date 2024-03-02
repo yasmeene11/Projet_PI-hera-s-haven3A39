@@ -11,7 +11,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType; 
 use Symfony\Component\Form\FormInterface; 
 
 class AnimalType extends AbstractType
@@ -37,7 +37,10 @@ class AnimalType extends AbstractType
                 'Dog' => 'Dog',
                 'Cat' => 'Cat',
                 'Rabbit' => 'Rabbit',
-                'Turtle' => 'Turtle',
+                'Fish' => 'Fish',
+                'Reptile' => 'Reptile',
+                'Bird' => 'Bird',
+
             ],
             'placeholder' => 'Select Type',
             'required' => true,

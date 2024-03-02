@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html
@@ -124,6 +125,12 @@
                   <a href="{{ path('app_listP') }}"class="menu-link">
                     <div data-i18n="Products">Products</div>
                   </a>
+                                     </li>
+                                                      <li class="menu-item">
+                  <a href="{{ path('app_listcat') }}"class="menu-link">
+                    <div data-i18n="Category">Category</div>
+                  </a>
+                   </li>
                    </li>
                     <li class="menu-item">
                   <a href="{{ path('app_listD') }}"" class="menu-link">
@@ -135,6 +142,13 @@
                     <div data-i18n="Appointments">Appointments</div>
                   </a>
                 </li>
+                                                     </li>
+                                                      <li class="menu-item">
+                  <a href="{{ path('app_listpd') }}"class="menu-link">
+                    <div data-i18n="ProductDonation">ProductDonation</div>
+                  </a>
+                   </li>
+                   </li>
                </ul>
             </li>
             
@@ -448,7 +462,7 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-
+<span class="h4 mb-0 app-brand-text fw-bold">Add Product</span>
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row invoice-add">
                 <!-- Invoice Add-->
@@ -462,26 +476,83 @@
                               <span style="color: var(--bs-primary)">
                               </span>
                             </span>
-                            <span class="h4 mb-0 app-brand-text fw-bold">Add Product</span>
+{{ form_start(formProduct, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<table>
+    <tr>
+        <td>
+            <label for="inputText">Name</label>
+            <div>
+                {{ form_widget(formProduct.Product_Name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Name, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+        
+    </tr>
+    <tr>
+        <td>
+            <label for="inputText">Quantity</label>
+            <div>
+                {{ form_widget(formProduct.Product_Quantity, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Quantity, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="inputText">Label</label>
+            <div>
+                {{ form_widget(formProduct.Product_Label, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(formProduct.Product_Label, {'attr': {'class': 'text-danger'}}) }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+            <label>{{ form_label(formProduct.Expiration_Date, "Date d'expiration") }}</label>
+       <div>
+        <label> 
+             
+             {{ form_widget(formProduct.Expiration_Date, {'attr': {'class': 'form-control'}}) }}
+             {{ form_errors(formProduct.Expiration_Date) }}</label> 
+             </div>
+          </td>
+
+    </tr>
+    <tr>
+        <td>
+            <div class="mb-3">
+                {{ form_label(formProduct.Category_Key) }}
+                {{ form_widget(formProduct.Category_Key, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </td>
+    </tr>
+    <tr>
+    <td>
+     <div class="mb-3">
+                            {{ form_label(formProduct.Product_Image) }}
+                            {% if formProduct.Product_Image.vars.value %}
+                                <img src="{{ asset('/public/Product_images/' ~ formProduct.Product_Image.vars.value) }}" alt="Product_Image" class="img-thumbnail">
+                            {% endif %}
+                            {{ form_widget(formProduct.Product_Image, {'attr': {'class': 'form-control'}}) }}
+                             {{ form_errors(formProduct.Product_Image, {'attr': {'class': 'text-danger'}}) }}
+                        </div>
+    </td>
+    </tr>
+</table>
+
+<div class="card-body">
+    <button type="submit" class="btn btn-sm btn-primary">Save Product</button>
+    {{ form_end(formProduct) }}
+    <!-- /Invoice Add-->
+</div>
+
+
                           </div>
                           
                         </div>
                         <div class="col-md-5 pe-0 ps-0 ps-md-2">
                           <dl class="row mb-2 g-2">
-                            <dt class="col-sm-6 mb-2 d-md-flex align-items-center justify-content-end">
-                              <span class="h4 text-capitalize mb-0 text-nowrap">Invoice</span>
-                            </dt>
                             <dd class="col-sm-6">
-                              <div class="input-group input-group-merge disabled">
-                                <span class="input-group-text">#</span>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  disabled
-                                  placeholder="3905"
-                                  value="3905"
-                                  id="invoiceId" />
-                              </div>
                             </dd>
                             
                           </dl>
@@ -491,87 +562,7 @@
                     <hr class="my-0" />
                     
                     <hr class="my-0" />
-                    <div class="card-body">
-                      <form class="source-item pt-1">
-                        <div class="mb-3" data-repeater-list="group-a">
-                          <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
-                            <div class="d-flex border rounded position-relative pe-0">
-                              <div class="row w-100 p-3">
-                                <div class="col-md-6 col-12 mb-md-0 mb-3">
-                                  <p class="mb-2 repeater-title">Item</p>
-                                  <select class="form-select item-details mb-3">
-                                    <option selected disabled>Select Item</option>
-                                    <option value="App Design">App Design</option>
-                                    <option value="App Customization">App Customization</option>
-                                    <option value="ABC Template">ABC Template</option>
-                                    <option value="App Development">App Development</option>
-                                  </select>
-                                  <textarea class="form-control" rows="2" placeholder="Item Information"></textarea>
-                                </div>
-                                <div class="col-md-3 col-12 mb-md-0 mb-3">
-                                  <p class="mb-2 repeater-title">Cost</p>
-                                  <input
-                                    type="number"
-                                    class="form-control invoice-item-price mb-2"
-                                    placeholder="00"
-                                    min="12" />
-                                  <div class="d-flex flex-column gap-2">
-                                    <span>Discount:</span>
-                                    <span>
-                                      <span class="discount me-2">0%</span>
-                                      <span
-                                        class="tax-1 me-2"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Tax 1"
-                                        >0%</span
-                                      >
-                                      <span class="tax-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Tax 2"
-                                        >0%</span
-                                      >
-                                    </span>
-                                  </div>
-                                </div>
-                                <div class="col-md-2 col-12 mb-md-0 mb-3">
-                                  <p class="mb-2 repeater-title">Qty</p>
-                                  <input
-                                    type="number"
-                                    class="form-control invoice-item-qty"
-                                    placeholder="1"
-                                    min="1"
-                                    max="50" />
-                                </div>
-                                <div class="col-md-1 col-12 pe-0">
-                                  <p class="mb-2 repeater-title">Price</p>
-                                  <p class="mb-0">$24.00</p>
-                                </div>
-                              </div>
-                              <div
-                                class="d-flex flex-column align-items-center justify-content-between border-start p-2">
-                                <i class="mdi mdi-close cursor-pointer" data-repeater-delete></i>
-                                
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <button type="button" class="btn btn-sm btn-primary" data-repeater-create>
-                              <i class="mdi mdi-plus me-1"></i> Add Product
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-
-                    
-                    
-                  </div>
-                </div>
-                <!-- /Invoice Add-->
-
-                
-              </div>
+ 
 
               
             </div>

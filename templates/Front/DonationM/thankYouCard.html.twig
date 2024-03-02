@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carte de Remerciement</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            overflow: hidden;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 20px;
+            color: #333;
+            line-height: 1.5;
+        }
+        .card-body img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            Merci !
+        </div>
+        <div class="card-body">
+            <img src="https://i.pinimg.com/originals/73/81/a9/7381a9437a51046824187b64fd66924f.gif" alt="Merci">
+            <h5>Merci pour votre don, {{ account}}!</h5>
+            <p>Nous apprécions grandement votre générosité. Votre soutien de {{donationAmount}} aide à continuer notre mission et à faire une différence.</p>
+            <a href="{{ path('donationMFront') }}" class="btn-primary">Faire un autre don</a>
+        </div>
+    </div>
+</body>
+</html>

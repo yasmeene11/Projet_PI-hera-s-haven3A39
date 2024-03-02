@@ -64,7 +64,7 @@ class Adoption
     {
         return $this->Adoption_Date;
     }
-
+   
     
     public function setAdoptionDate(?\DateTimeInterface $Adoption_Date): static
     {

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html
@@ -69,7 +70,7 @@
             <a href="indexb" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <span style="color: var(--bs-primary)">
-                  <image href="path/to/your/image.jpg" width="100%" height="100%" />
+                   <img src="../../public/logo.svg" width="100%" height="100%" alt="Logo">
                 </span>
               </span>
               <span class="app-brand-text demo menu-text fw-bold ms-2">United Pets</span>
@@ -101,11 +102,11 @@
               </a>
               <ul class="menu-sub">
                   <li class="menu-item ">
-                  <a href="{{ path('app_listU') }}" class="menu-link">
+                  <a href="{{ path('app_listU') }}"  class="menu-link">
                     <div data-i18n="Users">Users</div>
                   </a>
                     </li>
-                  <li class="menu-item ">
+                  <li class="menu-item">
                   <a href="{{ path('app_listA') }}" class="menu-link">
                     <div data-i18n="Animals">Animals</div>
                   </a>
@@ -120,13 +121,19 @@
                     <div data-i18n="Pet Boarding">Pet Boarding</div>
                   </a>
                 </li>
-                 <li class="menu-item active">
+                 <li class="menu-item active ">
                   <a href="{{ path('app_listP') }}"class="menu-link">
                     <div data-i18n="Products">Products</div>
                   </a>
-                  <li class="menu-item ">
-                  <a href="{{ path('app_listC') }}"class="menu-link">
-                    <div data-i18n="Categories">Categories</div>
+                   </li>
+                                                      <li class="menu-item">
+                  <a href="{{ path('app_listcat') }}"class="menu-link">
+                    <div data-i18n="Category">Category</div>
+                  </a>
+                   </li>
+                                                      <li class="menu-item">
+                  <a href="{{ path('app_listpd') }}"class="menu-link">
+                    <div data-i18n="ProductDonation">DonationProduct</div>
                   </a>
                    </li>
                     <li class="menu-item">
@@ -161,18 +168,23 @@
 
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
               <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item navbar-search-wrapper mb-0">
-                  <a class="nav-item nav-link search-toggler fw-normal px-0" href="javascript:void(0);">
-                    <i class="mdi mdi-magnify mdi-24px scaleX-n1-rtl"></i>
-                    <span class="d-none d-md-inline-block text-muted">Search (Ctrl+/)</span>
-                  </a>
-                </div>
-              </div>
-              <!-- /Search -->
+<div class="navbar-nav align-items-center">
+  <!-- Search form -->
+  <form action="{{ path('searchP') }}" method="post" class="d-flex">
+    <input type="text" name="test" class="form-control me-2" placeholder="Search">
+    <button class="btn btn-primary" type="submit">
+      <span class="d-md-inline-block d-none">Search</span>
+    </button>
+  </form>
+  <!-- /Search form -->
+</div>
 
-              <ul class="navbar-nav flex-row align-items-center ms-auto">
-              
+
+<!-- /Search -->
+
+
+      <ul class="navbar-nav flex-row align-items-center ms-auto">
+
                 <!-- Notification -->
                 <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
                   <a
@@ -456,152 +468,114 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="py-3 mb-4">Product List</h4>
 
-              <!--  List Widget -->
+              <!-- Invoice List Widget -->
 
               <div class="card mb-4">
-                <div class="card-widget-separator-wrapper">
-                  <div class="card-body card-widget-separator">
-                    <div class="row gy-4 gy-sm-1">
-                      <div class="col-sm-6 col-lg-3">
-                        <div
-                          class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
-                          <div>
-                            <h3 class="mb-1">24</h3>
-                            <p class="mb-0">Clients</p>
-                          </div>
-                          <div class="avatar me-sm-4">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-account-outline text-heading mdi-20px"></i>
-                            </span>
-                          </div>
+    <div class="card-widget-separator-wrapper">
+        <div class="card-body card-widget-separator">
+            <div class="row gy-4 gy-sm-1">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
+                        <div>
+                             
+                            <p class="mb-0">Products</p>
                         </div>
-                        <hr class="d-none d-sm-block d-lg-none me-4" />
-                      </div>
-                      <div class="col-sm-6 col-lg-3">
-                        <div
-                          class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-3 pb-sm-0">
-                          <div>
-                            <h3 class="mb-1">165</h3>
-                            <p class="mb-0">Invoices</p>
-                          </div>
-                          <div class="avatar me-lg-4">
+                        <div class="avatar me-sm-4">
                             <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-content-paste text-heading mdi-20px"></i>
+                                <i class="mdi mdi-account-outline text-heading mdi-20px"></i>
                             </span>
-                          </div>
                         </div>
-                        <hr class="d-none d-sm-block d-lg-none" />
-                      </div>
-                      <div class="col-sm-6 col-lg-3">
-                        <div
-                          class="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-3">
-                          <div>
-                            <h3 class="mb-1">$2.46k</h3>
-                            <p class="mb-0">Paid</p>
-                          </div>
-                          <div class="avatar me-sm-4">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-currency-usd text-heading mdi-20px"></i>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-6 col-lg-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                          <div>
-                            <h3 class="mb-1">$876</h3>
-                            <p class="mb-0">Unpaid</p>
-                          </div>
-                          <div class="avatar">
-                            <span class="avatar-initial rounded bg-label-secondary">
-                              <i class="mdi mdi-currency-usd-off text-heading mdi-20px"></i>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
+                    <hr class="d-none d-sm-block d-lg-none me-4" />
                 </div>
-              </div>
-
-              <!-- Animals List Table -->
-
-
-
-              <div class="card">
-    <div class="card-datatable table-responsive">
-        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-            <div class="row mx-1">
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
-                    <div class="dataTables_length" id="DataTables_Table_0_length">
-                        <label>Show
-                            <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0"
-                                class="form-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </label>
-                    </div>
-                   <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
-        <div class="dt-buttons">
-            <a href="{{ path('app_add_P') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Product</span></span>
-            </a>
-        </div>
-    </div>
-                </div>
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
-                    <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                        <label><input type="search" class="form-control" placeholder="Search Invoice"
-                                aria-controls="DataTables_Table_0"></label>
-                    </div>
-                    <div class="invoice_status mb-3 mb-md-0"></div>
-                </div>
-            </div>
-             <div class="card-datatable table-responsive">
-                  <table class="invoice-list-table table">
-                    <thead class="table-light">
-                      <tr>
-                        
-                        <th>ID</th>
-                        <th>Name </th
-                        <th>Quantity</th>
-                        <th class="text-truncate">Expiration Date</th>
-                        <th>Label</th>
-                        <th>Type</th>
-                        <th class="cell-fit">Actions</th>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-            <div class="row mx-2">
-                <div class="col-sm-12 col-md-6">
-                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 0
-                        to 0 of 0 entries</div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                        <ul class="pagination">
-                            <li class="paginate_button page-item previous disabled"
-                                id="DataTables_Table_0_previous">
-                                <a aria-controls="DataTables_Table_0" aria-disabled="true" role="link"
-                                    data-dt-idx="previous" tabindex="0" class="page-link">Previous</a>
-                            </li>
-                            <li class="paginate_button page-item next disabled" id="DataTables_Table_0_next">
-                                <a aria-controls="DataTables_Table_0" aria-disabled="true" role="link"
-                                    data-dt-idx="next" tabindex="0" class="page-link">Next</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <!-- ... (other columns) ... -->
             </div>
         </div>
     </div>
 </div>
 
-            <!-- / Content -->
+
+              {% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row invoice-add">
+            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
+                <div class="card">
+                    <div class="card-datatable table-responsive">
+                        <div class="dt-action-buttons text-start mt-md-0 mt-3">     
+    <div class="dt-buttons">
+        <a href="{{ path('app_add_P') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+            <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Product</span></span>
+        </a>
+    </div>
+</div>
+
+
+   <table class="invoice-list-table table">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Label</th>
+            <th class="text-truncate">Expiration Date</th>
+            <th>Category</th>
+            <th>Donation</th>
+            <th>Image</th>
+            <th>Rating</th>
+            <th class="cell-fit">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in result %}
+            <tr>
+                <td>{{ product.getproductId() }}</td>
+                <td>{{ product.getProductName() }}</td>
+                <td>{{ product.getProductQuantity() }}</td>
+                <td>{{ product.getProductLabel() }}</td>
+                <td>{{ product.getExpirationDate()|date('Y-m-d') }}</td>
+                <td>{{ product.getCategoryKey().getProductType()}}</td>
+               {% set donationCount = product.getDonationProducts()|length %}
+{% if donationCount > 0 %}
+    <td>
+        {{ donationCount }} donation{% if donationCount != 1 %}s{% endif %}
+    </td>
+{% else %}
+    <td></td>
+{% endif %}
+<td>
+                                    {% if product.getProductImage() %}
+                                        <img src="{{ asset('Product_images/' ~ product.getProductImage()) }}" alt="Product_Image" style="width: 250px; height: 250px; object-fit: cover;">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                                   
+     <td>{% if product.Rating > 0 %}
+    <td>
+        {{ product.Rating }} Star{% if product.Rating != 1 %}s{% endif %}
+    </td>
+{% else %}
+    <td></td>
+{% endif %}</td>
+                <td>
+                    <!-- Add your actions here, e.g., edit, delete -->
+                    <a href="{{ path('updateP', { 'productId': product.productId }) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
+                    <a href="{{ path('removeP', { 'productId': product.productId })}}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 
             <!-- Footer -->
             <footer class="content-footer footer bg-footer-theme">

@@ -4,6 +4,11 @@
 <!-- Mirrored from www.ingridkuhn.com/themes/unitedpetsbs5/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 28 Jan 2024 14:07:04 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
+<head>
+    <!-- Other head elements -->
+    <meta name="csrf-token" content="{{ csrf_token('your_csrf_token_intention') }}">
+</head>
+
       <meta charset="utf-8">
       <!--[if IE]>
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -157,90 +162,347 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </div>
             <!-- End Top bar -->
             <!-- Navbar Starts -->
-            <div class="navbar container-fluid">
-               <div class="container ">
-                  <!-- logo -->
-                  <a class="nav-brand" href="index.html">
-                  <img src="img/logo.png" alt="" class="img-fluid">
-                  </a>
-                  <!-- Navbartoggler -->
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggle-icon">
-                  <i class="fas fa-bars"></i>
-                  </span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarResponsive">
-                     <ul class="navbar-nav ms-auto">
-                        <!-- menu item -->
-                        <li class="nav-item home-menu">
-                           <a class="nav-link " href={{ path('app_home') }}>Home
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a   class="nav-link"   href={{ path('app_listAF') }}>
-                           Animals
-                           </a>
-                          
-                        </li>
-                        
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listBF') }}>
-                           Pet Boarding
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listPF') }}>
-                           Products
-                           </a>
-                           
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
+<div class="navbar container-fluid">
+    <div class="container">
+        <!-- Logo -->
+        <a class="nav-brand" >
+            <img src="img/logo.png" alt="" class="img-fluid">
+        </a>
+
+        <!-- Navbar Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggle-icon">
+                <i class="fas fa-bars"></i>
+            </span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <!-- Home -->
+                <li class="nav-item home-menu">
+                    <a class="nav-link" href={{ path('app_home') }}>Home</a>
+                </li>
+
+                <!-- Animals -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listAF') }}>Animals</a>
+                </li>
+
+                <!-- Pet Boarding -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listBF') }}>Pet Boarding</a>
+                </li>
+
+                <!-- Products -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listPF') }}>Products</a>
+                </li>
+
+                <!-- Donate -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="contact-dropdown" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Donate</a>
+                    <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
+                        <a class="dropdown-item" href={{ path('listDonationPFront') }}>Product donation</a>
+                        <a class="dropdown-item" href={{ path('listDonationMFront') }}>Financial contributions</a>
+                    </div>
+                </li>
+                {% if user.Role == 'user' %}
+            <!-- User-specific items for 'user' role -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link" >About</a>
+                </li>
+            </li>
+        {% elseif user.Role == 'veterinary' %}
+            <!-- User-specific items for 'veterinary' role -->
+            <li class="nav-item navbar-dropdown-veterinary dropdown-user dropdown">
+              <li class="nav-item dropdown">
                            <a class="nav-link dropdown-toggle"  id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Donate
+                           Appointments
                            </a>
                            <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
-                              <a  class="dropdown-item"  href={{ path('app_listDpF') }}>Product donation</a>
-                              <a  class="dropdown-item"  href={{ path('app_listDmF') }}>Financial contributions</a>
+                              <a  class="dropdown-item"  href={{ path('app_listApF') }}>Appointments</a>
+                              <a  class="dropdown-item"  href={{ path('app_listRF') }}>Rapports</a>
             
                            </div>
                         </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link" >
-                           About 
-                           </a>
-                        </li>
+            </li>
+        {% endif %}
+              
+    
 
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="battouna btn btn-primary" href={{ path('app_login') }}>Login</a>
-                        </li>
+              
 
+               <!-- User Dropdown -->
+<li class="nav-item navbar-dropdown dropdown-user dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+        <!-- Display the user's name -->
+        {{ user.Name }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <a class="dropdown-item" href="pages-account-settings-account.html">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <!-- You can add the user's profile picture here if available -->
+                    </div>
+                    <div class="flex-grow-1">
+                        <!-- Display the user's name and role -->
+                        <span class="fw-medium d-block">{{ user.Name }}</span>
+                        <small class="text-muted">{{ user.Role }}</small>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <div class="dropdown-divider"></div>
+        </li>
+        <li>
+            <a class="dropdown-item"href={{ path('testuser') }} >
+                <i class="mdi mdi-account-outline me-2" ></i>
+                <span class="align-middle">My Profile</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" target="_blank"href={{ path('logout') }}>
+                <i class="mdi mdi-logout me-2" ></i>
+                <span class="align-middle">Log Out</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<!--/ User Dropdown -->
 
-
-                     </ul>
-                     <!--/ul -->
-                  </div>
-                  <!--collapse -->
-               </div>
-               <!-- /container -->
-            </div>
-         <!-- /navbar -->
+            </ul>
+        </div>
+        <!-- Navbar Collapse -->
+    </div>
+    <!-- Container -->
+</div>
+<!-- Navbar -->
       </nav>
       <!-- /nav -->
-      <!-- ==== Slider ==== -->
-      <div class="container-fluid p-0">
-         <div id="slider" class="overlay-parallax-slider" style="width:1200px;height:650px;margin:0 auto;margin-bottom: 0px;">
-            
+<div class="jumbotron jumbotron-fluid">
+         <div class="container" >
+            <div class="jumbo-heading" data-aos="fade-up">
+               <h1>Product</h1>
+               <!-- Breadcrumbs -->
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href={{ path('app_home') }}>Home</a></li>
+                    <li class="breadcrumb-item active"><a >Product</a></li>
+                  </ol>
+               </nav>
+            </div>
          </div>
-         <!-- /slider -->
-      </div>
-      <!-- /container-fluid -->
-      
+         <!-- /jumbo-heading -->
+  </div>
+    
+{% block content %}
+    <div class="sidebar-search">
+        <div class="input-group custom-search-form">
+            <input type="text" id="search" class="form-control" placeholder="Search here">
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Label</th>
+                <th>Expiration Date</th>
+                <th>Category</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody id="t">
+            {# Your products will be dynamically inserted here through JavaScript #}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('search');
+            var tbody = document.getElementById('t');
+
+            searchInput.addEventListener('keyup', function() {
+                var value = searchInput.value;
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', "{{ path('search_result') }}?searchValue=" + encodeURIComponent(value), true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        updateTable(response);
+                    }
+                };
+
+                xhr.send();
+            });
+
+            function updateTable(products) {
+                tbody.innerHTML = '';
+
+                if (products.length > 0) {
+                    products.forEach(function(product) {
+                        tbody.innerHTML += '<tr><td>' + product.productId + '</td><td>' + product.Product_Name + '</td>' +
+                            '<td>' + product.Product_Quantity + '</td><td>' + product.Product_Label + '</td>' +
+                            '<td>' + (product.Expiration_Date ? product.Expiration_Date : '') + '</td>' +
+                            '<td>' + (product.Category_Key ? product.Category_Key.Product_Type : '') + '</td>' +
+                            '<td>' + product.Product_Image + '</td>' ;
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="8">no records found</td></tr>';
+                }
+            }
+        });
+    </script>
+<div class="page container">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row invoice-add">
+            <div class="col-lg-9 col-12 mb-lg-0 mb-4">
+                <div class="card">
+                    <div class="card-datatable table-responsive">
+                        <div class="dt-action-buttons text-start mt-md-0 mt-3">
+                            <div class="dt-buttons">
+                                <a  >
+                                    <span><i class="mdi mdi-plus me-md-1"></i><span class="d-md-inline-block d-none"></span></span>
+                                </a>
+                            </div>
+                        </div>
+                <td>
+<a href="{{ path('triP', {'productType': 'food'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Food</a>
+                </td>
+                                <td>
+<a href="{{ path('triP', {'productType': 'Medical'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Medical</a>
+
+                </td>
+                                <td>
+<a href="{{ path('triP', {'productType': 'Hygienic'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Hygienic</a>
+
+                </td>
+                      <table class="invoice-list-table table">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Category</th>
+            <th>Image</th>
+            <th>Rating</th>
+            <th class="cell-fit">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in result %}
+        <tr>
+            <td>{{ product.getProductName() }}</td>
+            <td>{{ product.getProductLabel() }}</td>
+            <td>{{ product.getCategoryKey().getProductType() }}</td>
+            <td>
+                {% if product.getProductImage() %}
+                    <img src="{{ asset('Product_images/' ~ product.getProductImage()) }}" alt="Product_Image" style="width: 250px; height: 250px; object-fit: cover;">
+                {% else %}
+                    No Image
+                {% endif %}
+            </td>
+            <td>
+            <td>
+<td>
+    <div class="rating-stars" data-product-id="{{ product.productId }}">
+        {% for i in 1..5 %}
+            <i class="star fas fa-star text-warning" data-rating="{{ i }}"></i>
+        {% endfor %}
+    </div>
+</td>
+<style>
+    .rating-stars {
+        display: flex;
+        cursor: pointer;
+    }
+
+    .star {
+        margin-right: 5px;
+        font-size: 24px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .star:hover {
+        transform: scale(1.2); /* Increase the size on hover */
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.rating-stars .star');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                const productId = this.closest('.rating-stars').dataset.productId;
+                const rating = this.dataset.rating;
+
+                // Send a request to your Symfony controller to handle the rating update
+                fetch(`/update-rating/${productId}/${rating}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': csrfToken, // Include CSRF token in headers
+                    },
+                    credentials: 'same-origin',  // Include credentials for same-origin requests
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Update the UI or handle success response
+                    console.log('Rating updated successfully:', data);
+                })
+                .catch(error => {
+                    console.error('Error updating rating:', error);
+                });
+            });
+        });
+    });
+</script>
+
+
+</td>
+
+            </td>
+            <td>
+                <a class="dt-button btn btn-primary waves-effect waves-light text-white"
+                   tabindex="0" aria-controls="DataTables_Table_0" type="button"
+                   {% if product.getCategoryKey().getProductType() == 'food' %}
+                       href="https://zanimo.tn/category/1/products"
+                   {% elseif product.getCategoryKey().getProductType() == 'hygienic' %}
+                       href="https://zanimo.tn/category/33/products"
+                   {% else %}
+                       href="https://zanimo.tn/category/31/products"
+                   {% endif %}
+                >See</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="d-flex justify-content-center align-items-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+  {{ knp_pagination_render(result) }}
+        </ul>
+    </nav>
+</div>
+{% endblock %}
+
+
 	  <!-- ==== footer ==== -->
       <footer class="bg-light pattern1">
          <div class="container">

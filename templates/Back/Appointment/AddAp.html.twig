@@ -447,127 +447,83 @@
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
-            <!-- Content -->
-
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row invoice-add">
-                <!-- Invoice Add-->
-                <div class="col-lg-9 col-12 mb-lg-0 mb-4">
-                  <div class="card invoice-preview-card">
-                    <div class="card-body">
-                      <div class="row mx-0">
-                        <div class="col-md-7 mb-md-0 mb-4 ps-0">
-                          <div class="d-flex svg-illustration align-items-center gap-2 mb-4">
-                            <span class="app-brand-logo demo">
-                              <span style="color: var(--bs-primary)">
-                              </span>
-                            </span>
-                            <span class="h4 mb-0 app-brand-text fw-bold">Add Appointment</span>
-                          </div>
-                          
-                        </div>
-                        <div class="col-md-5 pe-0 ps-0 ps-md-2">
-                          <dl class="row mb-2 g-2">
-                            <dt class="col-sm-6 mb-2 d-md-flex align-items-center justify-content-end">
-                              <span class="h4 text-capitalize mb-0 text-nowrap">Invoice</span>
-                            </dt>
-                            <dd class="col-sm-6">
-                              <div class="input-group input-group-merge disabled">
-                                <span class="input-group-text">#</span>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  disabled
-                                  placeholder="3905"
-                                  value="3905"
-                                  id="invoiceId" />
-                              </div>
-                            </dd>
-                            
-                          </dl>
-                        </div>
-                      </div>
+    <!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title mb-0">Add Appointment</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {{ form_start(form) }}
+                <div class="row">
+                    <!-- Account Key -->
+                    <div class="col-md-4 mb-3">
+                        {{ form_label(form.Account_Key, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.Account_Key, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(form.Account_Key) %}
+                            {% for error in form.Account_Key.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    <hr class="my-0" />
-                    
-                    <hr class="my-0" />
-                    <div class="card-body">
-                      <form class="source-item pt-1">
-                        <div class="mb-3" data-repeater-list="group-a">
-                          <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
-                            <div class="d-flex border rounded position-relative pe-0">
-                              <div class="row w-100 p-3">
-                                <div class="col-md-6 col-12 mb-md-0 mb-3">
-                                  <p class="mb-2 repeater-title">Item</p>
-                                  <select class="form-select item-details mb-3">
-                                    <option selected disabled>Select Item</option>
-                                    <option value="App Design">App Design</option>
-                                    <option value="App Customization">App Customization</option>
-                                    <option value="ABC Template">ABC Template</option>
-                                    <option value="App Development">App Development</option>
-                                  </select>
-                                  <textarea class="form-control" rows="2" placeholder="Item Information"></textarea>
-                                </div>
-                                <div class="col-md-3 col-12 mb-md-0 mb-3">
-                                  <p class="mb-2 repeater-title">Cost</p>
-                                  <input
-                                    type="number"
-                                    class="form-control invoice-item-price mb-2"
-                                    placeholder="00"
-                                    min="12" />
-                                  <div class="d-flex flex-column gap-2">
-                                    <span>Discount:</span>
-                                    <span>
-                                      <span class="discount me-2">0%</span>
-                                      <span
-                                        class="tax-1 me-2"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Tax 1"
-                                        >0%</span
-                                      >
-                                      <span class="tax-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Tax 2"
-                                        >0%</span
-                                      >
-                                    </span>
-                                  </div>
-                                </div>
-                                <div class="col-md-2 col-12 mb-md-0 mb-3">
-                                  <p class="mb-2 repeater-title">Qty</p>
-                                  <input
-                                    type="number"
-                                    class="form-control invoice-item-qty"
-                                    placeholder="1"
-                                    min="1"
-                                    max="50" />
-                                </div>
-                                <div class="col-md-1 col-12 pe-0">
-                                  <p class="mb-2 repeater-title">Price</p>
-                                  <p class="mb-0">$24.00</p>
-                                </div>
-                              </div>
-                              <div
-                                class="d-flex flex-column align-items-center justify-content-between border-start p-2">
-                                <i class="mdi mdi-close cursor-pointer" data-repeater-delete></i>
-                                
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <button type="button" class="btn btn-sm btn-primary" data-repeater-create>
-                              <i class="mdi mdi-plus me-1"></i> Add Appointment
-                            </button>
-                          </div>
-                        </div>
-                      </form>
+                    <!-- Animal Key -->
+                    <div class="col-md-4 mb-3">
+                        {{ form_label(form.Animal_Key, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.Animal_Key, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(form.Animal_Key) %}
+                            {% for error in form.Animal_Key.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-
-                    
-                    
-                  </div>
                 </div>
+                <div class="row">
+                    <!-- Appointment Date -->
+                    <div class="col-md-4 mb-3">
+                        {{ form_label(form.Appointment_Date, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.Appointment_Date, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(form.Appointment_Date) %}
+                            {% for error in form.Appointment_Date.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <!-- Appointment Time -->
+                    <div class="col-md-4 mb-3">
+                        {{ form_label(form.Appointment_Time, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.Appointment_Time, {'attr': {'class': 'form-control'}}) }}
+                        {% if form_errors(form.Appointment_Time) %}
+                            {% for error in form.Appointment_Time.vars.errors %}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% if form.Appointment_Status is defined %}
+                <div class="row">
+                    <!-- Appointment Status -->
+                    <div class="col-md-8 mb-4">
+                        {{ form_label(form.Appointment_Status, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.Appointment_Status, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.Appointment_Status) }}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <!-- Confirm Button -->
+                    <div class="col-md-8 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success">Confirm</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
                 <!-- /Invoice Add-->
 
                 
@@ -582,14 +538,7 @@
               <div class="container-xxl">
                 <div
                   class="footer-container d-flex align-items-center justify-content-between py-3 flex-md-row flex-column">
-                  <div class="mb-2 mb-md-0">
-                    ©
-                    <script>
-                      document.write(new Date().getFullYear());
-                    </script>
-                    , made with <span class="text-danger"><i class="tf-icons mdi mdi-heart"></i></span> by
-                    <a href="https://pixinvent.com" target="_blank" class="footer-link fw-medium">Pixinvent</a>
-                  </div>
+                  
                   <div class="d-none d-lg-inline-block">
                     <a href="https://themeforest.net/licenses/standard" class="footer-link me-4" target="_blank"
                       >License</a

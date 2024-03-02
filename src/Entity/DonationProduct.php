@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\DonationProductRepository;
 use Doctrine\ORM\Mapping as ORM;
-
 #[ORM\Entity(repositoryClass: DonationProductRepository::class)]
 class DonationProduct
 {
@@ -48,5 +47,10 @@ class DonationProduct
         $this->Product_Key = $Product_Key;
 
         return $this;
+    }
+    
+    public function __toString()
+    {
+        return $this->Donation_Key;
     }
 }

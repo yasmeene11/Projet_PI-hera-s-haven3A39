@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
    
 <!-- Mirrored from www.ingridkuhn.com/themes/unitedpetsbs5/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 28 Jan 2024 14:07:04 GMT -->
@@ -64,6 +64,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 '../../../www.googletagmanager.com/gtm5445.html?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-T7ZJPV8');</script>
 <!-- End Google Tag Manager -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+   jQuery(document).ready(function($) {
+      // Use $ inside this function for jQuery
+      $('#quizModal').modal('show');
+   });
+</script>
+
    </head>
    <!-- ==== body starts ==== -->
            <!-- Start Switcher -->
@@ -157,81 +168,155 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </div>
             <!-- End Top bar -->
             <!-- Navbar Starts -->
-            <div class="navbar container-fluid">
-               <div class="container ">
-                  <!-- logo -->
-                  <a class="nav-brand" href="index.html">
-                  <img src="img/logo.png" alt="" class="img-fluid">
-                  </a>
-                  <!-- Navbartoggler -->
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggle-icon">
-                  <i class="fas fa-bars"></i>
-                  </span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarResponsive">
-                     <ul class="navbar-nav ms-auto">
-                        <!-- menu item -->
-                        <li class="nav-item home-menu">
-                           <a class="nav-link " href={{ path('app_home') }}>Home
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a   class="nav-link"   href={{ path('app_listAF') }}>
-                           Animals
-                           </a>
-                          
-                        </li>
-                        
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listBF') }}>
-                           Pet Boarding
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listPF') }}>
-                           Products
-                           </a>
-                           
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
+<div class="navbar container-fluid">
+    <div class="container">
+        <!-- Logo -->
+        <a class="nav-brand" >
+            <img src="img/logo.png" alt="" class="img-fluid">
+        </a>
+
+        <!-- Navbar Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggle-icon">
+                <i class="fas fa-bars"></i>
+            </span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <!-- Home -->
+                <li class="nav-item home-menu">
+                    <a class="nav-link" href={{ path('app_home') }}>Home</a>
+                </li>
+
+                <!-- Animals -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listAF') }}>Animals</a>
+                </li>
+
+                <!-- Pet Boarding -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listBF') }}>Pet Boarding</a>
+                </li>
+
+                <!-- Products -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listPF') }}>Products</a>
+                </li>
+
+                <!-- Donate -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="contact-dropdown" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Donate</a>
+                    <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
+                        <a class="dropdown-item" href={{ path('listDonationPFront') }}>Product donation</a>
+                        <a class="dropdown-item" href={{ path('listDonationMFront') }}>Financial contributions</a>
+                    </div>
+                </li>
+                {% if user.Role == 'user' %}
+            <!-- User-specific items for 'user' role -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link" >About</a>
+                </li>
+            </li>
+        {% elseif user.Role == 'veterinary' %}
+            <!-- User-specific items for 'veterinary' role -->
+            <li class="nav-item navbar-dropdown-veterinary dropdown-user dropdown">
+              <li class="nav-item dropdown">
                            <a class="nav-link dropdown-toggle"  id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Donate
+                           Appointments
                            </a>
                            <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
-                              <a  class="dropdown-item"  href={{ path('app_listDpF') }}>Product donation</a>
-                              <a  class="dropdown-item"  href={{ path('app_listDmF') }}>Financial contributions</a>
+                              <a  class="dropdown-item"  href={{ path('app_listApF') }}>Appointments</a>
+                              <a  class="dropdown-item"  href={{ path('app_listRF') }}>Rapports</a>
             
                            </div>
                         </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link" >
-                           About 
-                           </a>
-                        </li>
+            </li>
+        {% endif %}
+              
+    
 
-                        
+              
 
+               <!-- User Dropdown -->
+<li class="nav-item navbar-dropdown dropdown-user dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+        <!-- Display the user's name -->
+        {{ user.Name }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <a class="dropdown-item" href="pages-account-settings-account.html">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <!-- You can add the user's profile picture here if available -->
+                    </div>
+                    <div class="flex-grow-1">
+                        <!-- Display the user's name and role -->
+                        <span class="fw-medium d-block">{{ user.Name }}</span>
+                        <small class="text-muted">{{ user.Role }}</small>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <div class="dropdown-divider"></div>
+        </li>
+        <li>
+            <a class="dropdown-item"href={{ path('testuser') }} >
+                <i class="mdi mdi-account-outline me-2" ></i>
+                <span class="align-middle">My Profile</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" target="_blank"href={{ path('logout') }}>
+                <i class="mdi mdi-logout me-2" ></i>
+                <span class="align-middle">Log Out</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<!--/ User Dropdown -->
 
-
-                     </ul>
-                     <!--/ul -->
-                  </div>
-                  <!--collapse -->
-               </div>
-               <!-- /container -->
-            </div>
-         <!-- /navbar -->
-      </nav>
-      <!-- /nav -->
-      <!-- ==== Slider ==== -->
+            </ul>
+        </div>
+        <!-- Navbar Collapse -->
+    </div>
+    <!-- Container -->
+</div>
+<!-- Navbar -->
+                                                         </nav>
+                                                         <!-- /nav -->
+                                                         <!-- ==== Slider ==== -->
    
-  
+<div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="quizModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quizModalLabel">Take a Quizz </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+          <p>Would you like to take a Quiz </p>            
+            </div>
+            <div class="modal-footer">
+                
+                <a href={{ path('animal_recommendation') }} class="btn btn-primary">Yes</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
   <div class="jumbotron jumbotron-fluid">
          <div class="container" >
             <div class="jumbo-heading" data-aos="fade-up">
@@ -251,20 +336,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <div class="page container">
-       <a  class="btn btn-primary" href={{ path('app_HistAd') }}  >Adoption History </a>
+       <a class="btn btn-primary"    href={{ path('app_HistAd') }}>Adoption History</a>
+
        <a  class="btn btn-primary"  href={{ path('app_HistB') }}>Pet Boarding History </a>
     <!-- centered Gallery navigation -->
-    <ul class="nav nav-pills category-isotope center-nav mt-5">
-        <li class="nav-item">
-            <a class="nav-link active" href="#" data-bs-toggle="tab" data-filter="*">All</a>
+    <div class="text-center">
+    <ul class="list-inline d-flex justify-content-center">
+        <li class="list-inline-item">
+            <a href="{{ path('app_filter', {'type': 'Dog'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Dogs Only</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="tab" data-filter=".dogs">Dogs Only</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="tab" data-filter=".cats">Cats Only</a>
+        <li class="list-inline-item">
+            <a href="{{ path('app_filter', {'type': 'Cat'}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Cats Only</a>
         </li>
     </ul>
+</div>
     <!-- /ul -->
     <!-- Gallery -->
      <div id="gallery-isotope" class="row row-eq-height mt-lg-5">
@@ -317,7 +402,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- /gallery-isotope -->
 </div>
 <!-- /page container -->
-  
+ 
       
 	  <!-- ==== footer ==== -->
       <footer class="bg-light pattern1">
@@ -402,6 +487,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+ 
 
 	  <!-- number counter script -->
       <script src="js/counter.js"></script>
@@ -413,6 +499,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <script src="vendor/layerslider/js/layerslider.transitions.js"></script>
       <script src="vendor/layerslider/js/layerslider.kreaturamedia.jquery.js"></script>
       <script src="vendor/layerslider/js/layerslider.load.js"></script>
+
+
+
+
+
+      
    </body>
 
 <!-- Mirrored from www.ingridkuhn.com/themes/unitedpetsbs5/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 28 Jan 2024 14:07:04 GMT -->

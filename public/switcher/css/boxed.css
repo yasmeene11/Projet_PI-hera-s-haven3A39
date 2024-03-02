@@ -1,0 +1,25 @@
+ /* boxed */
+#top {
+	max-width:1300px;
+	margin:0 auto;
+	box-shadow: 10px 10px 100px -19px rgba(0,0,0,0.75);
+	background:#fff;
+	}
+#top .navbar, 
+#top .top-bar,                        
+#top #slider,
+#top #nav,
+#top footer,
+#top #video-header{
+	max-width:1300px;
+	margin:0 auto!important;
+}
+#call-widget.container-fluid {
+	padding-right: 15px!important;
+	padding-left: 15px!important;
+}
+@media (min-width: 1400px){
+	.container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+		max-width: 1220px;
+	}
+}

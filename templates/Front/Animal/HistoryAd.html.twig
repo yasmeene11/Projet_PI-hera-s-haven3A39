@@ -8,6 +8,17 @@
       <!--[if IE]>
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <![endif]-->
+      <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
       <meta name="description" content="">
       <meta name="author" content="">
@@ -156,60 +167,66 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                <!-- /container -->
             </div>
             <!-- End Top bar -->
-            <!-- Navbar Starts -->
-            <div class="navbar container-fluid">
-               <div class="container ">
-                  <!-- logo -->
-                  <a class="nav-brand" href="index.html">
-                  <img src="img/logo.png" alt="" class="img-fluid">
-                  </a>
-                  <!-- Navbartoggler -->
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggle-icon">
-                  <i class="fas fa-bars"></i>
-                  </span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarResponsive">
-                     <ul class="navbar-nav ms-auto">
-                        <!-- menu item -->
-                        <li class="nav-item home-menu">
-                           <a class="nav-link " href={{ path('app_home') }}>Home
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a   class="nav-link"   href={{ path('app_listAF') }}>
-                           Animals
-                           </a>
-                          
-                        </li>
-                        <!-- menu item -->
-                       
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listBF') }}>
-                           Pet Boarding
-                           </a>
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link"   href={{ path('app_listPF') }}>
-                           Products
-                           </a>
-                           
-                        </li>
-                        <!-- menu item -->
-                        <li class="nav-item dropdown">
-                           <a class="nav-link dropdown-toggle"  id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Donate
-                           </a>
-                           <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
-                              <a  class="dropdown-item"  href={{ path('app_listDpF') }}>Product donation</a>
-                              <a  class="dropdown-item"  href={{ path('app_listDmF') }}>Financial contributions</a>
-            
-                           </div>
-                        </li>
-                        <li class="nav-item dropdown">
+          <!-- Navbar Starts -->
+<div class="navbar container-fluid">
+    <div class="container">
+        <!-- Logo -->
+        <a class="nav-brand" >
+            <img src="img/logo.png" alt="" class="img-fluid">
+        </a>
+
+        <!-- Navbar Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggle-icon">
+                <i class="fas fa-bars"></i>
+            </span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <!-- Home -->
+                <li class="nav-item home-menu">
+                    <a class="nav-link" href={{ path('app_home') }}>Home</a>
+                </li>
+
+                <!-- Animals -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listAF') }}>Animals</a>
+                </li>
+
+                <!-- Pet Boarding -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listBF') }}>Pet Boarding</a>
+                </li>
+
+                <!-- Products -->
+                <li class="nav-item">
+                    <a class="nav-link" href={{ path('app_listPF') }}>Products</a>
+                </li>
+
+                <!-- Donate -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="contact-dropdown" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Donate</a>
+                    <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
+                        <a class="dropdown-item" href={{ path('listDonationPFront') }}>Product donation</a>
+                        <a class="dropdown-item" href={{ path('listDonationMFront') }}>Financial contributions</a>
+                    </div>
+                </li>
+                {% if user.Role == 'user' %}
+            <!-- User-specific items for 'user' role -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link" >About</a>
+                </li>
+            </li>
+        {% elseif user.Role == 'veterinary' %}
+            <!-- User-specific items for 'veterinary' role -->
+            <li class="nav-item navbar-dropdown-veterinary dropdown-user dropdown">
+              <li class="nav-item dropdown">
                            <a class="nav-link dropdown-toggle"  id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Appointments
                            </a>
@@ -219,17 +236,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
                            </div>
                         </li>
+            </li>
+        {% endif %}
+              
+    
 
-                       
+              
 
-                     </ul>
-                     <!--/ul -->
-                  </div>
-                  <!--collapse -->
-               </div>
-               <!-- /container -->
-            </div>
-         <!-- /navbar -->
+               <!-- User Dropdown -->
+<li class="nav-item navbar-dropdown dropdown-user dropdown">
+    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+        <!-- Display the user's name -->
+        {{ user.Name }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+            <a class="dropdown-item" href="pages-account-settings-account.html">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <!-- You can add the user's profile picture here if available -->
+                    </div>
+                    <div class="flex-grow-1">
+                        <!-- Display the user's name and role -->
+                        <span class="fw-medium d-block">{{ user.Name }}</span>
+                        <small class="text-muted">{{ user.Role }}</small>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <div class="dropdown-divider"></div>
+        </li>
+        <li>
+            <a class="dropdown-item"href={{ path('testuser') }} >
+                <i class="mdi mdi-account-outline me-2" ></i>
+                <span class="align-middle">My Profile</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" target="_blank"href={{ path('logout') }}>
+                <i class="mdi mdi-logout me-2" ></i>
+                <span class="align-middle">Log Out</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<!--/ User Dropdown -->
+
+            </ul>
+        </div>
+        <!-- Navbar Collapse -->
+    </div>
+    <!-- Container -->
+</div>
+<!-- Navbar -->
       </nav>
       <!-- /nav -->
       <div class="jumbotron jumbotron-fluid">
@@ -283,10 +343,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <td>
                     
                     <td >
-    
-    
+                  <td>
+    <a class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button" onclick="sendNotification({{ adoption.getAdoptionId() }})">Edit</a>
+    <span id="notification-message"></span>
 </td>
 
+<script>
+    function sendNotification(adoptionId) {
+        // Make an AJAX request to send the notification
+        // Replace the URL with the appropriate endpoint to send the notification
+        // You can use a JavaScript framework like Axios or jQuery for making the AJAX request
+        // Here's an example using Axios:
+        axios.post('/send-notification', { adoptionId })
+            .then(response => {
+                // Display a success message or show a notification
+                document.getElementById('notification-message').textContent = 'Request sent to the admin.';
+            })
+            .catch(error => {
+                // Handle the error response if needed
+                console.error(error);
+            });
+    }
+</script>
                 </td>
             </tr>
         {% endfor %}
@@ -297,9 +375,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </div>
         </div>
     </div>
+
+
+
+
 {% endblock %}
-
-
 
 
 
@@ -371,6 +451,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <!-- Bootstrap core & Jquery -->
       <script src="vendor/jquery/jquery.min.js"></script>
       <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+      <!-- Add this script tag in your HTML file -->
+
+
+
       <!-- Custom Js -->
       <script src="js/custom.js"></script>
       <script src="js/plugins.js"></script>
@@ -411,3 +495,5 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 </html>
+
+

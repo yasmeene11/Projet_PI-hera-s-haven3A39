@@ -156,7 +156,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                <!-- /container -->
             </div>
             <!-- End Top bar -->
-            <!-- Navbar Starts -->
+           <!-- Navbar Starts -->
             <div class="navbar container-fluid">
                <div class="container ">
                   <!-- logo -->
@@ -184,7 +184,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                           
                         </li>
                         <!-- menu item -->
-                       
+                        
                         <!-- menu item -->
                         <li class="nav-item dropdown">
                            <a class="nav-link"   href={{ path('app_listBF') }}>
@@ -204,23 +204,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                            Donate
                            </a>
                            <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
-                              <a  class="dropdown-item"  href={{ path('app_listDpF') }}>Product donation</a>
-                              <a  class="dropdown-item"  href={{ path('app_listDmF') }}>Financial contributions</a>
+                              <a  class="dropdown-item"  href={{ path('listDonationPFront') }}>Product donation</a>
+                              <a  class="dropdown-item"  href={{ path('listDonationMFront') }}>Financial contributions</a>
             
                            </div>
                         </li>
+                        <!-- menu item -->
                         <li class="nav-item dropdown">
-                           <a class="nav-link dropdown-toggle"  id="contact-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Appointments
+                           <a class="nav-link" >
+                           About 
                            </a>
-                           <div class="dropdown-menu pattern2" aria-labelledby="contact-dropdown">
-                              <a  class="dropdown-item"  href={{ path('app_listApF') }}>Appointments</a>
-                              <a  class="dropdown-item"  href={{ path('app_listRF') }}>Rapports</a>
-            
-                           </div>
                         </li>
 
-                       
+                        <!-- menu item -->
+                        <li class="nav-item dropdown">
+                           <a class="battouna btn btn-primary" href={{ path('app_login') }}>Login</a>
+                        </li>
+
+
 
                      </ul>
                      <!--/ul -->

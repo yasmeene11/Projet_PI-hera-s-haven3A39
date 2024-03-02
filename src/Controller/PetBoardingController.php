@@ -7,12 +7,15 @@ use App\Entity\Animal;
 use App\Entity\Account;
 use App\Repository\BoardingRepository;
 use App\Form\BoardingType;
+use App\Entity\CashRegister;
 use App\Repository\AnimalRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 class PetBoardingController extends AbstractController
 {
@@ -67,6 +70,24 @@ class PetBoardingController extends AbstractController
         $em = $mr->getManager();
         $em->persist($s);
         $em->flush();
+
+
+
+            $cashRegister = new CashRegister();
+            $cashRegister->setType("Boarding");
+            $cashRegister->setInput(1);
+            $cashRegister->setOutput(0);
+
+
+            $cashRegister->setSomme($s->getBoardingFee());
+            $cashRegister->setDateTransaction(new \DateTime());
+            
+            $cashRegister->setIdEntity($s->getBoardingId());
+
+            $em->persist($cashRegister);
+            $em->flush();
+
+
         return $this->redirectToRoute('app_listB');
     }
 
@@ -114,21 +135,21 @@ class PetBoardingController extends AbstractController
    }
 
    #[Route('/add_ba{animalId}', name: 'app_listBa')]
-public function AddBa(ManagerRegistry $mr, Request $request, $animalId,AnimalRepository $animalRepository): Response
+public function AddBa(ManagerRegistry $mr, Request $request, $animalId,AnimalRepository $animalRepository,SessionInterface $session): Response
 {
     $animal = $mr->getRepository(Animal::class)->find($animalId);
     $s = new Boarding();
     $s->setBoardingStatus('Pending');
     $s->setBoardingFee(200);
 
-    $accountId = 1;
+    $accountId = $session->get('user_id');
     $user = $mr->getRepository(Account::class)->find($accountId);
     $s->setAccountKey($user);
     
     $s->setAnimalKey($animal);
     $form = $this->createForm(BoardingType::class, $s, ['animalRepository' => $animalRepository],['is_admin' => false]);
     
-    $form->handleRequest($request); // Use $request instead of $req
+    $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
         dump('Form data after handling request:', $form->getData());
@@ -136,6 +157,21 @@ public function AddBa(ManagerRegistry $mr, Request $request, $animalId,AnimalRep
         $em = $mr->getManager();
         $em->persist($s);   
         $em->flush();
+
+
+        $cashRegister = new CashRegister();
+            $cashRegister->setType("Boarding");
+            $cashRegister->setInput(1);
+            $cashRegister->setOutput(0);
+
+
+            $cashRegister->setSomme($s->getBoardingFee());
+            $cashRegister->setDateTransaction(new \DateTime());
+            
+            $cashRegister->setIdEntity($s->getBoardingId());
+
+            $em->persist($cashRegister);
+            $em->flush();
 
         return $this->redirectToRoute('app_home');
     } else {
@@ -148,7 +184,7 @@ public function AddBa(ManagerRegistry $mr, Request $request, $animalId,AnimalRep
     ]);
 }
 
-
+/*
 #[Route('/Hist_b', name: 'app_HistB')]
 public function HistB(BoardingRepository $repo): Response
 {
@@ -157,6 +193,24 @@ public function HistB(BoardingRepository $repo): Response
         'result' => $result,
     ]);
 }
-   
+   */
+
+
+
+  #[Route('/Hist_b', name: 'app_HistB')]
+   public function HistB(BoardingRepository $repo, SessionInterface $session): Response
+{
+    
+    $userId = $session->get('user_id');
+    $result = $repo->findBy(['Account_Key' => $userId]);
+
+    return $this->render('/Front/Animal/HistoryB.html.twig', [
+        'result' => $result,
+    ]);
+}
+
+
+
+
 
 }

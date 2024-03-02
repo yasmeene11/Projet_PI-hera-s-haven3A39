@@ -8,6 +8,25 @@
     <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css">
     <link rel="stylesheet" type="text/css" href="css/iofrm-style.css">
     <link rel="stylesheet" type="text/css" href="css/iofrm-theme5.css">
+
+
+
+
+   
+
+
+   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Your code -->
+
+    <style>
+        .error-message {
+            display: none;
+        }
+
+        .error-message.select-error {
+            margin-top: 10px; /* Increased margin for spacing */
+        }
+    </style>
 </head>
 <body>
     <div class="form-body container-fluid">
@@ -28,25 +47,50 @@
             <div class="form-holder">
                 <div class="form-content">
                     <div class="form-items">
-                        <h3>Get more things done with Loggin platform.</h3>
-                        <p>Access to the most powerful tool in the entire design and web industry.</p>
+                        <h3>Register and help a furry friend!</h3>
+                        <p>Join our pet adoption platform to make a difference in the lives of homeless pets.</p>
                         <div class="page-links">
                             <a href={{ path('app_login') }}>Login</a><a href={{ path('app_register') }} class="active">Register</a>
                         </div>
-                        <form>
-                            <input class="form-control" type="text" name="name" placeholder="Name" required>
-                            <input class="form-control" type="text" name="surname" placeholder="Surname" required>
-                            <input class="form-control" type="email" name="email" placeholder="E-mail Address" required>
-                            <input class="form-control" type="password" name="password" placeholder="Password" required>
-                            <input class="form-control" type="password" name="confirm_password" placeholder="Confirm Password" required>
-                            <input class="form-control" type="text" name="cin" placeholder="CIN" required>
-                            <input class="form-control" type="tel" name="phone_number" placeholder="Phone Number" required>
-                            <input class="form-control" type="text" name="address" placeholder="Address" required>
-                            <select class="form-control" name="gender" id="gender" required>
-                                <option value="">Select gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
+                        {% if errorMessage %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ errorMessage }}
+                        </div>
+                        {% endif %}
+                        <form id="registerForm" method="post" action="{{ path('register_submit') }}">
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name">
+                                <div class="error-message alert alert-danger" id="nameError"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="surname" name="surname" class="form-control" placeholder="Surname">
+                                <div class="error-message alert alert-danger" id="surnameError"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="E-mail Address">
+                                <div class="error-message alert alert-danger" id="emailError"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+                                <div class="error-message alert alert-danger" id="passwordError"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="Phone Number">
+                                <div class="error-message alert alert-danger" id="phoneNumberError"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="address" name="address" class="form-control" placeholder="Address">
+                                <div class="error-message alert alert-danger" id="addressError"></div>
+                            </div>
+                            <div class="form-group">
+                                <select id="gender" name="gender" class="form-control">
+                                    <option value="" selected disabled>Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                <div class="error-message alert alert-danger select-error" id="genderError"></div>
+                            </div>
+                             <div class="g-recaptcha" data-sitekey="6LfGv4ApAAAAAHYlbP2f6jbal4_jjHSRbUYKhf6e"></div>
                             <div class="form-button">
                                 <button id="submit" type="submit" class="ibtn">Register</button>
                             </div>
@@ -59,9 +103,89 @@
             </div>
         </div>
     </div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/popper.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registerForm');
+
+            form.addEventListener('submit', function(event) {
+                // Reset error messages
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(function(message) {
+                    message.textContent = '';
+                    message.style.display = 'none';
+                });
+
+                if (!validateName(form.name.value)) {
+                    event.preventDefault();
+                    document.getElementById('nameError').textContent = 'Please enter a valid name (letters only).';
+                    document.getElementById('nameError').style.display = 'block';
+                    return false;
+                }
+
+                if (!validateName(form.surname.value)) {
+                    event.preventDefault();
+                    document.getElementById('surnameError').textContent = 'Please enter a valid surname (letters only).';
+                    document.getElementById('surnameError').style.display = 'block';
+                    return false;
+                }
+
+                if (!validateEmail(form.email.value)) {
+                    event.preventDefault();
+                    document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                    document.getElementById('emailError').style.display = 'block';
+                    return false;
+                }
+
+                if (!validatePassword(form.password.value)) {
+                    event.preventDefault();
+                    document.getElementById('passwordError').textContent = 'Please enter a valid password (at least 6 characters, with at least 1 uppercase letter, 1 lowercase letter, 1 symbol, and 1 number).';
+                    document.getElementById('passwordError').style.display = 'block';
+                    return false;
+                }
+
+                if (!validatePhoneNumber(form.phone_number.value)) {
+                    event.preventDefault();
+                    document.getElementById('phoneNumberError').textContent = 'Please enter a valid phone number (8 digits minimum).';
+                    document.getElementById('phoneNumberError').style.display = 'block';
+                    return false;
+                }
+
+                if (form.address.value.trim() === '') { // Check for non-empty address
+                    event.preventDefault();
+                    document.getElementById('addressError').textContent = 'Please enter your address.';
+                    document.getElementById('addressError').style.display = 'block';
+                    return false;
+                }
+
+                if (form.gender.value === '') {
+                    event.preventDefault();
+                    document.getElementById('genderError').textContent = 'Please select a gender.';
+                    document.getElementById('genderError').style.display = 'block';
+                    return false;
+                }
+            });
+
+            function validateName(name) {
+                return /^[a-zA-Z]+$/.test(name);
+            }
+
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            function validatePassword(password) {
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$/.test(password);
+            }
+
+            function validatePhoneNumber(phoneNumber) {
+                return /^\d{8,}$/.test(phoneNumber);
+            }
+        });
+    </script>
 </body>
 </html>

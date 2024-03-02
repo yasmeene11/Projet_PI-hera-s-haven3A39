@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoption Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        .info {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <!-- Include jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <h1>Adoption Information</h1>
+    
+    <div class="info">
+        <strong>Adoption ID:</strong> {{ adoptionData.adoptionId }}
+    </div>
+    <div class="info">
+        <strong>Adoption Date:</strong> {{ adoptionData.adoptionDate }}
+    </div>
+    <div class="info">
+        <strong>Adoption Status:</strong> {{ adoptionData.adoptionStatus }}
+    </div>
+    <div class="info">
+        <strong>Adoption Fee:</strong> {{ adoptionData.adoptionFee }}
+    </div>
+    <div class="info">
+        <strong>Account Name:</strong> {{ adoptionData.accountName }}
+    </div>
+    <div class="info">
+        <strong>Animal Name:</strong> {{ adoptionData.animalName }}
+    </div>
+
+    <button id="downloadPdfButton">Download PDF</button>
+
+    <script>
+        // JavaScript code to generate PDF
+        document.getElementById("downloadPdfButton").addEventListener("click", function() {
+            const pdf = new jsPDF();
+            
+            pdf.text('Adoption Information', 20, 20);
+
+            const yPos = 40;
+            const lineHeight = 10;
+
+            // Iterate over adoptionData and add information to PDF
+            Object.entries({{ adoptionData|json_encode|raw }}).forEach(([key, value], index) => {
+                pdf.text(`${key}: ${value}`, 20, yPos + index * lineHeight);
+            });
+
+            // Save the PDF
+            pdf.save('adoption_document.pdf');
+        });
+    </script>
+</body>
+</html>

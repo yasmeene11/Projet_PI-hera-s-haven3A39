@@ -36,4 +36,41 @@ class AnimalRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    public function findbytype($type = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->orderBy('a.Animal_Type', 'ASC');
+    
+        if ($type !== null) {
+            $queryBuilder->andWhere('a.Animal_Type = :type')
+                ->setParameter('type', $type);
+        }
+    
+        return $queryBuilder->getQuery()->getResult();
+    }
+    public function findByName($name)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.Animal_Name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $userInput
+     * @return Animal|null
+     */
+    public function findBestMatchAnimal(string $userInput): ?Animal
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.Animal_Name LIKE :userInput')
+            ->setParameter('userInput', '%' . $userInput . '%')
+            ->orderBy('a.matchingAlgorithmResult', 'DESC')  
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

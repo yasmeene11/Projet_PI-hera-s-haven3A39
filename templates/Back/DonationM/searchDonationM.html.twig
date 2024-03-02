@@ -1,0 +1,122 @@
+
+
+{% block head %}
+<style>
+    body {
+        background-color: #eff1f5; /* Couleur de fond plus douce */
+        font-family: 'Inter', sans-serif; /* Police plus moderne */
+    }
+    .container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px; /* Bordures plus arrondies */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Ombre plus subtile */
+        margin-top: 40px; /* Plus d'espace au-dessus du conteneur */
+        width: 100%;
+        max-width: none; /* Pour ne pas étirer trop le conteneur sur de grands écrans */
+        margin-left: auto; /* Centrage du conteneur */
+        margin-right: auto; /* Centrage du conteneur */
+    }
+    .table {
+    width: 90%; /* S'assure que le tableau utilise toute la largeur */
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+    .table thead th {
+        background-color: #007bff; /* Couleur d'en-tête plus dynamique */
+        color: #ffffff;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    .table tbody tr {
+        background-color: #f8f9fa; /* Fond des lignes */
+        box-shadow: 0 2px 2px rgba(0,0,0,0.1); /* Ombre subtile pour chaque ligne */
+    }
+    .table tbody tr td {
+        padding-top: 12px;
+        padding-bottom: 12px; /* Espacement vertical dans les cellules */
+        border: none; /* Suppression des bordures de cellule */
+    }
+    .table tbody tr:first-child td {
+        border-top: none; /* Pas de bordure en haut pour la première ligne */
+    }
+    .table tbody tr td:first-child {
+        border-top-left-radius: 8px; /* Arrondir les coins de la première cellule */
+        border-bottom-left-radius: 8px; /* Arrondir les coins de la première cellule */
+    }
+    .table tbody tr td:last-child {
+        border-top-right-radius: 8px; /* Arrondir les coins de la dernière cellule */
+        border-bottom-right-radius: 8px; /* Arrondir les coins de la dernière cellule */
+    }
+    .btn-primary {
+        background-color: #007bff; /* Harmonisation avec le thème */
+        border: none; /* Style de bouton plus épuré */
+        padding: 8px 15px; /* Ajustement de l'espacement intérieur */
+        border-radius: 5px; /* Bordures légèrement arrondies */
+    }
+    .btn-primary:hover {
+        background-color: #0056b3; /* Assombrissement au survol */
+    }
+</style>
+{% endblock %}
+
+
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4">Search Results</h2>
+
+    {% if results|length > 0 %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <thead>
+    <tr>
+        <th class="w-25">ID</th>
+        <th class="w-50">Donation Amount</th>
+        <th class="w-25">Donation Date</th>
+        <th class="w-25">Donator</th>
+    </tr>
+</thead>
+
+            </thead>
+            <tbody>
+                {% for donationM in results %}
+                <tr>
+                <td>{{ donationM.getdonationMId() }}</td>
+                <td>{{ donationM.getDonationAmount() }}</td>
+               
+                <td>{{ donationM.getDonationMDate()|date('Y-m-d') }}</td>
+                <td>{{ donationM.getAccountKey() }}</td>
+
+                <td>
+                    <!-- Add your actions here, e.g., edit, delete -->
+               <a href="{{ path('app_update_donationM', {'donationMId': donationM.getdonationMId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Edit</a>
+    <a href="{{ path('app_delete_donationM', {'donationMId': donationM.getdonationMId()}) }}" class="dt-button btn btn-primary waves-effect waves-light text-white" tabindex="0" aria-controls="DataTables_Table_0" type="button">Delete</a>
+    <!-- Add your actions here, e.g., edit, delete -->
+    
+</td>
+
+                </td>
+            </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="dt-buttons">
+            <a href="{{ path('app_listD') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                <span><i class="mdi mdi-plus me-md-1"></i>Return Back</span>
+            </a>
+        </div>
+    {% else %}
+    <p>No results found for your search.</p>
+    <div class="dt-buttons">
+            <a href="{{ path('app_listD') }}" class="dt-button btn btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                <span><i class="mdi mdi-plus me-md-1"></i>Return Back</span>
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

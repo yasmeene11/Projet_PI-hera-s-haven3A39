@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -16,9 +17,15 @@ class Category
     private ?int $categoryId = null;
 
     #[ORM\Column(length: 255)]
+    /**
+ * @Assert\NotBlank(message="Don't leave it blank")
+ */
     private ?string $Product_Type = null;
 
     #[ORM\Column(length: 255)]
+    /**
+ * @Assert\NotBlank(message="Don't leave it blank")
+ */
     private ?string $Product_Source = null;
 
     #[ORM\OneToMany(mappedBy: 'Category_Key', targetEntity: Product::class)]
@@ -45,7 +52,10 @@ class Category
 
         return $this;
     }
-
+    public function __toString()
+    {
+        return $this->Product_Type;
+    }
     public function getProductSource(): ?string
     {
         return $this->Product_Source;
