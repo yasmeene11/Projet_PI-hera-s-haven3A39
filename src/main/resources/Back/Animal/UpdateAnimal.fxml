@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="410.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.UpdateAnimalB">
+
+    <Label text="Animal Name:" />
+    <TextField fx:id="txtAnimalName" />
+
+    <Label text="Animal Breed:" />
+    <ComboBox fx:id="cmbBreed">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Labrador Retriever" />
+                <String fx:value="Persian" />
+                <String fx:value="Guinea Pig" />
+                <String fx:value="Cockatiel" />
+                <String fx:value="Betta Fish" />
+                <String fx:value="Bearded Dragon" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Label text="Animal Status:" />
+    <ComboBox fx:id="cmbstatus">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Available" />
+                <String fx:value="Pending" />
+                <String fx:value="Adopted" />
+                <String fx:value="Here for Boarding" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <Label text="Animal Type:" />
+    <ComboBox fx:id="cmbtype">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Dog" />
+                <String fx:value="Cat" />
+                <String fx:value="Rabbit" />
+                <String fx:value="Fish" />
+                <String fx:value="Reptile" />
+                <String fx:value="Bird" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <Label text="Enrollement Date:" />
+    <DatePicker fx:id="enrollementdate" />
+
+    <Label text="Age:" />
+    <TextField fx:id="txtAge" />
+
+
+
+
+    <Label text="Animal Image:" />
+    <TextField fx:id="txtImage" />
+    <Button onAction="#handleSelectImage" text="Select Image" />
+
+    <Label text="Animal Description:" />
+    <TextField fx:id="txtAnimalDescription" />
+
+
+    <Button onAction="#updateAnimal" text="Update" />
+</VBox>
