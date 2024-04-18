@@ -3,11 +3,14 @@ package controllers.Back.DonationM;
 import entities.DonationM;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import services.ServiceDonationM;
 
@@ -110,6 +113,8 @@ public class DisplayDonationMB {
    @FXML
    private void initialize() {
        try {
+           List<DonationM> donations = donationService.Show();
+           listDonations.getItems().addAll(donations);
            // Set cell value factories to populate ListView items
            listDonations.setCellFactory(param -> new ListCell<DonationM>() {
                @Override
@@ -118,19 +123,92 @@ public class DisplayDonationMB {
                    if (empty || donation == null) {
                        setText(null);
                    } else {
-                       setText("Id: " + donation.getDonationMId() + ", Amount: " + donation.getDonationAmount() + ", Date: " + donation.getDonationMDate() + ", Account Key: " + donation.getAccountKey());
+                       /*setText("Id: " + donation.getDonationMId() +
+                               "Amount: " + donation.getDonationAmount() + ", Date: " + donation.getDonationMDate() + ", Account Key: " + donation.getAccountKey());*/
+                       VBox container = new VBox(5);
+                       container.getStyleClass().add("user-card");
+                       Label donationMAmount = new Label("Donation Amount: " + donation.getDonationAmount());
+                       Label donationMDate = new Label("Donation Date : " + donation.getDonationMDate());
+                       Label userNameLabel = new Label("User Name: " + donation.getAccountKey());
+                     //  Label userSurnameLabel = new Label("User Surname: " + donation.getAccountKey());
+
+
+
+
+
+
+                       HBox buttonBox = new HBox(10);
+                       buttonBox.setAlignment(Pos.CENTER);
+
+                       Button updateButton = new Button("Update");
+                       updateButton.getStyleClass().add("user-button");
+                       updateButton.setOnAction(event -> handleUpdate(donation));
+
+                       Button deleteButton = new Button("Delete");
+                       deleteButton.getStyleClass().add("user-button");
+                       deleteButton.setOnAction(delete -> handleDelete(donation));
+
+                       buttonBox.getChildren().addAll(updateButton, deleteButton);
+
+                       container.getChildren().addAll(donationMAmount, donationMDate, userNameLabel,buttonBox);
+                       setGraphic(container);
+
                    }
                }
            });
+           listDonations.getSelectionModel().selectedItemProperty().addListener((obs, oldDonation, newDonation) -> {
+               if (newDonation != null) {
+                   // Handle user selection here
+               }
+           });
+
+
 
            // Call the Show method to retrieve donation data and populate the ListView
-           List<DonationM> donations = donationService.Show();
-           listDonations.getItems().addAll(donations);
+
        } catch (SQLException e) {
            e.printStackTrace();
            // Handle SQLException
        }
    }
+    @FXML
+    private void handleDelete(DonationM donationM) {
+        try {
+            donationService.delete(donationM); // Assuming animalService is the correct service to use for deleting animals
+            // Deletion successful, now refresh the display
+            listDonations.getItems().remove(donationM); // Remove the deleted animal from the list
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle or log the exception appropriately
+        }
+    }
+    private void handleUpdate(DonationM donationM) {
+        if (donationM != null) {
+            try {
+                // Load the FXML for the update animal page
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DonationM/UpdateDonationM.fxml"));
+                Parent root = loader.load();
+
+                // Get the controller for the update animal page
+                UpdateDonationMB controller = loader.getController();
+
+                // Pass the selected animal to the controller
+                controller.initData(donationM);
+
+                // Create a new stage for the update animal page
+                Stage updateStage = new Stage();
+                updateStage.setScene(new Scene(root));
+                updateStage.setTitle("Update Donation");
+
+                // Show the update stage without closing the main stage
+                updateStage.initOwner(btnAdoption.getScene().getWindow());
+                updateStage.initModality(Modality.WINDOW_MODAL);
+                updateStage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle IOException
+            }
+        }
+    }
+
     @FXML
     private void NavigateToDisplayUser() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/User/DisplayUser.fxml"));

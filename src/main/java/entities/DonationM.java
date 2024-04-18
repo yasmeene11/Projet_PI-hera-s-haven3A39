@@ -41,8 +41,8 @@ public class DonationM {
         this.donationAmount = donationAmount;
     }
 
-    public Date getDonationMDate() {
-        return donationMDate;
+    public java.sql.Date getDonationMDate() {
+        return new java.sql.Date(donationMDate.getTime());
     }
 
     public void setDonationMDate(Date donationMDate) {

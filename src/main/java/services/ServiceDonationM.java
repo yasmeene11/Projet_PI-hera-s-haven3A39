@@ -35,12 +35,11 @@ public class ServiceDonationM implements IService<DonationM>{
     @Override
     public void update(DonationM donationM) throws SQLException
     {
-        String req = "update donation_m set donation_amount=?,donation_m_date=?,Account_Key=? where donation_amount=? ";
+        String req = "update donation_m set donation_amount=?,donation_m_date=? where donationMId=? ";
         try (PreparedStatement preparedStatement = con.prepareStatement(req)) {
             preparedStatement.setFloat(1, donationM.getDonationAmount());
             preparedStatement.setDate(2, new java.sql.Date(donationM.getDonationMDate().getTime()));
-            preparedStatement.setInt(3, donationM.getAccountKey());
-            preparedStatement.setFloat(4, donationM.getDonationAmount());
+            preparedStatement.setInt(3, donationM.getDonationMId());
 
             preparedStatement.executeUpdate();
         }

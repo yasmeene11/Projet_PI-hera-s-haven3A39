@@ -105,7 +105,10 @@
                 <TableColumn fx:id="ColumnAccountKey" prefWidth="200.0" text="Account Key" />
             </columns>
         </TableView>-->
-        <ListView fx:id="listDonations" layoutX="330.0" layoutY="110.0" prefHeight="550.0" prefWidth="900.0" styleClass="custom-list-view" stylesheets="@../../styling/fullpackstyling.css"/>
-
+        <ListView fx:id="listDonations" layoutX="330.0" layoutY="110.0" prefHeight="550.0" prefWidth="900.0"  stylesheets="@../../styling/style.css">
+            <cellFactory>
+                <javafx.scene.control.cell.TextFieldListCell fx:factory="forListView"  />
+            </cellFactory>
+        </ListView>
     </children>
 </AnchorPane>
