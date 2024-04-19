@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Appointment.AddAppointmentB">
+
+    <children>
+        <AnchorPane layoutX="-23.2" prefHeight="720.0" prefWidth="287.0" style="-fx-background-color: #fff; -fx-border-radius: 30; -fx-border-color: #38B6FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-23.0" AnchorPane.topAnchor="0.0">
+            <children>
+
+                <Button fx:id="btnUser" layoutX="92.0" layoutY="119.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayUser" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Users" />
+
+                <Button fx:id="btnAnimal" layoutX="92.0" layoutY="174.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAnimal" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Animals" />
+                <Button fx:id="btnAdoption" layoutX="92.0" layoutY="234.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAdoption" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Adoptions" />
+                <Button fx:id="btnBoarding" layoutX="92.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayBoarding" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Pet Boardings" />
+                <Button fx:id="btnProduct" layoutX="92.0" layoutY="347.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayProduct" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Products" />
+                <Button fx:id="btnCategory" layoutX="92.0" layoutY="400.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayCategory" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Categories" />
+                <Button fx:id="btnDonation" layoutX="92.0" layoutY="455.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayDonation" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Donations" />
+                <Button fx:id="btnCash" layoutX="92.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayCashRegister" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Cash Register" />
+                <Button fx:id="btnAppointment" layoutX="92.0" layoutY="565.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="40.0" prefWidth="170.0" style="-fx-background-color: #38B6FF; -fx-text-fill: #fff;" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Appointments" />
+                <Button fx:id="btnReport" layoutX="92.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayReport" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Reports" />
+                <ImageView fitHeight="34.0" fitWidth="28.0" layoutX="50.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/people.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="182.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/pet.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/adoption.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/boarding.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="356.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/product.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/category.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="36.0" fitWidth="35.0" layoutX="46.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/donation.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="519.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/cash.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="573.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/appointment.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="50.0" layoutY="628.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/report.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+        <Button fx:id="btnlistappointment" layoutX="358.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="44.0" prefWidth="218.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     List of Appointment" />
+        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="367.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/list.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnaddappointment" layoutX="604.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#NavigateToAddAppointment" prefHeight="44.0" prefWidth="208.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     Add Appointment" />
+        <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="621.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/add.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="170.0" fitWidth="203.0" layoutX="44.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/loga.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnIndex" layoutX="71.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#NavigateToIndexBack" prefHeight="63.0" prefWidth="170.0" styleClass="btnlogo" stylesheets="@../../styling/fullpackstyling.css" />
+
+
+
+        <GridPane layoutX="287.0" layoutY="93.0" prefHeight="601.0" prefWidth="924.0" style="-fx-background-color: #fff; -fx-border-radius: 30; -fx-border-color: #38B6FF;">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <ImageView fitHeight="78.0" fitWidth="104.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@../../images/form.png" />
+                    </image>
+                </ImageView>
+
+                <Button fx:id="btnconfirmadd" GridPane.columnIndex="2" GridPane.rowIndex="7" mnemonicParsing="false" onMousePressed="#addAppointment" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+
+                <Label alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" prefHeight="37.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Appointment Form">
+                    <font>
+                        <Font name="Segoe UI" size="18.0" />
+                    </font>
+                </Label>
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="2" text="Appointment Date" style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="3" text="Appointment Time" style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="4" text="Patient Name" style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="5" text="Pet Name" style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
+
+
+
+
+
+
+                <DatePicker fx:id="ApDateID" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="ApPatientNameID" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField fx:id="ApPetNameID" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <ComboBox fx:id="ApTimeId" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="08:00" />
+                            <String fx:value="09:00" />
+                            <String fx:value="10:00" />
+                            <String fx:value="11:00" />
+                            <String fx:value="12:00" />
+                            <String fx:value="13:00" />
+                            <String fx:value="14:00" />
+                            <String fx:value="15:00" />
+                            <String fx:value="16:00" />
+                            <String fx:value="17:00" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </children>
+        </GridPane>
+
+
+
+
+
+    </children>
+
+
+</AnchorPane>
