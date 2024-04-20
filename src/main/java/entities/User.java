@@ -150,19 +150,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "accountId=" + accountId +
+        return
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", gender='" + gender + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", accountStatus='" + accountStatus + '\'' +
-                ", resetToken='" + resetToken + '\'' +
-                ", resetTokenRequestedAt=" + resetTokenRequestedAt +
+                ", surname='" + surname +
                 '}';
     }
 }

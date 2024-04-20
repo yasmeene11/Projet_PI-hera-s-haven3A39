@@ -17,29 +17,18 @@ import services.ServiceDonationM;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 public class DisplayDonationMB {
 
-    @FXML
-    private TableView<DonationM> TableDonations;
+
     @FXML
 
     private ListView<DonationM> listDonations;
 
-    @FXML
-
-    private TableColumn<DonationM, Integer> ColumnId;
-
-    @FXML
-    private TableColumn<DonationM, Double> ColumnAmount;
-
-    @FXML
-    private TableColumn<DonationM, String> ColumnDate;
-
-    @FXML
-    private TableColumn<DonationM, Integer> ColumnAccountKey;
 
     @FXML
     private Button btnAdoption;
@@ -173,12 +162,20 @@ public class DisplayDonationMB {
    }
     @FXML
     private void handleDelete(DonationM donationM) {
-        try {
-            donationService.delete(donationM); // Assuming animalService is the correct service to use for deleting animals
-            // Deletion successful, now refresh the display
-            listDonations.getItems().remove(donationM); // Remove the deleted animal from the list
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle or log the exception appropriately
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Delete Donation");
+        alert.setContentText("Are you sure you want to delete this donation?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                donationService.delete(donationM); // Assuming donationPService is the correct service to use for deleting donations
+                // Deletion successful, now refresh the display
+                listDonations.getItems().remove(donationM); // Remove the deleted donation from the list
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle or log the exception appropriately
+            }
         }
     }
     private void handleUpdate(DonationM donationM) {

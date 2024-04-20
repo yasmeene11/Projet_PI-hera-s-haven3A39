@@ -31,6 +31,21 @@ public class ServiceDonationM implements IService<DonationM>{
         }
 
     }
+    public List<User> getAllAccounts() throws SQLException {
+        List<User> accounts = new ArrayList<>();
+        String req = "SELECT * FROM account";
+        try (PreparedStatement preparedStatement = con.prepareStatement(req)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                User account = new User();
+                account.setAccountId(resultSet.getInt("accountId"));
+                account.setName(resultSet.getString("name"));
+                // Ajouter d'autres attributs si nécessaire
+                accounts.add(account);
+            }
+        }
+        return accounts;
+    }
 
     @Override
     public void update(DonationM donationM) throws SQLException
