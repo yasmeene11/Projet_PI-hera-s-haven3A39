@@ -1,0 +1,73 @@
+.profile-pane {
+    -fx-background-color: #f5f5f5; /* Profile card background color */
+    -fx-padding: 20px; /* Padding around the pane */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0); /* Shadow effect */
+}
+
+.profile-label {
+    -fx-font-size: 14px; /* Font size for labels */
+    -fx-text-fill: #333; /* Text color */
+}
+
+.profile-value {
+    -fx-font-size: 14px; /* Font size for values */
+    -fx-text-fill: #666; /* Text color */
+}
+
+.profile-button {
+    -fx-font-size: 14px; /* Font size for buttons */
+    -fx-padding: 8px 16px; /* Padding around buttons */
+    -fx-border-radius: 20px; /* Rounded corners */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-cursor: hand; /* Cursor style */
+    -fx-transition-duration: 0.2s; /* Animation duration */
+}
+
+.update-button {
+    -fx-font-size: 14px; /* Font size for buttons */
+    -fx-padding: 8px 16px; /* Padding around buttons */
+    -fx-border-radius: 20px; /* Rounded corners */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-cursor: hand; /* Cursor style */
+    -fx-transition-duration: 0.2s; /* Animation duration */
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #45a049); /* Button background gradient */
+    -fx-text-fill: white; /* Button text color */
+}
+
+.reset-button {
+    -fx-font-size: 14px; /* Font size for buttons */
+    -fx-padding: 8px 16px; /* Padding around buttons */
+    -fx-border-radius: 20px; /* Rounded corners */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-cursor: hand; /* Cursor style */
+    -fx-transition-duration: 0.2s; /* Animation duration */
+    -fx-background-color: linear-gradient(to bottom, #f44336, #d32f2f); /* Button background gradient */
+    -fx-text-fill: white; /* Button text color */
+}
+
+.delete-account-button {
+    -fx-font-size: 14px; /* Font size for buttons */
+    -fx-padding: 8px 16px; /* Padding around buttons */
+    -fx-border-radius: 20px; /* Rounded corners */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-cursor: hand; /* Cursor style */
+    -fx-transition-duration: 0.2s; /* Animation duration */
+    -fx-background-color: linear-gradient(to bottom, #2196F3, #1976D2); /* Button background gradient */
+    -fx-text-fill: white; /* Button text color */
+}
+
+.update-button:hover {
+    -fx-scale-x: 1.05; /* Hover scale effect */
+    -fx-scale-y: 1.05; /* Hover scale effect */
+}
+
+.reset-button:hover {
+    -fx-scale-x: 1.05; /* Hover scale effect */
+    -fx-scale-y: 1.05; /* Hover scale effect */
+}
+
+.delete-account-button {
+    -fx-scale-x: 1.05; /* Hover scale effect */
+    -fx-scale-y: 1.05; /* Hover scale effect */
+}
+

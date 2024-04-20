@@ -1,0 +1,57 @@
+/* Include your provided CSS styles here */
+.button {
+    -fx-background-color: #FFF;
+    -fx-border-color: #355ECE;
+    -fx-text-fill: #0C3988;
+}
+
+.button:hover {
+    -fx-background-color: #355ECE;
+    -fx-text-fill: #FFF;
+}
+
+.button:pressed {
+    -fx-background-color: #0C39FF;
+    -fx-text-fill: #FFF;
+}
+
+.button2 {
+    -fx-background-color: #0C39FF;
+    -fx-border-color: #FFF;
+    -fx-text-fill: #FFF;
+}
+
+.button2:hover {
+    -fx-background-color: #0C3988;
+    -fx-text-fill: #FFF;
+}
+
+.button2:pressed {
+    -fx-background-color: #0C3400;
+    -fx-text-fill: #FFF;
+}
+
+.bold-label {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Black";
+}
+
+.text-field-custom {
+    -fx-prompt-text-fill: #e1dede;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #e1dede;
+    -fx-border-width: 2px;
+}
+
+.custom-button {
+    /* Your custom button styles */
+}
+
+.custom-button2 {
+    /* Your custom button styles */
+}
