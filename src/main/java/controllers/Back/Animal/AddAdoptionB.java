@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import services.ServiceAdoption;
 import services.ServiceAnimal;
 import services.ServiceUser;
@@ -95,16 +96,41 @@ import java.util.List;
         @FXML
         public void initialize() throws SQLException {
             // Populate the ComboBox for adoption status
-            cmbadoptionstatus.setItems(FXCollections.observableArrayList("Pending", "Approved", "Rejected"));
+            cmbadoptionstatus.setItems(FXCollections.observableArrayList("Pending", "Cancelled", "Adopted"));
 
-            // Populate the ComboBox for animals
+            // Populate the ComboBox for animals with only names
             List<Animal> animals = animalService.Show();
             cmbanimalkey.setItems(FXCollections.observableArrayList(animals));
+            cmbanimalkey.setConverter(new StringConverter<Animal>() {
+                @Override
+                public String toString(Animal object) {
+                    return object.getAnimal_Name(); // Assuming 'getName()' returns the name of the animal
+                }
 
-            // Populate the ComboBox for users
+                @Override
+                public Animal fromString(String string) {
+                    // If needed for conversion back, but not used in this case
+                    return null;
+                }
+            });
+
+            // Populate the ComboBox for users with only names
             List<User> users = userService.Show();
             cmbuserkey.setItems(FXCollections.observableArrayList(users));
+            cmbuserkey.setConverter(new StringConverter<User>() {
+                @Override
+                public String toString(User object) {
+                    return object.getName(); // Assuming 'getName()' returns the name of the user
+                }
+
+                @Override
+                public User fromString(String string) {
+
+                    return null;
+                }
+            });
         }
+
 
         @FXML
         public void AddAdoptionB() {

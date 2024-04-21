@@ -113,10 +113,6 @@ public class DisplayAdoptionB {
                         Label userSurnameLabel = new Label("User Surname: " + adoption.getAccount_Key().getSurname());
 
 
-
-
-
-
                         HBox buttonBox = new HBox(10);
                         buttonBox.setAlignment(Pos.CENTER);
 

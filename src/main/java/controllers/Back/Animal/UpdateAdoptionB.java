@@ -13,16 +13,17 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UpdateAdoptionB {
     @FXML
     private DatePicker adoptiondate;
 
     @FXML
-    private ComboBox<Animal> cmbAnimalName;
+    private ComboBox<String> cmbAnimalName;
 
     @FXML
-    private ComboBox<User> cmbUserName;
+    private ComboBox<String> cmbUserName;
 
     @FXML
     private ComboBox<String> cmbadoptionstatus;
@@ -31,8 +32,6 @@ public class UpdateAdoptionB {
     private TextField txtAdoptionFee;
 
     private Adoption adoption;
-
-
 
     public void initData(Adoption adoption) {
         this.adoption = adoption;
@@ -53,8 +52,9 @@ public class UpdateAdoptionB {
         try {
             ServiceUser userService = new ServiceUser();
             List<User> users = userService.Show();
-            cmbUserName.setItems(FXCollections.observableArrayList(users));
-            cmbUserName.setValue(adoption.getAccount_Key());
+            List<String> userNames = users.stream().map(User::getName).collect(Collectors.toList());
+            cmbUserName.setItems(FXCollections.observableArrayList(userNames));
+            cmbUserName.setValue(adoption.getAccount_Key().getName());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,8 +64,9 @@ public class UpdateAdoptionB {
         try {
             ServiceAnimal animalService = new ServiceAnimal();
             List<Animal> animals = animalService.Show();
-            cmbAnimalName.setItems(FXCollections.observableArrayList(animals));
-            cmbAnimalName.setValue(adoption.getAnimal_Key());
+            List<String> animalNames = animals.stream().map(Animal::getAnimal_Name).collect(Collectors.toList());
+            cmbAnimalName.setItems(FXCollections.observableArrayList(animalNames));
+            cmbAnimalName.setValue(adoption.getAnimal_Key().getAnimal_Name());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -77,14 +78,16 @@ public class UpdateAdoptionB {
             java.sql.Date newAdoptionDate = java.sql.Date.valueOf(adoptiondate.getValue());
             String newAdoptionStatus = cmbadoptionstatus.getValue();
             float newAdoptionFee = Float.parseFloat(txtAdoptionFee.getText());
-            Animal newAnimalName = cmbAnimalName.getValue();
-            User newUserName = cmbUserName.getValue();
+            String newAnimalName = cmbAnimalName.getValue();
+            String newUserName = cmbUserName.getValue();
 
             adoption.setAdoption_Date(newAdoptionDate);
             adoption.setAdoption_Status(newAdoptionStatus);
             adoption.setAdoption_Fee(newAdoptionFee);
-            adoption.setAnimal_Key(newAnimalName);
-            adoption.setAccount_Key(newUserName);
+
+            // Assuming you have methods to set the name of animal and user
+            adoption.getAnimal_Key().setAnimal_Name(newAnimalName);
+            adoption.getAccount_Key().setName(newUserName);
 
             try {
                 ServiceAdoption adoptionService = new ServiceAdoption();

@@ -135,4 +135,18 @@ public class ServiceBoarding implements IService<Boarding>{
         }
         return user;
     }
+
+
+
+
+    public  void deleteByAnimalId(int animalId) throws SQLException {
+        String req = "DELETE FROM boarding WHERE Animal_Key=?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setInt(1, animalId);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            // Handle the exception appropriately
+            throw e;
+        }
+    }
 }

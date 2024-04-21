@@ -121,6 +121,17 @@ public class ServiceAdoption implements IService<Adoption> {
 
 
 
+    public  void deleteByAnimalId(int animalId) throws SQLException {
+        String req = "DELETE FROM Adoption WHERE Animal_Key=?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setInt(1, animalId);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            // Handle the exception appropriately
+            throw e;
+        }
+    }
+
 
 
 

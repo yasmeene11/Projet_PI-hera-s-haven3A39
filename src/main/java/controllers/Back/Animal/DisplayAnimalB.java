@@ -14,7 +14,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import services.ServiceAdoption;
 import services.ServiceAnimal;
+import services.ServiceBoarding;
 import services.ServiceUser;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -73,10 +75,13 @@ public class DisplayAnimalB {
     @FXML
     private Button btnlistanimal;
 
+
     private final ServiceAnimal animalService;
+    private final ServiceAdoption adoptionService;
 
     public DisplayAnimalB() {
         animalService = new ServiceAnimal();
+        adoptionService = new ServiceAdoption();
     }
 
 
@@ -187,7 +192,13 @@ public class DisplayAnimalB {
     @FXML
     private void handleDelete(Animal animal) {
         try {
-            animalService.delete(animal); // Assuming animalService is the correct service to use for deleting animals
+            // Delete related adoption records
+            adoptionService.deleteByAnimalId(animal.getAnimalId());
+
+            // Delete related pet boarding records
+            // Delete the animal
+            animalService.delete(animal);
+
             // Deletion successful, now refresh the display
             ListAnimals.getItems().remove(animal); // Remove the deleted animal from the list
         } catch (SQLException e) {
