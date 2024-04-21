@@ -2,31 +2,18 @@ package controllers.Back.Animal;
 import entities.Adoption;
 import entities.Animal;
 import entities.User;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+
 import services.ServiceAdoption;
 import services.ServiceAnimal;
 import services.ServiceUser;
-import javafx.stage.FileChooser;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import javafx.collections.FXCollections;
+
+import java.util.List;
+
 public class UpdateAdoptionB {
     @FXML
     private DatePicker adoptiondate;
@@ -45,54 +32,68 @@ public class UpdateAdoptionB {
 
     private Adoption adoption;
 
+
+
     public void initData(Adoption adoption) {
         this.adoption = adoption;
         if (adoption != null) {
             adoptiondate.setValue(adoption.getAdoption_Date().toLocalDate());
-            cmbadoptionstatus.setValue(String.valueOf(adoption.getAdoption_Status()));
+            cmbadoptionstatus.setValue(adoption.getAdoption_Status());
             txtAdoptionFee.setText(String.valueOf(adoption.getAdoption_Fee()));
 
-            cmbAnimalName.setValue(adoption.getAnimal_Key()); // Cast to String
-            cmbUserName.setValue(adoption.getAccount_Key()); // Cast to String
+            // Populate the ComboBox for users
+            populateUserComboBox();
 
+            // Populate the ComboBox for animals
+            populateAnimalComboBox();
         }
     }
 
+    private void populateUserComboBox() {
+        try {
+            ServiceUser userService = new ServiceUser();
+            List<User> users = userService.Show();
+            cmbUserName.setItems(FXCollections.observableArrayList(users));
+            cmbUserName.setValue(adoption.getAccount_Key());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private void populateAnimalComboBox() {
+        try {
+            ServiceAnimal animalService = new ServiceAnimal();
+            List<Animal> animals = animalService.Show();
+            cmbAnimalName.setItems(FXCollections.observableArrayList(animals));
+            cmbAnimalName.setValue(adoption.getAnimal_Key());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     private void updateAdoption() {
         if (adoption != null) {
-            // Retrieve updated data from input fields
-            java.sql.Date newAdoptionDate = java.sql.Date.valueOf(adoptiondate.getValue()); // Convert LocalDate to java.sql.Date
-            String newAdoptionStatus = (String) cmbadoptionstatus.getValue(); // Cast to String
+            java.sql.Date newAdoptionDate = java.sql.Date.valueOf(adoptiondate.getValue());
+            String newAdoptionStatus = cmbadoptionstatus.getValue();
+            float newAdoptionFee = Float.parseFloat(txtAdoptionFee.getText());
+            Animal newAnimalName = cmbAnimalName.getValue();
+            User newUserName = cmbUserName.getValue();
 
-            float newAdoptionFee = Integer.parseInt(txtAdoptionFee.getText()); // Parse to int
-            Animal newAnimalName =  cmbAnimalName.getValue(); // Cast to String
-            User newUserName =  cmbUserName.getValue(); /// Cast to String
-
-            // Update animal object
             adoption.setAdoption_Date(newAdoptionDate);
             adoption.setAdoption_Status(newAdoptionStatus);
             adoption.setAdoption_Fee(newAdoptionFee);
             adoption.setAnimal_Key(newAnimalName);
             adoption.setAccount_Key(newUserName);
 
-
-            // Perform the update operation (e.g., call a service method)
             try {
-                ServiceAdoption adoptionService = new ServiceAdoption(); // Rename the variable to avoid conflict
+                ServiceAdoption adoptionService = new ServiceAdoption();
                 adoptionService.update(adoption);
-
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
-            // Close the update stage (optional)
             adoptiondate.getScene().getWindow().hide();
         }
     }
-
-
-
 }

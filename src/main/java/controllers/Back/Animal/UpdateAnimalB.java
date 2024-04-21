@@ -57,21 +57,29 @@ public class UpdateAnimalB {
     private Animal animal;
     private File selectedImageFile;
 
+
+
+    private String imagefullpath;
+
+
+
     @FXML
     private void handleSelectImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
         );
         selectedImageFile = fileChooser.showOpenDialog(new Stage());
         if (selectedImageFile != null && selectedImageFile.exists()) {
             String imageFileName = selectedImageFile.getName(); // Get just the file name
-            Path targetPath = Paths.get("/animal_images/", imageFileName); // Use only the file name when creating the target path
+            Path targetPath = Paths.get("animal_images", imageFileName); // Use only the file name when creating the target path
+            String sourcePath = selectedImageFile.getAbsolutePath(); // Get the full path of the source image file
             try {
                 Files.createDirectories(targetPath.getParent()); // Create parent directories if they don't exist
                 Files.copy(selectedImageFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
                 txtImage.setText(imageFileName); // Set the image file name in the text field
+                imagefullpath = sourcePath; // Set the full path of the image file
             } catch (IOException e) {
                 e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -89,6 +97,7 @@ public class UpdateAnimalB {
             alert.showAndWait();
         }
     }
+
 
     public void initData(Animal animal) {
         this.animal = animal;
@@ -123,6 +132,21 @@ public class UpdateAnimalB {
             int newAge = Integer.parseInt(txtAge.getText()); // Parse to int
 
             String newAnimalDescription = txtAnimalDescription.getText();
+
+            Path targetPath = Paths.get("C:/Users/perri/IdeaProjects/UnitedPets (1)/UnitedPets/src/main/resources", "animal_images", txtImage.getText());
+
+            try {
+                Files.copy(Paths.get(imagefullpath), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to copy the image file.");
+                alert.showAndWait();
+                return;
+            }
+
 
             // Update animal object
             animal.setAnimal_Name(newAnimalName);

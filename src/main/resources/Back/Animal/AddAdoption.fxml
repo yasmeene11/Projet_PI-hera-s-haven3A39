@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,8 +19,8 @@
             <children>
 
                 <Button fx:id="btnUser" layoutX="92.0" layoutY="119.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayUser" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Users" />
-                <Button fx:id="btnAnimal" layoutX="92.0" layoutY="174.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAnimal" prefHeight="40.0" prefWidth="170.0"  styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Animals" />
-                <Button fx:id="btnAdoption" layoutX="92.0" layoutY="234.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAdoption" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" style="-fx-background-color: #38B6FF; -fx-text-fill: #fff;" stylesheets="@../../styling/fullpackstyling.css" text="Adoptions" />
+                <Button fx:id="btnAnimal" layoutX="92.0" layoutY="174.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAnimal" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Animals" />
+                <Button fx:id="btnAdoption" layoutX="92.0" layoutY="234.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAdoption" prefHeight="40.0" prefWidth="170.0" style="-fx-background-color: #38B6FF; -fx-text-fill: #fff;" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Adoptions" />
                 <Button fx:id="btnBoarding" layoutX="92.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayBoarding" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Pet Boardings" />
                 <Button fx:id="btnProduct" layoutX="92.0" layoutY="347.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayProduct" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Products" />
                 <Button fx:id="btnCategory" layoutX="92.0" layoutY="400.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayCategory" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Categories" />
@@ -101,14 +106,58 @@
                     </image>
                 </ImageView>
 
-                <Button fx:id="btnconfirmadd" layoutX="713.0" layoutY="535.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+                <Button fx:id="btnconfirmadd" layoutX="713.0" layoutY="535.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="159.0" onAction="#AddAdoptionB" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
 
                 <Label alignment="CENTER" layoutX="275.0" layoutY="22.0" prefHeight="35.0" prefWidth="227.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Form">
                     <font>
                         <Font name="Segoe UI" size="18.0" />
                     </font>
                 </Label>
-            </children></AnchorPane>
+                <Label alignment="CENTER" layoutX="21.0" layoutY="283.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Fee">
+                    <font>
+                        <Font name="Segoe UI" size="10.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" layoutX="25.0" layoutY="119.0" prefHeight="35.0" prefWidth="151.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Date">
+                    <font>
+                        <Font name="Segoe UI" size="10.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" layoutX="21.0" layoutY="200.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Status">
+                    <font>
+                        <Font name="Segoe UI" size="10.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="cmbuserkey" layoutX="572.0" layoutY="144.0" prefHeight="44.0" prefWidth="170.0" promptText="user" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+                <ComboBox id="adoptionstatus" fx:id="cmbadoptionstatus" layoutX="176.0" layoutY="201.0" prefHeight="34.0" prefWidth="170.0" styleClass="combo-box-custom" stylesheets="@../../styling/fullpackstyling.css">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Cancelled" />
+                            <String fx:value="Pending" />
+                            <String fx:value="Adopted" />
+
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <DatePicker fx:id="adoptiondate" layoutX="176.0" layoutY="119.0" prefHeight="34.0" prefWidth="170.0" promptText="Enrollement Date" />
+
+                <TextField fx:id="txtadoptionfee" layoutX="176.0" layoutY="279.0" prefHeight="44.0" prefWidth="170.0" promptText="Animal Image Path" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+            <Label alignment="CENTER" layoutX="428.0" layoutY="148.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="User Key">
+               <font>
+                  <Font name="Segoe UI" size="10.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="427.0" layoutY="255.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Animal Key">
+               <font>
+                  <Font name="Segoe UI" size="10.0" />
+               </font>
+            </Label>
+                <ComboBox fx:id="cmbanimalkey" layoutX="572.0" layoutY="251.0" prefHeight="44.0" prefWidth="170.0" promptText="animal" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+
+
+            </children>
+        </AnchorPane>
 
     </children>
 

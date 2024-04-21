@@ -19,6 +19,7 @@ import services.ServiceUser;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.InputStream;
 import java.net.URL;
 
 
@@ -88,7 +89,6 @@ public class DisplayAnimalB {
             ListAnimals.getItems().addAll(animals);
 
             ListAnimals.setCellFactory(param -> new ListCell<Animal>() {
-                @Override
                 protected void updateItem(Animal animal, boolean empty) {
                     super.updateItem(animal, empty);
                     if (empty || animal == null) {
@@ -107,7 +107,17 @@ public class DisplayAnimalB {
                         // Use an ImageView for the animal image
                         ImageView imageView = new ImageView();
                         String imagePath = getClass().getResource("/animal_images/" + animal.getAnimal_Image()).toExternalForm();
-                        imageView.setImage(new Image(imagePath)); // Load image
+
+                        // Check if the image file exists in the animal_images directory
+                        InputStream imageStream = getClass().getResourceAsStream("/animal_images/" + animal.getAnimal_Image());
+                        if (imageStream != null) {
+                            imageView.setImage(new Image(imagePath)); // Load image from animal_images directory
+                        } else {
+                            // Load image directly from its original location
+                            String originalImagePath = "file:///" + animal.getAnimal_Image();
+                            imageView.setImage(new Image(originalImagePath));
+                        }
+
                         imageView.setFitWidth(100); // Set image width
                         imageView.setFitHeight(100); // Set image height
 
@@ -130,6 +140,7 @@ public class DisplayAnimalB {
                         setGraphic(container);
                     }
                 }
+
             });
 
             ListAnimals.getSelectionModel().selectedItemProperty().addListener((obs, oldAnimal, newAnimal) -> {

@@ -95,6 +95,7 @@ public class AddAnimalB {
     private TextField txtImage; // Assuming this is the TextField for displaying the image path
 
     private File selectedImageFile;
+    private String imagefullpath;
 
 
     private final ServiceAnimal animalService; // Assuming you have a ServiceUser object
@@ -110,16 +111,18 @@ public class AddAnimalB {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
         );
         selectedImageFile = fileChooser.showOpenDialog(new Stage());
         if (selectedImageFile != null && selectedImageFile.exists()) {
             String imageFileName = selectedImageFile.getName(); // Get just the file name
-            Path targetPath = Paths.get("/animal_images/", imageFileName); // Use only the file name when creating the target path
+            Path targetPath = Paths.get("animal_images", imageFileName); // Use only the file name when creating the target path
+            String sourcePath = selectedImageFile.getAbsolutePath(); // Get the full path of the source image file
             try {
                 Files.createDirectories(targetPath.getParent()); // Create parent directories if they don't exist
                 Files.copy(selectedImageFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
                 txtImage.setText(imageFileName); // Set the image file name in the text field
+                imagefullpath = sourcePath; // Set the full path of the image file
             } catch (IOException e) {
                 e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -149,6 +152,20 @@ public class AddAnimalB {
         LocalDate enrolmentDateValue = enrollementdate.getValue();
         Date Enrollement_Date = enrolmentDateValue != null ? Date.valueOf(enrolmentDateValue) : null;
         String Animal_Description = txtDescription.getText(); // Use getText() for TextField
+
+        Path targetPath = Paths.get("C:/Users/perri/IdeaProjects/UnitedPets (1)/UnitedPets/src/main/resources", "animal_images", txtImage.getText());
+
+        try {
+            Files.copy(Paths.get(imagefullpath), targetPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to copy the image file.");
+            alert.showAndWait();
+            return;
+        }
 
         Animal animal = new Animal(Animal_Name, Animal_Breed, Animal_Status, Animal_Type, Age, Enrollement_Date, txtImage.getText(), Animal_Description);
 
