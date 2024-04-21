@@ -191,7 +191,7 @@ public class DisplayDonation {
 
     @FXML
     public void NavigateToDisplayDonationM()throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DonationM/DisplayDonationM.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DonationM/AddDonationM.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btndonationm.getScene().getWindow();
         Scene scene = new Scene(root);
@@ -203,7 +203,7 @@ public class DisplayDonation {
     }
     @FXML
     public void NavigateToDisplayDonationP()throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DonationP/DisplayDonationP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DonationP/AddDonationP.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btndonationp.getScene().getWindow();
         Scene scene = new Scene(root);

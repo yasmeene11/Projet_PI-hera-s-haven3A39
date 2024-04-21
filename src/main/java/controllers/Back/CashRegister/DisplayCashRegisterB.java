@@ -1,14 +1,27 @@
 package controllers.Back.CashRegister;
 
+import entities.CashRegister;
+import entities.DonationM;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import services.ServiceCashRegister;
+import services.ServiceDonationM;
 
 import java.io.IOException;
+import java.security.Provider;
+import java.sql.SQLException;
+import java.util.List;
 
 public class DisplayCashRegisterB {
 
@@ -51,6 +64,52 @@ public class DisplayCashRegisterB {
     @FXML
     private Button btncashstatistic;
 
+    private final ServiceCashRegister cashRegisterService;
+    @FXML
+    private ListView<CashRegister> listTransactions;
+    public DisplayCashRegisterB() {
+        cashRegisterService = new ServiceCashRegister();
+    }
+    @FXML
+    private void initialize() {
+        try {
+            List<CashRegister> transactions = cashRegisterService.Show();
+            listTransactions.getItems().addAll(transactions);
+            // Set cell value factories to populate ListView items
+            listTransactions.setCellFactory(param -> new ListCell<CashRegister>() {
+                @Override
+                protected void updateItem(CashRegister transaction, boolean empty) {
+                    super.updateItem(transaction, empty);
+                    if (empty || transaction == null) {
+                        setText(null);
+                    } else {
+                        VBox container = new VBox(5);
+                        container.getStyleClass().add("user-card");
+                        Label inputLabel = new Label("Input: " + transaction.getInput());
+                        Label outputLabel = new Label("Output: " + transaction.getOutput());
+                        Label dateLabel = new Label("Date: " + transaction.getDate_transaction());
+                        Label typeLabel = new Label("Type: " + transaction.getType());
+                        Label sumLabel = new Label("Somme: " + transaction.getSomme());
+                        Label idEntityLabel = new Label("ID Entity: " + transaction.getId_entity());
+
+                        //HBox buttonBox = new HBox(10);
+                        //buttonBox.setAlignment(Pos.CENTER);
+
+                        container.getChildren().addAll(inputLabel, outputLabel, dateLabel, typeLabel, sumLabel, idEntityLabel);
+                        setGraphic(container);
+                    }
+                }
+            });
+            listTransactions.getSelectionModel().selectedItemProperty().addListener((obs, oldTransaction, newTransaction) -> {
+                if (newTransaction != null) {
+                    // Handle transaction selection here
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle SQLException
+        }
+    }
 
     @FXML
     private void NavigateToDisplayUser() throws IOException {

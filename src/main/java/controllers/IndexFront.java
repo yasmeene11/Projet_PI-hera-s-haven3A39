@@ -120,7 +120,7 @@ public class IndexFront {
 
     @FXML
     public void NavigateToDisplayDonationM() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/DonationM/DisplayDonationM.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/DonationM/AddDonationM.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btndonationm.getParentPopup().getOwnerWindow();
         Scene scene = new Scene(root);
@@ -131,7 +131,7 @@ public class IndexFront {
 
     @FXML
     public void NavigateToDisplayDonationP() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/DonationP/DisplayDonationP.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/DonationP/AddDonationP.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btndonationp.getParentPopup().getOwnerWindow();
         Scene scene = new Scene(root);
