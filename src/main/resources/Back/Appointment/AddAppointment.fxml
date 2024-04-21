@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Appointment.AddAppointmentB">
 
@@ -126,27 +125,27 @@
                     </image>
                 </ImageView>
 
-                <Button fx:id="btnconfirmadd" GridPane.columnIndex="2" GridPane.rowIndex="7" mnemonicParsing="false" onMousePressed="#addAppointment" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+                <Button fx:id="btnconfirmadd" mnemonicParsing="false" onMousePressed="#addAppointment" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" GridPane.columnIndex="2" GridPane.rowIndex="7" />
 
-                <Label alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" prefHeight="37.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Appointment Form">
+                <Label alignment="CENTER" prefHeight="37.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Appointment Form" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0">
                     <font>
                         <Font name="Segoe UI" size="18.0" />
                     </font>
                 </Label>
-                <Label GridPane.columnIndex="0" GridPane.rowIndex="2" text="Appointment Date" style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
-                <Label GridPane.columnIndex="0" GridPane.rowIndex="3" text="Appointment Time" style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
-                <Label GridPane.columnIndex="0" GridPane.rowIndex="4" text="Veterinarian " style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
-                <Label GridPane.columnIndex="0" GridPane.rowIndex="5" text="Pet Name" style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" />
+                <Label style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" text="Appointment Date" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" text="Appointment Time" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" text="Veterinarian " GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Label style="-fx-text-fill: #38B6FF; -fx-font-family: 'Segoe UI'; -fx-font-size: 18; -fx-font-weight: bold; -fx-padding: 0 20 0 0;" text="Pet Name" GridPane.columnIndex="0" GridPane.rowIndex="5" />
 
 
 
 
 
 
-                    <DatePicker fx:id="ApDateID" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <ComboBox fx:id="patientComboBox" GridPane.columnIndex="1" GridPane.rowIndex="6" prefWidth="200.0" />
-                <ComboBox fx:id="petComboBox" GridPane.columnIndex="1" GridPane.rowIndex="7" prefWidth="200.0" />
-                <ComboBox fx:id="AptimeId" GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="200.0" />
+                    <DatePicker fx:id="ApDateID" prefHeight="26.0" prefWidth="197.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ComboBox fx:id="patientComboBox" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <ComboBox fx:id="petComboBox" prefHeight="26.0" prefWidth="202.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <ComboBox fx:id="AptimeId" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 </children>
             </GridPane>
 
@@ -158,20 +157,3 @@
 
 
 </AnchorPane>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

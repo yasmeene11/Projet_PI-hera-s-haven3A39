@@ -96,4 +96,11 @@
         public void setAnimal(Animal animal) {
             this.animal = animal;
         }
+
+        @Override
+        public String toString() {
+            String vetName = (user != null) ? user.getName() : "No Vet Assigned";
+            String petName = (animal != null) ? animal.getAnimal_Name() : "No Pet Assigned";
+            return "Appointment ID: " + appointmentId + ", Vet: " + vetName + ", Pet: " + petName;
+        }
     }
