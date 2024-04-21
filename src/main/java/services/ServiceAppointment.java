@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class ServiceAppointment implements IService<Appointment> {
 
-    private Connection con;
+    private static Connection con;
     private Statement ste;
 
     public ServiceAppointment() {
@@ -51,7 +51,7 @@ public class ServiceAppointment implements IService<Appointment> {
     @Override
     public List<Appointment> Show() throws SQLException {
         List<Appointment> appointments = new ArrayList<>();
-        String query = "SELECT a.appointment_date, a.appointment_time, " +
+        String query = "SELECT a.appointmentId, a.appointment_date, a.appointment_time, a.appointment_status, " +
                 "u.name AS vet_name, an.animal_name AS pet_name " +
                 "FROM appointment a " +
                 "JOIN account u ON a.Account_Key = u.accountId " +
@@ -60,8 +60,10 @@ public class ServiceAppointment implements IService<Appointment> {
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Appointment appointment = new Appointment();
+                appointment.setAppointmentId(resultSet.getInt("appointmentId"));
                 appointment.setAppointmentDate(resultSet.getDate("appointment_date"));
                 appointment.setAppointmentTime(resultSet.getTime("appointment_time"));
+                appointment.setAppointmentStatus(resultSet.getString("appointment_status"));
 
                 // Set vet and pet names
                 User vet = new User();
@@ -150,7 +152,7 @@ public class ServiceAppointment implements IService<Appointment> {
         return animalNames;
     }
 
-        public Integer getUserIdByName(String userName) throws SQLException {
+        public static Integer getUserIdByName(String userName) throws SQLException {
             String req = "SELECT accountId FROM account WHERE name = ?";
             try (PreparedStatement pre = con.prepareStatement(req)) {
                 pre.setString(1, userName);
@@ -163,7 +165,7 @@ public class ServiceAppointment implements IService<Appointment> {
             return null; // Return null if user is not found
         }
 
-        public Integer getAnimalIdByName(String animalName) throws SQLException {
+        public static Integer getAnimalIdByName(String animalName) throws SQLException {
             String req = "SELECT animalId FROM animal WHERE animal_name = ?";
             try (PreparedStatement pre = con.prepareStatement(req)) {
                 pre.setString(1, animalName);

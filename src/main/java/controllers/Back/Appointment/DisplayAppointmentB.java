@@ -106,11 +106,42 @@ public class DisplayAppointmentB {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
                         setText(null);
+                        setGraphic(null);
                     } else {
                         setText("Date: " + item.getAppointmentDate() +
                                 "\nTime: " + item.getAppointmentTime() +
                                 "\nAssociated Vet: " + item.getUser().getName() +
                                 "\nAnimal: " + item.getAnimal().getAnimal_Name());
+
+                        Button updateButton = new Button("Update");
+                        updateButton.setOnAction(event -> {
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Appointment/UpdateAppointment.fxml"));
+                                Parent root = loader.load();
+                                UpdateAppointmentB controller = loader.getController();
+                                controller.setAppointment(item);
+                                Stage stage = new Stage();
+                                stage.setScene(new Scene(root));
+                                stage.setTitle("Update Appointment");
+                                stage.initModality(Modality.APPLICATION_MODAL);
+                                stage.showAndWait();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        Button deleteButton = new Button("Delete");
+                        deleteButton.setOnAction(event -> {
+                            try {
+                                appointmentservice.delete(item);
+                                appointmentList.remove(item);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        HBox buttonsBox = new HBox(10, updateButton, deleteButton);
+                        setGraphic(buttonsBox);
                     }
                 }
             });
@@ -119,6 +150,7 @@ public class DisplayAppointmentB {
             e.printStackTrace();
         }
     }
+
 
 
 
