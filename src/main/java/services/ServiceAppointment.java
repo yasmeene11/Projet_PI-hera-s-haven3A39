@@ -8,7 +8,9 @@ import utils.MyBD;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServiceAppointment implements IService<Appointment> {
 
@@ -20,17 +22,17 @@ public class ServiceAppointment implements IService<Appointment> {
     }
 
     @Override
-    public void add(Appointment appointment) throws SQLException {
-        String req = "INSERT INTO appointment (appointment_date, appointment_time, appointment_status, Account_Key, Animal_Key) " +
-                "VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement pre = con.prepareStatement(req);
-        pre.setDate(1, appointment.getAppointmentDate());
-        pre.setTime(2, appointment.getAppointmentTime());
-        pre.setString(3, appointment.getAppointmentStatus());
-        pre.setInt(4, appointment.getUser().getAccountId()); // Assuming Account_Key is the foreign key for the User entity
-        pre.setInt(5, appointment.getAnimal().getAnimalId()); // Assuming Animal_Key is the foreign key for the Animal entity
-        pre.executeUpdate();
-    }
+        public void add(Appointment appointment) throws SQLException {
+            String req = "INSERT INTO appointment (appointment_date, appointment_time, appointment_status, Account_Key, Animal_Key) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement pre = con.prepareStatement(req);
+            pre.setDate(1, appointment.getAppointmentDate());
+            pre.setTime(2, appointment.getAppointmentTime());
+            pre.setString(3, "pending"); // Set appointment status to "pending"
+            pre.setInt(4, appointment.getUser().getAccountId()); // Assuming Account_Key is the foreign key for the User entity
+            pre.setInt(5, appointment.getAnimal().getAnimalId()); // Assuming Animal_Key is the foreign key for the Animal entity
+            pre.executeUpdate();
+        }
 
     @Override
     public void update(Appointment appointment) throws SQLException {
@@ -108,8 +110,61 @@ public class ServiceAppointment implements IService<Appointment> {
 
     private Animal fetchAnimalById(int animalId) throws SQLException {
         // Implement logic to fetch Animal from the database
-        Animal animal = null; // Initialize animal variable with fetched Animal object
+        Animal animal = null; // Initzialize animal variable with fetched Animal object
         return animal;
     }
 
-}
+    public Map<Integer, String> getVetNames() throws SQLException {
+        Map<Integer, String> vetNames = new HashMap<>();
+        String req = "SELECT accountId, name FROM account WHERE role='veterinary'";
+        try (Statement ste = con.createStatement();
+             ResultSet res = ste.executeQuery(req)) {
+            while (res.next()) {
+                int vetId = res.getInt("accountId");
+                String vetName = res.getString("name");
+                vetNames.put(vetId, vetName);
+            }
+        }
+        return vetNames;
+    }
+
+    public Map<Integer, String> getAnimalNames() throws SQLException {
+        Map<Integer, String> animalNames = new HashMap<>();
+        String req = "SELECT animalId, animal_name FROM animal";
+        try (Statement ste = con.createStatement();
+             ResultSet res = ste.executeQuery(req)) {
+            while (res.next()) {
+                int animalId = res.getInt("animalId");
+                String animalName = res.getString("animal_name");
+                animalNames.put(animalId, animalName);
+            }
+        }
+        return animalNames;
+    }
+
+        public Integer getUserIdByName(String userName) throws SQLException {
+            String req = "SELECT accountId FROM account WHERE name = ?";
+            try (PreparedStatement pre = con.prepareStatement(req)) {
+                pre.setString(1, userName);
+                try (ResultSet res = pre.executeQuery()) {
+                    if (res.next()) {
+                        return res.getInt("accountId");
+                    }
+                }
+            }
+            return null; // Return null if user is not found
+        }
+
+        public Integer getAnimalIdByName(String animalName) throws SQLException {
+            String req = "SELECT animalId FROM animal WHERE animal_name = ?";
+            try (PreparedStatement pre = con.prepareStatement(req)) {
+                pre.setString(1, animalName);
+                try (ResultSet res = pre.executeQuery()) {
+                    if (res.next()) {
+                        return res.getInt("animalId");
+                    }
+                }
+            }
+            return null; // Return null if animal is not found
+        }
+    }
