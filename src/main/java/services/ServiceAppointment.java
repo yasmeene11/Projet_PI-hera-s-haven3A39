@@ -51,21 +51,29 @@ public class ServiceAppointment implements IService<Appointment> {
     @Override
     public List<Appointment> Show() throws SQLException {
         List<Appointment> appointments = new ArrayList<>();
-        String req = "SELECT * FROM appointment";
-            ste = con.createStatement();
-        ResultSet res = ste.executeQuery(req);
-        while (res.next()) {
-            int appointmentId = res.getInt(1);
-            Date appointmentDate = res.getDate("appointment_date");
-            Time appointmentTime = res.getTime("appointment_time");
-            String appointmentStatus = res.getString("appointment_status");
-            int userId = res.getInt("Account_Key"); // Assuming Account_Key is the foreign key in appointment for User
-            int animalId = res.getInt("Animal_Key"); // Assuming Animal_Key is the foreign key in appointment for Animal
-            // Fetch User and Animal objects using userId and animalId respectively
-            User user = fetchUserById(userId);
-            Animal animal = fetchAnimalById(animalId);
-            Appointment a = new Appointment(appointmentId, appointmentDate, appointmentTime, appointmentStatus, null, user, animal);
-            appointments.add(a);
+        String query = "SELECT a.appointment_date, a.appointment_time, " +
+                "u.name AS vet_name, an.animal_name AS pet_name " +
+                "FROM appointment a " +
+                "JOIN account u ON a.Account_Key = u.accountId " +
+                "JOIN animal an ON a.Animal_Key = an.animalId";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setAppointmentDate(resultSet.getDate("appointment_date"));
+                appointment.setAppointmentTime(resultSet.getTime("appointment_time"));
+
+                // Set vet and pet names
+                User vet = new User();
+                vet.setName(resultSet.getString("vet_name"));
+                appointment.setUser(vet);
+
+                Animal pet = new Animal();
+                pet.setAnimal_Name(resultSet.getString("pet_name"));
+                appointment.setAnimal(pet);
+
+                appointments.add(appointment);
+            }
         }
         return appointments;
     }

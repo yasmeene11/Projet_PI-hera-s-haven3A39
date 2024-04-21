@@ -109,10 +109,8 @@ public class DisplayAppointmentB {
                     } else {
                         setText("Date: " + item.getAppointmentDate() +
                                 "\nTime: " + item.getAppointmentTime() +
-                                "\nStatus: " + item.getAppointmentStatus() +
-                                "\nRapport: " + item.getRapport() +
-                                "\nUser: " + item.getUser() +
-                                "\nAnimal: " + item.getAnimal());
+                                "\nAssociated Vet: " + item.getUser().getName() +
+                                "\nAnimal: " + item.getAnimal().getAnimal_Name());
                     }
                 }
             });
