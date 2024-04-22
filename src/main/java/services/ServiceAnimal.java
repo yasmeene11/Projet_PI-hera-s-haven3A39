@@ -33,6 +33,29 @@ public class ServiceAnimal implements IService<Animal> {
 
 
 
+    public int add2(Animal animal) throws SQLException {
+        String req = "INSERT INTO animal (Animal_Name, Animal_Breed, Animal_Status, Animal_Type, Age, Enrollement_Date, Animal_Image, Animal_Description) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement pre = con.prepareStatement(req, Statement.RETURN_GENERATED_KEYS); // Specify to return generated keys
+        pre.setString(1, animal.getAnimal_Name());
+        pre.setString(2, animal.getAnimal_Breed());
+        pre.setString(3, animal.getAnimal_Status());
+        pre.setString(4, animal.getAnimal_Type());
+        pre.setInt(5, animal.getAge());
+        pre.setDate(6, animal.getEnrollement_Date());
+        pre.setString(7, animal.getAnimal_Image());
+        pre.setString(8, animal.getAnimal_Description());
+        pre.executeUpdate();
+
+        // Get the generated keys
+        ResultSet generatedKeys = pre.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            return generatedKeys.getInt(1); // Return the generated ID
+        } else {
+            throw new SQLException("Failed to retrieve generated ID.");
+        }
+    }
+
 
     @Override
     public void update(Animal animal) throws SQLException {
@@ -82,5 +105,29 @@ public class ServiceAnimal implements IService<Animal> {
         return animals;
     }
 
+
+    public Animal fetchAnimalById(int animalId) throws SQLException {
+        Animal animal = null;
+        String query = "SELECT  Animal_Name, Animal_Breed, Animal_Status, Age, Animal_Image, Animal_Description FROM Animal WHERE animalId = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setInt(1, animalId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Assuming you have an Animal constructor that takes parameters accordingly
+                    animal = new Animal(
+
+                            resultSet.getString("Animal_Name"),
+                            resultSet.getString("Animal_Breed"),
+                            resultSet.getString("Animal_Status"),
+                            resultSet.getInt("Age"),
+                            resultSet.getString("Animal_Image"),
+                            resultSet.getString("Animal_Description")
+
+                    );
+                }
+            }
+        }
+        return animal;
+    }
 
 }

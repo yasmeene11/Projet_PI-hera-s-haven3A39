@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front.Animal.AddAdoptionF">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front.Animal.AddBoarding2">
     <children>
         <AnchorPane prefHeight="34.0" prefWidth="1280.0" style="-fx-background-color: #38B6FF;" AnchorPane.bottomAnchor="691.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -79,13 +79,13 @@
                 </MenuItem>
             </Menu>
 
-            <Menu style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Animals">
+            <Menu  styleClass="menu" text="Animals">
                 <MenuItem fx:id="btnanimal" onAction="#NavigateToDisplayAnimal" styleClass="menu-item" text="Animals">
                 </MenuItem>
             </Menu>
 
             <!-- Pet Boarding Menu -->
-            <Menu styleClass="menu" text="Pet Boarding">
+            <Menu style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Pet Boarding">
                 <MenuItem fx:id="btnboarding" onAction="#NavigateToAddBoarding" styleClass="menu-item" text="Pet Boarding">
                 </MenuItem>
             </Menu>
@@ -107,15 +107,30 @@
             <Menu styleClass="menu" text="About">
             </Menu>
         </MenuBar>
-        <Label alignment="CENTER" layoutX="301.0" layoutY="294.0" prefHeight="35.0" prefWidth="151.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Date">
+
+
+
+        <Button fx:id="btnconfirmadd" layoutX="473.0" layoutY="449.0" mnemonicParsing="false" onAction="#AddBoarding2" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+
+        <Label alignment="CENTER" layoutX="417.0" layoutY="146.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Pet Boarding Form">
+            <font>
+                <Font name="Segoe UI" size="18.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="341.0" layoutY="264.0" prefHeight="35.0" prefWidth="151.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Start Date ">
             <font>
                 <Font name="Segoe UI" size="10.0" />
             </font>
         </Label>
 
-        <DatePicker fx:id="adoptiondate" layoutX="525.0" layoutY="294.0" prefHeight="34.0" prefWidth="170.0" promptText="Enrollement Date" />
+        <DatePicker fx:id="startdate" layoutX="588.0" layoutY="264.0" prefHeight="34.0" prefWidth="170.0" promptText="Start Date" />
+        <DatePicker fx:id="enddate" layoutX="588.0" layoutY="343.0" prefHeight="34.0" prefWidth="170.0" promptText="End Date" />
+        <Label alignment="CENTER" layoutX="341.0" layoutY="343.0" prefHeight="35.0" prefWidth="151.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="End Date ">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
 
-        <Button fx:id="btnconfirmadd" layoutX="431.0" layoutY="387.0" mnemonicParsing="false" onAction="#AddAdoptionF" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
 
     </children>
 </AnchorPane>

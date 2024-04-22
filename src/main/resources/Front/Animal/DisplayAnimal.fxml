@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -72,12 +75,12 @@
         <MenuBar fx:id="menuBar" layoutX="264.0" layoutY="49.0" prefHeight="46.0" prefWidth="987.0" styleClass="menu-bar" stylesheets="@../../styling/fullpackstyling.css">
 
             <!-- Home Menu -->
-            <Menu   styleClass="menu"    text="Home">
+            <Menu styleClass="menu" text="Home">
                 <MenuItem fx:id="btnindexb" onAction="#NavigateToIndexBack" styleClass="menu-item" text="Home">
                 </MenuItem>
             </Menu>
 
-            <Menu  style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Animals">
+            <Menu style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Animals">
                 <MenuItem fx:id="btnanimal" onAction="#NavigateToDisplayAnimal" styleClass="menu-item" text="Animals">
                 </MenuItem>
             </Menu>
@@ -105,6 +108,22 @@
             <Menu styleClass="menu" text="About">
             </Menu>
         </MenuBar>
+
+
+        <Label alignment="CENTER" layoutX="417.0" layoutY="146.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal List">
+            <font>
+                <Font name="Segoe UI" size="18.0" />
+            </font>
+        </Label>
+        <ScrollPane layoutX="89.0" layoutY="228.0" prefHeight="401.0" prefWidth="1114.0">
+            <content>
+                <ListView fx:id="ListAnimals" orientation="HORIZONTAL">
+                    <cellFactory>
+                        <javafx.scene.control.cell.TextFieldListCell fx:factory="forListView" />
+                    </cellFactory>
+                </ListView>
+            </content>
+        </ScrollPane>
 
 
     </children>

@@ -18,7 +18,7 @@ public class ServiceBoarding implements IService<Boarding>{
     }
     @Override
     public void add(Boarding boarding) throws SQLException {
-        String req = "INSERT INTO boarding (Start_Date, End_Date, Boarding_Status,Boarding_Fee, Animal_Key Account_Key) " +
+        String req = "INSERT INTO boarding (Start_Date, End_Date, Boarding_Status,Boarding_Fee, Animal_Key ,Account_Key) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement pre = con.prepareStatement(req);
         pre.setDate(1, boarding.getStart_Date());

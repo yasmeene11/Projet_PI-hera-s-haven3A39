@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -98,22 +99,6 @@ import java.util.List;
             // Populate the ComboBox for adoption status
             cmbadoptionstatus.setItems(FXCollections.observableArrayList("Pending", "Cancelled", "Adopted"));
 
-            // Populate the ComboBox for animals with only names
-            List<Animal> animals = animalService.Show();
-            cmbanimalkey.setItems(FXCollections.observableArrayList(animals));
-            cmbanimalkey.setConverter(new StringConverter<Animal>() {
-                @Override
-                public String toString(Animal object) {
-                    return object.getAnimal_Name(); // Assuming 'getName()' returns the name of the animal
-                }
-
-                @Override
-                public Animal fromString(String string) {
-                    // If needed for conversion back, but not used in this case
-                    return null;
-                }
-            });
-
             // Populate the ComboBox for users with only names
             List<User> users = userService.Show();
             cmbuserkey.setItems(FXCollections.observableArrayList(users));
@@ -125,34 +110,116 @@ import java.util.List;
 
                 @Override
                 public User fromString(String string) {
+                    return null;
+                }
+            });
 
+            // Populate the ComboBox for animals with only names where the status is available
+            List<Animal> availableAnimals = getAvailableAnimals();
+            cmbanimalkey.setItems(FXCollections.observableArrayList(availableAnimals));
+            cmbanimalkey.setConverter(new StringConverter<Animal>() {
+                @Override
+                public String toString(Animal object) {
+                    return object.getAnimal_Name(); // Assuming 'getAnimal_Name()' returns the name of the animal
+                }
+
+                @Override
+                public Animal fromString(String string) {
                     return null;
                 }
             });
         }
 
+        private List<Animal> getAvailableAnimals() throws SQLException {
+            List<Animal> allAnimals = animalService.Show();
+            List<Animal> availableAnimals = new ArrayList<>();
+
+            for (Animal animal : allAnimals) {
+                if (animal.getAnimal_Status().equals("Available")) { // Assuming 'getStatus()' returns the status of the animal
+                    availableAnimals.add(animal);
+                }
+            }
+
+            return availableAnimals;
+        }
+
+
 
         @FXML
         public void AddAdoptionB() {
             LocalDate adoptionDateValue = adoptiondate.getValue();
-            Date Adoption_Date = adoptionDateValue != null ? Date.valueOf(adoptionDateValue) : null;
+            if (adoptionDateValue == null || adoptionDateValue.isBefore(LocalDate.now())) {
+                // Display an error message if the date is null or a past date
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Date");
+                alert.setHeaderText("Please select a valid future date.");
+                alert.showAndWait();
+                return; // Exit the method if the date is invalid
+            }
 
-            String Adoption_Status = cmbadoptionstatus.getValue(); // No need to call toString() here
-            float Adoption_Fee = Float.parseFloat(txtadoptionfee.getText());
+            String Adoption_Status = "Pending"; // Set adoption status to "Pending"
+
+            // Validate combo boxes
+            if (cmbanimalkey.getValue() == null || cmbuserkey.getValue() == null) {
+                // Display an error message if any of the combo boxes are left empty
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Missing Selection");
+                alert.setHeaderText("Please select values for all fields.");
+                alert.showAndWait();
+                return; // Exit the method if any combo box is left empty
+            }
+            // Validate adoption fee
+            String adoptionFeeText = txtadoptionfee.getText();
+            float Adoption_Fee;
+            try {
+                Adoption_Fee = Float.parseFloat(adoptionFeeText);
+                if (Adoption_Fee < 0) {
+                    // Adoption fee can't be negative
+                    // Display an error message or handle the invalid fee scenario
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Adoption Fee");
+                    alert.setHeaderText("Adoption fee cannot be negative.");
+                    alert.showAndWait();
+                    return; // Exit the method if the fee is invalid
+                }
+            } catch (NumberFormatException e) {
+                // Adoption fee contains characters or is empty
+                // Display an error message or handle the invalid fee scenario
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Adoption Fee");
+                alert.setHeaderText("Please enter a valid number for adoption fee.");
+                alert.showAndWait();
+                return; // Exit the method if the fee is invalid
+            }
+
             Animal Animal_Key = cmbanimalkey.getValue();
             User User_Key = cmbuserkey.getValue();
 
-            Adoption adoption = new Adoption(Adoption_Date, Adoption_Status, Adoption_Fee, User_Key, Animal_Key);
+            Adoption adoption = new Adoption(Date.valueOf(adoptionDateValue), Adoption_Status, Adoption_Fee, User_Key, Animal_Key);
 
             try {
                 adoptionService.add(adoption);
 
-                // Display a success message
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Adoption added successfully");
-                alert.setHeaderText(null);
-                alert.setContentText("Adoption added successfully!");
-                alert.showAndWait();
+                // Update the status of the associated animal to "Pending"
+                Animal_Key.setAnimal_Status("Pending");
+                animalService.update(Animal_Key);
+// Display a success message
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Adoption Added", "Animal added successfully!");
+
+                // Close the current window or scene
+                Stage stage = (Stage) adoptiondate.getScene().getWindow();
+                stage.close();
+
+                // Open the DisplayAnimal page
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Animal/DisplayAdoption.fxml"));
+                Parent root = loader.load();
+                DisplayAdoptionB controller = loader.getController();
+                // Initialize or update the DisplayAnimal page as needed
+
+                // Show the DisplayAnimal page
+                Stage displayStage = new Stage();
+                displayStage.setScene(new Scene(root));
+                displayStage.show();
 
             } catch (Exception e) {
                 // Display an error message if adding fails
@@ -164,9 +231,15 @@ import java.util.List;
                 e.printStackTrace();
             }
         }
+        private void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+            Alert alert = new Alert(alertType);
+            alert.setTitle(title);
+            alert.setHeaderText(headerText);
+            alert.setContentText(contentText);
+            alert.showAndWait();
+        }
 
-
-    @FXML
+        @FXML
     private void NavigateToDisplayUser() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/User/DisplayUser.fxml"));
         Parent root = loader.load();

@@ -116,11 +116,10 @@ public class AddAnimalB {
         selectedImageFile = fileChooser.showOpenDialog(new Stage());
         if (selectedImageFile != null && selectedImageFile.exists()) {
             String imageFileName = selectedImageFile.getName(); // Get just the file name
-            Path targetPath = Paths.get("animal_images", imageFileName); // Use only the file name when creating the target path
             String sourcePath = selectedImageFile.getAbsolutePath(); // Get the full path of the source image file
+            String targetPath = "C:/Users/perri/IdeaProjects/UnitedPets (1)/UnitedPets/src/main/resources/animal_images/" + imageFileName;
             try {
-                Files.createDirectories(targetPath.getParent()); // Create parent directories if they don't exist
-                Files.copy(selectedImageFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(selectedImageFile.toPath(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
                 txtImage.setText(imageFileName); // Set the image file name in the text field
                 imagefullpath = sourcePath; // Set the full path of the image file
             } catch (IOException e) {
@@ -141,55 +140,90 @@ public class AddAnimalB {
         }
     }
 
+
     @FXML
     public void addAnimalB() {
+        // Get values from input fields
         String Animal_Name = txtAnimalName.getText();
-        String Animal_Breed = cmbBreed.getValue().toString(); // Use getValue() to get the selected item from ComboBox
-        String Animal_Status = cmbstatus.getValue().toString(); // Same as above
-        String Animal_Type = cmbtype.getValue().toString(); // Same as above
-        int Age = Integer.parseInt(txtAge.getText());
-
+        String Animal_Breed = cmbBreed.getValue() != null ? cmbBreed.getValue().toString() : null;
+        String Animal_Status = cmbstatus.getValue() != null ? cmbstatus.getValue().toString() : null;
+        String Animal_Type = cmbtype.getValue() != null ? cmbtype.getValue().toString() : null;
+        String AgeText = txtAge.getText();
         LocalDate enrolmentDateValue = enrollementdate.getValue();
-        Date Enrollement_Date = enrolmentDateValue != null ? Date.valueOf(enrolmentDateValue) : null;
-        String Animal_Description = txtDescription.getText(); // Use getText() for TextField
+        String Animal_Description = txtDescription.getText();
+        String ImageFileName = txtImage.getText();
 
-        Path targetPath = Paths.get("C:/Users/perri/IdeaProjects/UnitedPets (1)/UnitedPets/src/main/resources", "animal_images", txtImage.getText());
-
-        try {
-            Files.copy(Paths.get(imagefullpath), targetPath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Failed to copy the image file.");
-            alert.showAndWait();
+        // Perform input validation
+        if (Animal_Name.isEmpty() || Animal_Breed == null || Animal_Status == null || Animal_Type == null ||
+                AgeText.isEmpty() || enrolmentDateValue == null || Animal_Description.isEmpty() || ImageFileName.isEmpty()) {
+            // Display an error message if any field is empty
+            showAlert(Alert.AlertType.ERROR, "Error", "Incomplete Information", "Please fill in all fields.");
             return;
         }
 
-        Animal animal = new Animal(Animal_Name, Animal_Breed, Animal_Status, Animal_Type, Age, Enrollement_Date, txtImage.getText(), Animal_Description);
+        try {
+            // Parse age
+            int Age = Integer.parseInt(AgeText);
+            // Check if age is positive
+            if (Age <= 0) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Invalid Age", "Age must be a positive integer.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            // Display an error message if age is not a valid integer
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid Age", "Age must be a positive integer.");
+            return;
+        }
+
+        // Check if enrolment date is in the past
+        if (enrolmentDateValue.isBefore(LocalDate.now())) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid Date", "Enrolment date cannot be in the past.");
+            return;
+        }
+
+        // Perform other validations if needed (e.g., validate image file existence)
+
+        // If all validations pass, proceed to add the animal
+        Animal animal = new Animal(Animal_Name, Animal_Breed, Animal_Status, Animal_Type,
+                Integer.parseInt(AgeText), Date.valueOf(enrolmentDateValue), ImageFileName, Animal_Description);
 
         try {
             // Call the add method in ServiceAnimal to add the animal
             animalService.add(animal);
 
             // Display a success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Animal added successfully");
-            alert.setHeaderText(null);
-            alert.setContentText("Animal added successfully!");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Animal Added", "Animal added successfully!");
+
+            // Close the current window or scene
+            Stage stage = (Stage) txtImage.getScene().getWindow();
+            stage.close();
+
+            // Open the DisplayAnimal page
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Animal/DisplayAnimal.fxml"));
+            Parent root = loader.load();
+            DisplayAnimalB controller = loader.getController();
+            // Initialize or update the DisplayAnimal page as needed
+
+            // Show the DisplayAnimal page
+            Stage displayStage = new Stage();
+            displayStage.setScene(new Scene(root));
+            displayStage.show();
 
         } catch (Exception e) {
             // Display an error message if adding fails
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Add failed");
-            alert.setHeaderText(null);
-            alert.setContentText("Failed to add animal");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Error", "Add Failed", "Failed to add animal.");
             e.printStackTrace();
         }
     }
+
+    private void showAlert(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
 
 
 

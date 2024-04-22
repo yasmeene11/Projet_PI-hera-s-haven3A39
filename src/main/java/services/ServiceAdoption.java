@@ -37,9 +37,7 @@ public class ServiceAdoption implements IService<Adoption> {
         pre.setString(2, adoption.getAdoption_Status());
         pre.setFloat(3, adoption.getAdoption_Fee());
         pre.setInt(4, adoption.getAccount_Key().getAccountId());
-
         pre.setInt(5, adoption.getAnimal_Key().getAnimalId());
-
         pre.setInt(6, adoption.getAdoptionId());
         pre.executeUpdate();
     }
@@ -133,6 +131,22 @@ public class ServiceAdoption implements IService<Adoption> {
     }
 
 
+    public void updateAnimalStatus(int animalId, String Animal_Status) throws SQLException {
+
+        String req = "UPDATE animal SET Animal_Status = ? WHERE animalId = ?";
+
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setString(1, Animal_Status);
+            pre.setInt(2, animalId);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            // Handle the exception appropriately
+            throw e;
+        }
+
+
+
+    }
 
 
 }

@@ -22,8 +22,19 @@ public class Boarding {
         this.End_Date=End_Date;
         this.Boarding_Status=Boarding_Status;
         this.Boarding_Fee=Boarding_Fee;
-        this.Account_Key=Account_Key;
         this.Animal_Key=Animal_Key;
+        this.Account_Key=Account_Key;
+
+    }
+    public Boarding(Date Start_Date,Date End_Date,String Boarding_Status,float Boarding_Fee,User Account_Key,Animal Animal_Key)
+    {
+        this.Start_Date=Start_Date;
+        this.End_Date=End_Date;
+        this.Boarding_Status=Boarding_Status;
+        this.Boarding_Fee=Boarding_Fee;
+        this.Animal_Key=Animal_Key;
+        this.Account_Key=Account_Key;
+
     }
 
     public int getBoardingId() {

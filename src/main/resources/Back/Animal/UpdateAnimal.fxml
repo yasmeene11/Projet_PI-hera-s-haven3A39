@@ -9,13 +9,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="410.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.UpdateAnimalB">
+<VBox prefHeight="700.0" prefWidth="600.0" styleClass="back" stylesheets="@../../styling/UpdateUserStyling.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.UpdateAnimalB">
 
-    <Label text="Animal Name:" />
-    <TextField fx:id="txtAnimalName" />
+    <Label styleClass="bold-label" text="Animal Name:" />
+    <TextField fx:id="txtAnimalName" styleClass="text-field-custom" />
 
-    <Label text="Animal Breed:" />
-    <ComboBox fx:id="cmbBreed">
+    <Label styleClass="bold-label" text="Animal Breed:" />
+    <ComboBox fx:id="cmbBreed" styleClass="comboStatus">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Labrador Retriever" />
@@ -28,8 +28,8 @@
         </items>
     </ComboBox>
 
-    <Label text="Animal Status:" />
-    <ComboBox fx:id="cmbstatus">
+    <Label styleClass="bold-label" text="Animal Status:" />
+    <ComboBox fx:id="cmbstatus" styleClass="comboStatus">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Available" />
@@ -40,8 +40,8 @@
         </items>
     </ComboBox>
 
-    <Label text="Animal Type:" />
-    <ComboBox fx:id="cmbtype">
+    <Label styleClass="bold-label" text="Animal Type:" />
+    <ComboBox fx:id="cmbtype" styleClass="comboStatus">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Dog" />
@@ -53,22 +53,21 @@
             </FXCollections>
         </items>
     </ComboBox>
-    <Label text="Enrollement Date:" />
+    <Label styleClass="bold-label" text="Enrollement Date:" />
     <DatePicker fx:id="enrollementdate" />
 
-    <Label text="Age:" />
-    <TextField fx:id="txtAge" />
+    <Label styleClass="bold-label" text="Age:" />
+    <TextField fx:id="txtAge" styleClass="text-field-custom" />
 
 
 
+    <Label styleClass="bold-label" text="Animal Image:" />
+    <TextField fx:id="txtImage" styleClass="text-field-custom" />
+    <Button onAction="#handleSelectImage" styleClass="custom-button" text="Select Image" />
 
-    <Label text="Animal Image:" />
-    <TextField fx:id="txtImage" />
-    <Button onAction="#handleSelectImage" text="Select Image" />
-
-    <Label text="Animal Description:" />
-    <TextField fx:id="txtAnimalDescription" />
+    <Label styleClass="bold-label" text="Animal Description:" />
+    <TextField fx:id="txtAnimalDescription" styleClass="text-field-custom" />
 
 
-    <Button onAction="#updateAnimal" text="Update" />
+    <Button onAction="#updateAnimal" styleClass="custom-button" text="Update" />
 </VBox>

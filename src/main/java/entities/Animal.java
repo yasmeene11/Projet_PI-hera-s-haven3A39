@@ -50,6 +50,21 @@ public class Animal {
         this.Animal_Image = Animal_Image;
     }
 
+
+    public Animal( String Animal_Name,String Animal_Breed,String Animal_Status,int Age,String Animal_Image,String Animal_Description)
+    {
+
+        this.Animal_Name=Animal_Name;
+        this.Animal_Breed=Animal_Breed;
+        this.Animal_Status=Animal_Status;
+
+        this.Age=Age;
+
+        this.Animal_Image=Animal_Image;
+        this.Animal_Description=Animal_Description;
+
+    }
+
     public int getAnimalId() {
         return animalId;
     }

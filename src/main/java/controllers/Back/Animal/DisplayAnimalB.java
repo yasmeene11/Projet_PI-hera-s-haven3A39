@@ -78,10 +78,12 @@ public class DisplayAnimalB {
 
     private final ServiceAnimal animalService;
     private final ServiceAdoption adoptionService;
+    private final ServiceBoarding boardingService;
 
     public DisplayAnimalB() {
         animalService = new ServiceAnimal();
         adoptionService = new ServiceAdoption();
+        boardingService = new ServiceBoarding();
     }
 
 
@@ -108,15 +110,15 @@ public class DisplayAnimalB {
                         Label animaltypeLabel = new Label("Animal Type: " + animal.getAnimal_Type());
                         Label ageLabel = new Label("Age: " + animal.getAge());
                         Label enrollementdatelabel = new Label("Enrollment Date: " + animal.getEnrollement_Date());
+                        Label animaldescriptionLabel = new Label("Animal Description: " + animal.getAnimal_Description());
 
                         // Use an ImageView for the animal image
                         ImageView imageView = new ImageView();
-                        String imagePath = getClass().getResource("/animal_images/" + animal.getAnimal_Image()).toExternalForm();
 
                         // Check if the image file exists in the animal_images directory
                         InputStream imageStream = getClass().getResourceAsStream("/animal_images/" + animal.getAnimal_Image());
                         if (imageStream != null) {
-                            imageView.setImage(new Image(imagePath)); // Load image from animal_images directory
+                            imageView.setImage(new Image(imageStream)); // Load image from animal_images directory
                         } else {
                             // Load image directly from its original location
                             String originalImagePath = "file:///" + animal.getAnimal_Image();
@@ -125,8 +127,6 @@ public class DisplayAnimalB {
 
                         imageView.setFitWidth(100); // Set image width
                         imageView.setFitHeight(100); // Set image height
-
-                        Label animaldescriptionLabel = new Label("Animal Description: " + animal.getAnimal_Description());
 
                         HBox buttonBox = new HBox(10);
                         buttonBox.setAlignment(Pos.CENTER);
@@ -141,11 +141,10 @@ public class DisplayAnimalB {
 
                         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
-                        container.getChildren().addAll(animalnameLabel, animalbreedLabel, animalstatusLabel, animaldescriptionLabel, imageView, buttonBox);
+                        container.getChildren().addAll(animalnameLabel, animalbreedLabel, animalstatusLabel, animaltypeLabel, ageLabel, enrollementdatelabel, animaldescriptionLabel, imageView, buttonBox);
                         setGraphic(container);
                     }
                 }
-
             });
 
             ListAnimals.getSelectionModel().selectedItemProperty().addListener((obs, oldAnimal, newAnimal) -> {
@@ -158,6 +157,7 @@ public class DisplayAnimalB {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     private void handleUpdate(Animal animal) {
@@ -196,6 +196,7 @@ public class DisplayAnimalB {
             adoptionService.deleteByAnimalId(animal.getAnimalId());
 
             // Delete related pet boarding records
+            boardingService.deleteByAnimalId(animal.getAnimalId());
             // Delete the animal
             animalService.delete(animal);
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front.Animal.DescriptionPage">
+    <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" spacing="10">
+        <Label text="Animal Information" alignment="CENTER">
+            <font>
+                <Font name="Segoe UI" size="24.0" />
+            </font>
+        </Label>
+
+        <Label fx:id="animalNameLabel" text="Name:"/>
+        <Label fx:id="animalAgeLabel" text="Age:"/>
+        <Label fx:id="animalBreedLabel" text="Breed:"/>
+        <Label fx:id="animalStatusLabel" text="Status:"/>
+        <Label fx:id="animalDescriptionLabel" text="Description:"/>
+
+        <ImageView fx:id="animalImageView" fitWidth="200" fitHeight="200" preserveRatio="true"/>
+
+        <Label fx:id="animalImageLabel" text="Animal Image:"/>
+
+
+    </VBox>
+</AnchorPane>

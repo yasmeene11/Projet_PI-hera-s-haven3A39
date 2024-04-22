@@ -1,29 +1,23 @@
 package controllers.Back.Animal;
 
 import entities.Animal;
-import entities.User;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceAnimal;
-import services.ServiceUser;
-import javafx.stage.FileChooser;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+
 public class UpdateAnimalB {
 
     @FXML
@@ -98,14 +92,13 @@ public class UpdateAnimalB {
         }
     }
 
-
     public void initData(Animal animal) {
         this.animal = animal;
         if (animal != null) {
             txtAnimalName.setText(animal.getAnimal_Name());
-            cmbBreed.setValue(String.valueOf(animal.getAnimal_Breed())); // Cast to String
-            cmbstatus.setValue(String.valueOf(animal.getAnimal_Status())); // Cast to String
-            cmbtype.setValue(String.valueOf(animal.getAnimal_Type())); // Cast to String
+            cmbBreed.setValue(animal.getAnimal_Breed()); // Set value directly
+            cmbstatus.setValue(animal.getAnimal_Status()); // Set value directly
+            cmbtype.setValue(animal.getAnimal_Type()); // Set value directly
 
             // For DatePicker, set the value to a LocalDate
             enrollementdate.setValue(animal.getEnrollement_Date().toLocalDate());
@@ -118,49 +111,66 @@ public class UpdateAnimalB {
         }
     }
 
-
-
     @FXML
     private void updateAnimal() {
         if (animal != null) {
             // Retrieve updated data from input fields
-            String newAnimalName = txtAnimalName.getText();
-            String newAnimalBreed = (String) cmbBreed.getValue(); // Cast to String
-            String newAnimalStatus = (String) cmbstatus.getValue(); // Cast to String
-            String newAnimalType = (String) cmbtype.getValue(); // Cast to String
-            java.sql.Date newEnrollementDate = java.sql.Date.valueOf(enrollementdate.getValue()); // Convert LocalDate to java.sql.Date
-            int newAge = Integer.parseInt(txtAge.getText()); // Parse to int
+            String newAnimalName = txtAnimalName.getText().trim();
+            String newAnimalBreed = cmbBreed.getValue();
+            String newAnimalStatus = cmbstatus.getValue();
+            String newAnimalType = cmbtype.getValue();
+            LocalDate newEnrollementDate = enrollementdate.getValue();
+            int newAge;
+            String newAnimalDescription = txtAnimalDescription.getText().trim();
 
-            String newAnimalDescription = txtAnimalDescription.getText();
-
-            Path targetPath = Paths.get("C:/Users/perri/IdeaProjects/UnitedPets (1)/UnitedPets/src/main/resources", "animal_images", txtImage.getText());
-
-            try {
-                Files.copy(Paths.get(imagefullpath), targetPath, StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Failed to copy the image file.");
-                alert.showAndWait();
+            // Validate input fields
+            if (newAnimalName.isEmpty() || newAnimalBreed == null || newAnimalStatus == null ||
+                    newAnimalType == null || newEnrollementDate == null || newAnimalDescription.isEmpty()) {
+                // Display an error message for empty fields
+                showAlert("Error", "Missing Information", "Please fill in all fields.");
                 return;
             }
 
+            try {
+                // Validate age
+                newAge = Integer.parseInt(txtAge.getText());
+                if (newAge <= 0) {
+                    // Display an error message for invalid age
+                    showAlert("Error", "Invalid Age", "Age must be a positive integer.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                // Display an error message for non-integer age
+                showAlert("Error", "Invalid Age", "Age must be a positive integer.");
+                return;
+            }
+
+            // Check if an image file is selected
+            if (selectedImageFile != null && selectedImageFile.exists()) {
+                // Perform file copying only if an image file is selected
+                Path targetPath = Paths.get("C:/Users/perri/IdeaProjects/UnitedPets (1)/UnitedPets/src/main/resources/animal_images", txtImage.getText());
+
+                try {
+                    Files.copy(selectedImageFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert("Error", "File Copy Failed", "Failed to copy the image file.");
+                    return;
+                }
+            }
 
             // Update animal object
             animal.setAnimal_Name(newAnimalName);
             animal.setAnimal_Breed(newAnimalBreed);
             animal.setAnimal_Status(newAnimalStatus);
             animal.setAnimal_Type(newAnimalType);
-            animal.setEnrollement_Date(newEnrollementDate);
+            animal.setEnrollement_Date(Date.valueOf(newEnrollementDate));
             animal.setAge(newAge);
-            animal.setAnimal_Image(txtImage.getText());
             animal.setAnimal_Description(newAnimalDescription);
 
             // Perform the update operation (e.g., call a service method)
             try {
-                ServiceAnimal animalService = new ServiceAnimal(); // Rename the variable to avoid conflict
+                ServiceAnimal animalService = new ServiceAnimal(); // Initialize service properly
                 animalService.update(animal);
 
             } catch (SQLException e) {
@@ -171,5 +181,16 @@ public class UpdateAnimalB {
             txtAnimalName.getScene().getWindow().hide();
         }
     }
+
+    // Helper method to display alert messages
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
 
 }

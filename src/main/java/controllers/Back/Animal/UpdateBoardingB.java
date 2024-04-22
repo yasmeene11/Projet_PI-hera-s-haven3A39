@@ -1,4 +1,144 @@
 package controllers.Back.Animal;
 
+import entities.Animal;
+import entities.Boarding;
+import entities.User;
+import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import services.ServiceAnimal;
+import services.ServiceBoarding;
+import services.ServiceUser;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UpdateBoardingB {
+    @FXML
+    private ComboBox<Animal> cmbAnimalName;
+
+    @FXML
+    private ComboBox<User> cmbUserName;
+
+    @FXML
+    private ComboBox<String> cmbboardingstatus;
+
+    @FXML
+    private DatePicker enddate;
+
+    @FXML
+    private DatePicker startdate;
+
+    @FXML
+    private TextField txtboardingFee;
+
+    private Boarding boarding;
+
+    public void initData(Boarding boarding) {
+        this.boarding = boarding;
+        if (boarding != null) {
+            startdate.setValue(boarding.getStart_Date().toLocalDate());
+            enddate.setValue(boarding.getEnd_Date().toLocalDate());
+            cmbboardingstatus.setValue(boarding.getBoarding_Status());
+            txtboardingFee.setText(String.valueOf(boarding.getBoarding_Fee()));
+
+            // Populate the ComboBox for users
+            populateUserComboBox();
+
+            // Populate the ComboBox for animals
+            populateAnimalComboBox();
+        }
+    }
+
+    private void populateUserComboBox() {
+        try {
+            ServiceUser userService = new ServiceUser();
+            List<User> users = userService.Show();
+            cmbUserName.setItems(FXCollections.observableArrayList(users));
+            cmbUserName.setValue(boarding.getAccount_Key());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void populateAnimalComboBox() {
+        try {
+            ServiceAnimal animalService = new ServiceAnimal();
+            List<Animal> animals = animalService.Show();
+            cmbAnimalName.setItems(FXCollections.observableArrayList(animals));
+            cmbAnimalName.setValue(boarding.getAnimal_Key());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    private void updateBoarding() {
+        if (boarding != null) {
+            // Retrieve updated data from input fields
+            LocalDate startDateValue = startdate.getValue();
+            LocalDate endDateValue = enddate.getValue();
+            String newBoardingStatus = cmbboardingstatus.getValue();
+            String boardingFeeText = txtboardingFee.getText();
+
+            // Validate input fields
+            if (startDateValue == null || endDateValue == null || newBoardingStatus == null || boardingFeeText.isEmpty()) {
+                // Display an error message for empty fields
+                showAlert("Error", "Missing Information", "Please fill in all fields.");
+                return;
+            }
+
+            try {
+                // Validate dates
+                java.sql.Date newStartDate = java.sql.Date.valueOf(startDateValue);
+                java.sql.Date newEndDate = java.sql.Date.valueOf(endDateValue);
+                if (newStartDate.after(newEndDate)) {
+                    // Display an error message for invalid dates
+                    showAlert("Error", "Invalid Dates", "Start date must be before end date.");
+                    return;
+                }
+
+                // Validate boarding fee
+                float newBoardingFee = Float.parseFloat(boardingFeeText);
+                if (newBoardingFee <= 0) {
+                    // Display an error message for invalid fee
+                    showAlert("Error", "Invalid Boarding Fee", "Boarding fee must be a positive number.");
+                    return;
+                }
+
+                // Rest of the update logic
+                boarding.setStart_Date(newStartDate);
+                boarding.setEnd_Date(newEndDate);
+                boarding.setBoarding_Status(newBoardingStatus);
+                boarding.setBoarding_Fee(newBoardingFee);
+
+                // Perform the update operation (e.g., call a service method)
+                ServiceBoarding boardingService = new ServiceBoarding();
+                boardingService.update(boarding);
+
+                // Close the update stage (optional)
+                startdate.getScene().getWindow().hide();
+            } catch (NumberFormatException e) {
+                // Display an error message for invalid boarding fee format
+                showAlert("Error", "Invalid Boarding Fee", "Boarding fee must be a valid number.");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    // Helper method to display alert messages
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 }
