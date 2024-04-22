@@ -106,7 +106,7 @@
                     </image>
                 </ImageView>
 
-                <Button fx:id="btnconfirmadd" layoutX="713.0" layoutY="535.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="159.0" onAction="#AddAdoptionB" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+                <Button fx:id="btnconfirmadd" layoutX="713.0" layoutY="535.0" mnemonicParsing="false" onAction="#AddAdoptionB" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
 
                 <Label alignment="CENTER" layoutX="275.0" layoutY="22.0" prefHeight="35.0" prefWidth="227.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Form">
                     <font>
@@ -142,7 +142,7 @@
 
                 <DatePicker fx:id="adoptiondate" layoutX="176.0" layoutY="119.0" prefHeight="34.0" prefWidth="170.0" promptText="Enrollement Date" />
 
-                <TextField fx:id="txtadoptionfee" layoutX="176.0" layoutY="279.0" prefHeight="44.0" prefWidth="170.0" promptText="Animal Image Path" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+                <TextField fx:id="txtadoptionfee" layoutX="176.0" layoutY="279.0" prefHeight="44.0" prefWidth="170.0" promptText="Adoption Fee" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
             <Label alignment="CENTER" layoutX="428.0" layoutY="148.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="User Key">
                <font>
                   <Font name="Segoe UI" size="10.0" />

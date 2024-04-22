@@ -22,7 +22,7 @@ public class UpdateAdoptionB {
     private DatePicker adoptiondate;
 
     @FXML
-    private ComboBox<String> cmbAnimalName;
+    private ComboBox<Animal> cmbAnimalName;
 
     @FXML
     private ComboBox<String> cmbUserName;
@@ -70,22 +70,18 @@ public class UpdateAdoptionB {
                     .filter(animal -> animal.getAnimal_Status().equals("Available"))
                     .collect(Collectors.toList());
 
-            // Extract the names of available animals
-            List<String> availableAnimalNames = availableAnimals.stream()
-                    .map(Animal::getAnimal_Name)
-                    .collect(Collectors.toList());
+            // Set the ComboBox items with the available animals
+            cmbAnimalName.setItems(FXCollections.observableArrayList(availableAnimals));
 
-            // Set the ComboBox items with the names of available animals
-            cmbAnimalName.setItems(FXCollections.observableArrayList(availableAnimalNames));
-
-            // Set the default value of the ComboBox to the adoption's animal name if available
+            // Set the default value of the ComboBox to the adoption's animal if available
             if (adoption != null && adoption.getAnimal_Key() != null) {
-                cmbAnimalName.setValue(adoption.getAnimal_Key().getAnimal_Name());
+                cmbAnimalName.setValue(adoption.getAnimal_Key());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 
     @FXML
@@ -127,7 +123,7 @@ public class UpdateAdoptionB {
             // Rest of the update logic
             java.sql.Date newAdoptionDate = java.sql.Date.valueOf(selectedDate);
             String newAdoptionStatus = cmbadoptionstatus.getValue();
-            String newAnimalName = cmbAnimalName.getValue();
+            Animal newAnimalName = cmbAnimalName.getValue();
             String newUserName = cmbUserName.getValue();
 
             if (newAnimalName == null || newUserName == null) {
@@ -143,7 +139,7 @@ public class UpdateAdoptionB {
             adoption.setAdoption_Date(newAdoptionDate);
             adoption.setAdoption_Status(newAdoptionStatus);
             adoption.setAdoption_Fee(newAdoptionFee);
-            adoption.getAnimal_Key().setAnimal_Name(newAnimalName);
+            adoption.setAnimal_Key(newAnimalName);
             adoption.getAccount_Key().setName(newUserName);
 
             try {
@@ -154,6 +150,10 @@ public class UpdateAdoptionB {
                 if ("Cancelled".equals(newAdoptionStatus)) {
                     int animalId = adoption.getAnimal_Key().getAnimalId();
                     adoptionService.updateAnimalStatus(animalId, "Available");
+                }
+                if ("Pending".equals(newAdoptionStatus)) {
+                    int animalId = adoption.getAnimal_Key().getAnimalId();
+                    adoptionService.updateAnimalStatus(animalId, "Pending");
                 }
 
                 // Close the window after successful update

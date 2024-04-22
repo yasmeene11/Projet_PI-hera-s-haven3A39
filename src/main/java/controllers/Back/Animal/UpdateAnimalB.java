@@ -121,7 +121,7 @@ public class UpdateAnimalB {
             String newAnimalType = cmbtype.getValue();
             LocalDate newEnrollementDate = enrollementdate.getValue();
             int newAge;
-            String newAnimalDescription = txtAnimalDescription.getText().trim();
+            String newAnimalDescription = txtAnimalDescription.getText();
 
             // Validate input fields
             if (newAnimalName.isEmpty() || newAnimalBreed == null || newAnimalStatus == null ||
@@ -167,6 +167,8 @@ public class UpdateAnimalB {
             animal.setEnrollement_Date(Date.valueOf(newEnrollementDate));
             animal.setAge(newAge);
             animal.setAnimal_Description(newAnimalDescription);
+            animal.setAnimal_Image(newAnimalDescription);
+            animal.setAnimal_Image(txtImage.getText());
 
             // Perform the update operation (e.g., call a service method)
             try {
