@@ -92,7 +92,7 @@ public class UpdateDonationMB {
             Float newDonationAmount = Float.parseFloat(txtDonationMAmount.getText());
 
             java.sql.Date newDonationDate = java.sql.Date.valueOf(datePickerDonationMDate.getValue()); // Convert LocalDate to java.sql.Date
-            System.out.println(newDonationAmount);
+            //System.out.println(newDonationAmount);
             donationM.setDonationAmount(newDonationAmount);
             donationM.setDonationMDate(newDonationDate);
 

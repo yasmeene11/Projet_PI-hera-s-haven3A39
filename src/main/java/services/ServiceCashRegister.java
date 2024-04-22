@@ -5,7 +5,9 @@ import utils.MyBD;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ServiceCashRegister implements IService<CashRegister> {
@@ -55,6 +57,20 @@ public class ServiceCashRegister implements IService<CashRegister> {
         }
 
         return transactions;
+    }
+    public Map<String, Integer> getStatsByType() throws SQLException {
+        String query = "SELECT type, COUNT(*) AS count FROM cash_register GROUP BY type";
+        Map<String, Integer> stats = new HashMap<>();
+
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String type = resultSet.getString("type");
+                int count = resultSet.getInt("count");
+                stats.put(type, count);
+            }
+        }
+        return stats;
     }
 
 }

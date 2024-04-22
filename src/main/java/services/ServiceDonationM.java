@@ -31,7 +31,6 @@ public class ServiceDonationM implements IService<DonationM>{
             donationMStatement.setInt(3, donationM.getAccountKey());
             donationMStatement.executeUpdate();
 
-            // Récupération de l'id de la donation_m insérée
             ResultSet generatedKeys = donationMStatement.getGeneratedKeys();
             int donationMId = -1;
             if (generatedKeys.next()) {
@@ -66,7 +65,7 @@ public class ServiceDonationM implements IService<DonationM>{
                 User account = new User();
                 account.setAccountId(resultSet.getInt("accountId"));
                 account.setName(resultSet.getString("name"));
-                // Ajouter d'autres attributs si nécessaire
+                account.setSurname(resultSet.getString("surname"));
                 accounts.add(account);
             }
         }
@@ -114,6 +113,17 @@ public class ServiceDonationM implements IService<DonationM>{
             }
         } // Les ressources sont automatiquement fermées après la fin du bloc try
         return dons;   }
+    public String getDonorNameById(int donorId) throws SQLException {
+        String query = "SELECT name FROM account WHERE accountId = ?";
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setInt(1, donorId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("name");
+            }
+        }
+        return null;
+    }
 
 
 }

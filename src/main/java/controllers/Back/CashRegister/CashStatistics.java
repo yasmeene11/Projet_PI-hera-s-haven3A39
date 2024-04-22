@@ -1,5 +1,17 @@
 package controllers.Back.CashRegister;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.sql.SQLException;
+import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,10 +19,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import services.ServiceCashRegister;
 
 import java.io.IOException;
 
-public class CashStatistics {
+public class CashStatistics  {
 
     @FXML
     private Button btnAdoption;
@@ -50,6 +63,35 @@ public class CashStatistics {
 
     @FXML
     private Button btncashstatistic;
+    @FXML
+    private VBox chartContainer;
+
+    @FXML
+    public void showCashStatistics() {
+        try {
+            System.out.println("statistiqueeee");
+            ServiceCashRegister cashRegisterService = new ServiceCashRegister();
+            Map<String, Integer> stats = cashRegisterService.getStatsByType();
+
+            CategoryAxis xAxis = new CategoryAxis();
+            NumberAxis yAxis = new NumberAxis();
+            BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+            barChart.setTitle("Cash Register Statistics by Type");
+
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            ObservableList<XYChart.Data<String, Number>> data = FXCollections.observableArrayList();
+
+            stats.forEach((type, count) -> data.add(new XYChart.Data<>(type, count)));
+            series.setData(data);
+            barChart.getData().add(series);
+
+            // Ajouter le graphique au conteneur chartContainer
+            chartContainer.getChildren().clear(); // Effacer tout contenu précédent
+            chartContainer.getChildren().add(barChart);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gérer l'exception
+        }
+    }
 
     @FXML
     private void NavigateToDisplayUser() throws IOException {

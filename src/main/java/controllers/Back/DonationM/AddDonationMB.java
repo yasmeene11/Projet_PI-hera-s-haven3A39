@@ -75,6 +75,8 @@ public class AddDonationMB {
 
     @FXML
     private ComboBox<User> accountComboBox;
+    private ServiceDonationM serviceDonationM;
+    public AddDonationMB(){serviceDonationM=new ServiceDonationM();}
 
     @FXML
     public void initialize() {
@@ -142,7 +144,7 @@ public class AddDonationMB {
     }
 
     @FXML
-    private void addDonationM() {
+    private void addDonationM() throws SQLException {
 
         if (validateFields())
         {// Récupérer les valeurs des champs de texte et de la date
@@ -156,6 +158,7 @@ public class AddDonationMB {
         donationM.setDonationMDate(date);
         donationM.setAccountKey(accountId);
 
+
         // Appeler la méthode add() pour insérer la donation dans la base de données
         try {
             ServiceDonationM donationMController = new ServiceDonationM();
@@ -165,12 +168,25 @@ public class AddDonationMB {
             alert.setHeaderText(null);
             alert.setContentText("Donation added successfully!");
             alert.showAndWait();
+            String donorName= serviceDonationM.getDonorNameById(accountId);
+            String thankYouMessage = generateThankYouMessage(donorName);
+            displayThankYouMessage(thankYouMessage);
         } catch (SQLException e) {
             e.printStackTrace();
             // Gérer les erreurs liées à la base de données
             // Vous pouvez afficher un message d'erreur à l'utilisateur ici
         }}
 
+    }
+    private void displayThankYouMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Merci !");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private String generateThankYouMessage(String donorName) {
+        return "Thank you, " + donorName + ", for you generous donation ! We appreciate your support.";
     }
     @FXML
     private void NavigateToDisplayUser() throws IOException {

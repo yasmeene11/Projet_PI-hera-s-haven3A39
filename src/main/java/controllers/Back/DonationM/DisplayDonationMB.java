@@ -116,6 +116,7 @@ public class DisplayDonationMB {
                                "Amount: " + donation.getDonationAmount() + ", Date: " + donation.getDonationMDate() + ", Account Key: " + donation.getAccountKey());*/
                        VBox container = new VBox(5);
                        container.getStyleClass().add("user-card");
+
                        Label donationMAmount = new Label("Donation Amount: " + donation.getDonationAmount());
                        Label donationMDate = new Label("Donation Date : " + donation.getDonationMDate());
                        Label userNameLabel = new Label("User Name: " + donation.getAccountKey());
