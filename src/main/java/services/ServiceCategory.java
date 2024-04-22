@@ -60,4 +60,15 @@ public class ServiceCategory implements IService<Category>{
         }
         return categories;
     }
+    public void deleteProductsByCategory(Category category) throws SQLException {
+        String deleteProductsQuery = "DELETE FROM product WHERE Category_Key=?";
+        try (PreparedStatement deleteProductsStatement = con.prepareStatement(deleteProductsQuery)) {
+            deleteProductsStatement.setInt(1, category.getCategoryId());
+            deleteProductsStatement.executeUpdate();
+        } catch (SQLException e) {
+            // Handle exception
+            e.printStackTrace();
+            // Optionally, throw an exception or handle the error gracefully
+        }
+    }
 }

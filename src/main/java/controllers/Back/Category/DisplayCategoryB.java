@@ -147,8 +147,8 @@ public class DisplayCategoryB {
     @FXML
     private void handleDelete(Category category) {
         try {
+            servicecat.deleteProductsByCategory(category);
             servicecat.delete(category); // Assuming animalService is the correct service to use for deleting animals
-            // Deletion successful, now refresh the display
             categoryListView.getItems().remove(category); // Remove the deleted animal from the list
         } catch (SQLException e) {
             e.printStackTrace(); // Handle or log the exception appropriately

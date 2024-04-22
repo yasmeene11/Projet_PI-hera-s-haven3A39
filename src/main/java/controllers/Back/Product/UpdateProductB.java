@@ -2,6 +2,8 @@ package controllers.Back.Product;
 import entities.Category;
 import entities.Product;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -9,6 +11,7 @@ import javafx.util.converter.IntegerStringConverter;
 import services.ServiceCategory;
 import services.ServiceProduct;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -64,13 +67,15 @@ public class UpdateProductB {
         });
         TextFormatter<Integer> quantityFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
             if (change.isContentChange()) {
-                // Vérifier si la nouvelle valeur peut être convertie en un nombre
                 try {
-                    Integer.parseInt(change.getControlNewText());
-                    return change;
+                    int newValue = Integer.parseInt(change.getControlNewText());
+                    if (newValue >= 0) {
+                        return change;
+                    } else {
+                        return null; // Reject negative values
+                    }
                 } catch (NumberFormatException e) {
-                    // Ne pas accepter la modification si la nouvelle valeur n'est pas un nombre
-                    return null;
+                    return null; // Reject non-integer values
                 }
             }
             return change;
@@ -78,7 +83,6 @@ public class UpdateProductB {
 
         txtProductQuantity.setTextFormatter(quantityFormatter);
     }
-
     void handleException(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -112,6 +116,13 @@ public class UpdateProductB {
 
     @FXML
     private void updateProduct() {
+        if (txtProductName.getText().isEmpty() || txtProductLabel.getText().isEmpty() || txtProductQuantity.getText().isEmpty() || txtExpirationDate.getValue() == null || txtCategory.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText("Please fill in all fields.");
+            alert.show();
+            return;
+        }
         if (product != null) {
             String newProductName = txtProductName.getText();
             String newProductLabel = txtProductLabel.getText();
@@ -129,16 +140,24 @@ public class UpdateProductB {
                 // Update the product in the database
                 ServiceProduct serviceprod = new ServiceProduct();
                 serviceprod.update(product);
-            } catch (SQLException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Update");
+                alert.setContentText("Product Updated");
+                alert.show();
+                LoadPage();
+            } catch (SQLException | IOException e) {
                 throw new RuntimeException(e);
             }
-
-            // Close the current window
             txtProductName.getScene().getWindow().hide();
         }
     }
 
+    public void LoadPage() throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("/Back/Product/DisplayProduct.fxml"));
+        Parent root=loader.load();
+        txtProductName.getScene().setRoot(root);
 
+    }
 
 
 

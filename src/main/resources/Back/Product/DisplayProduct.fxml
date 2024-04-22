@@ -24,6 +24,8 @@
                 <Button fx:id="btnCash" layoutX="92.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayCashRegister" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Cash Register" />
                 <Button fx:id="btnAppointment" layoutX="92.0" layoutY="565.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Appointments" />
                 <Button fx:id="btnReport" layoutX="92.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayReport" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Reports" />
+                <Button fx:id="btnPD" layoutX="92.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayPD" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="ProductDonation" />
+
                 <ImageView fitHeight="34.0" fitWidth="28.0" layoutX="50.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../images/people.png" />

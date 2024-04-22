@@ -2,6 +2,7 @@ package controllers.Back.Product;
 
 import entities.Category;
 import entities.Product;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import services.ServiceCategory;
 import services.ServiceProduct;
@@ -256,29 +258,50 @@ public class AddProductB {
         TextFormatter<Integer> quantityFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
             if (change.isContentChange()) {
                 try {
-                    Integer.parseInt(change.getControlNewText());
-                    return change;
+                    int newValue = Integer.parseInt(change.getControlNewText());
+                    if (newValue >= 0) {
+                        return change;
+                    } else {
+                        return null; // Reject negative values
+                    }
                 } catch (NumberFormatException e) {
-                    return null;
+                    return null; // Reject non-integer values
                 }
             }
             return change;
         });
 
         ProductQuantity.setTextFormatter(quantityFormatter);
+
     }
 
     private void populateCategoryComboBox() throws SQLException {
         ServiceCategory sc = new ServiceCategory();
         List<Category> categories = sc.Show();
-        System.out.println(categories);
-        for (Category category: categories){
-        CategoryKey.getItems().add(category);}
+            CategoryKey.setItems(FXCollections.observableArrayList(categories));
+            CategoryKey.setConverter(new StringConverter<Category>() {
+                @Override
+                public String toString(Category object) {
+                    return object.getProduct_Type();
+                }
+
+                @Override
+                public Category fromString(String string) {
+                    return null;
+                }
+            });
 
     }
 
     @FXML
     void AddProduct(ActionEvent event) {
+        if (ProductName.getText().isEmpty() || ProductLabel.getText().isEmpty() || ProductQuantity.getText().isEmpty() || ExpirationDate.getValue() == null || CategoryKey.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText("Please fill in all fields.");
+            alert.show();
+            return;
+        }
         try {
             LocalDate localDate = ExpirationDate.getValue();
             // Convert LocalDate to java.sql.Date

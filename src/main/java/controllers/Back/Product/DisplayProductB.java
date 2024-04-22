@@ -66,6 +66,8 @@ public class DisplayProductB{
 
     @FXML
     private Button btnaddproduct;
+    @FXML
+    private Button btnPD;
 
     @FXML
     private Button btnlistproduct;
@@ -178,6 +180,16 @@ public class DisplayProductB{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/User/DisplayUser.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btnUser.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+        stage.show();
+    }
+    @FXML
+    private void NavigateToDisplayPD() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/ProductDonation/DisplayPD.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnPD.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("United Pets");

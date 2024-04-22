@@ -213,6 +213,13 @@ public class AddCategoryB {
     }
 
     public void AddCategory(ActionEvent actionEvent) {
+        if (ProductType.getText().isEmpty() || ProductSource.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText("Please fill in all fields.");
+            alert.show();
+            return;
+        }
         try {
             pc.add(new Category(ProductType.getText(),ProductSource.getText()));
             Alert alert=new Alert(Alert.AlertType.INFORMATION);
@@ -240,4 +247,5 @@ public class AddCategoryB {
         Parent root=loader.load();
         ProductType.getScene().setRoot(root);
     }
+
 }
