@@ -95,7 +95,7 @@ public class DisplayAppointmentB {
         try {
             ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
-            List<Appointment> appointments = appointmentservice.Show();
+                List<Appointment> appointments = appointmentservice.Show();
             appointmentList.addAll(appointments);
 
             listAppointments.setItems(appointmentList);

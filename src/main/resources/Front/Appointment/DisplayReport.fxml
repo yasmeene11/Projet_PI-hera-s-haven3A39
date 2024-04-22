@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -72,12 +74,12 @@
         <MenuBar fx:id="menuBar" layoutX="264.0" layoutY="49.0" prefHeight="46.0" prefWidth="987.0" styleClass="menu-bar" stylesheets="@../../styling/fullpackstyling.css">
 
             <!-- Home Menu -->
-            <Menu   styleClass="menu"    text="Home">
+            <Menu styleClass="menu" text="Home">
                 <MenuItem fx:id="btnindexb" onAction="#NavigateToIndexBack" styleClass="menu-item" text="Home">
                 </MenuItem>
             </Menu>
 
-            <Menu   styleClass="menu" text="Animals">
+            <Menu styleClass="menu" text="Animals">
                 <MenuItem fx:id="btnanimal" onAction="#NavigateToDisplayAnimal" styleClass="menu-item" text="Animals">
                 </MenuItem>
             </Menu>
@@ -109,6 +111,13 @@
                 </items>
             </Menu>
         </MenuBar>
+      <TableView fx:id="rapportTableView" layoutX="289.0" layoutY="151.0" prefHeight="466.0" prefWidth="861.0">
+        <columns>
+          <TableColumn fx:id="descriptionColumn" prefWidth="231.199951171875" text="Report" />
+          <TableColumn fx:id="vetNameColumn" prefWidth="259.1999816894531" text="Written By Dr" />
+            <TableColumn fx:id="petNameColumn" prefWidth="370.400048828125" text="Associated Pet" />
+        </columns>
+      </TableView>
 
 
     </children>

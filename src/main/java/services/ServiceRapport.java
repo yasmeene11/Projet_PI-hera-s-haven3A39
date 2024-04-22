@@ -29,12 +29,31 @@ public class ServiceRapport implements IService<Rapport> {
 
     @Override
     public void update(Rapport rapport) throws SQLException {
-
+        con.setAutoCommit(false); // Set autoCommit to false
+        try {
+            String req = "UPDATE rapport SET description =? WHERE rapportId =?";
+            System.out.println("SQL Query: " + req);
+            System.out.println("Description: " + rapport.getDescription());
+            System.out.println("Rapport ID: " + rapport.getRapportId());
+            PreparedStatement pre = con.prepareStatement(req);
+            pre.setString(1, rapport.getDescription());
+            pre.setInt(2, rapport.getRapportId());
+            pre.executeUpdate();
+            con.commit(); // Commit the changes
+        } catch (SQLException e) {
+            con.rollback(); // Roll back the changes if an exception occurs
+            throw e; // Rethrow the exception
+        } finally {
+            con.setAutoCommit(true); // Set autoCommit back to true
+        }
     }
 
     @Override
     public void delete(Rapport rapport) throws SQLException {
-
+        String req = "DELETE FROM rapport WHERE rapportId = ?";
+        PreparedStatement pre = con.prepareStatement(req);
+        pre.setInt(1, rapport.getRapportId());
+        pre.executeUpdate();
     }
 
     public List<Rapport> Show() throws SQLException {
