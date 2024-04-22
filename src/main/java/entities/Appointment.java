@@ -38,6 +38,9 @@
 
         }
 
+        public Appointment(int appointmentKey) {
+            this.appointmentId = appointmentKey;
+        }
         // Getters and Setters
         public int getAppointmentId() {
             return appointmentId;

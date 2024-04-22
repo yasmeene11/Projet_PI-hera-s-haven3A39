@@ -37,10 +37,28 @@ public class ServiceRapport implements IService<Rapport> {
 
     }
 
-    @Override
     public List<Rapport> Show() throws SQLException {
-        return null;
+        List<Rapport> rapports = new ArrayList<>();
+        String query = "SELECT r.description, a.name AS vetName, an.animal_name AS petName " +
+                "FROM rapport r " +
+                "INNER JOIN appointment ap ON r.Appointment_Key = ap.appointmentId " +
+                "INNER JOIN account a ON ap.Account_Key = a.accountId " +
+                "INNER JOIN animal an ON ap.Animal_Key = an.animalId";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                String description = resultSet.getString("description");
+                String vetName = resultSet.getString("vetName");
+                String petName = resultSet.getString("petName");
+                System.out.println("Description: " + description + ", Vet Name: " + vetName + ", Pet Name: " + petName);
+                Rapport rapport = new Rapport(description, vetName, petName);
+                rapports.add(rapport);
+            }
+        }
+        return rapports;
     }
+
+
 
     public List<Appointment> getAppointmentsWithoutReports() throws SQLException {
         List<Appointment> appointments = new ArrayList<>();

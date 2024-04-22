@@ -1,14 +1,23 @@
 package controllers.Back.Appointment;
 
+import entities.Rapport;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import services.ServiceRapport;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 public class DisplayReportB {
 
@@ -50,7 +59,20 @@ public class DisplayReportB {
 
     @FXML
     private Button btnlistreport;
+    @FXML
+    private TableView<Rapport> rapportTableView;
 
+
+    @FXML
+    private TableColumn<Rapport, String> descriptionColumn;
+
+    @FXML
+    private TableColumn<Rapport, Integer> appointmentIdColumn;
+    @FXML
+    private TableColumn<Rapport, String> vetNameColumn;
+
+    @FXML
+    private TableColumn<Rapport, String> petNameColumn;
     @FXML
     private void NavigateToDisplayUser() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/User/DisplayUser.fxml"));
@@ -198,5 +220,23 @@ public class DisplayReportB {
 
         stage.show();
 
+    }
+
+    @FXML
+    private void initialize() {
+        try {
+            ServiceRapport serviceRapport = new ServiceRapport();
+            List<Rapport> rapports = serviceRapport.Show();
+
+            ObservableList<Rapport> rapportData = FXCollections.observableArrayList(rapports);
+
+            descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+            vetNameColumn.setCellValueFactory(new PropertyValueFactory<>("vetName"));
+            petNameColumn.setCellValueFactory(new PropertyValueFactory<>("petName"));
+
+            rapportTableView.setItems(rapportData);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace(); // Handle the exception appropriately
+        }
     }
 }
