@@ -149,4 +149,51 @@ public class ServiceBoarding implements IService<Boarding>{
             throw e;
         }
     }
+
+    public Animal getAnimalByName(String name) throws SQLException {
+        Animal animal = null;
+        String query = "SELECT * FROM Animal WHERE animal_name = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Assuming you have a Animal constructor that takes parameters accordingly
+                    animal = new Animal(
+                            resultSet.getInt("animalId"), // Assuming this is the column name for animal ID
+                            resultSet.getString("animal_name"),
+                            resultSet.getString("animal_status")
+                    );
+                }
+            }
+        }
+        return animal;
+    }
+    public User getUserByName(String name) throws SQLException {
+        User user = null;
+        String query = "SELECT * FROM Account WHERE name = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Assuming you have a User constructor that takes parameters accordingly
+                    user = new User(
+                            resultSet.getInt("accountId"), // Assuming this is the column name for account ID
+                            resultSet.getString("name"),
+                            resultSet.getString("surname"),
+                            resultSet.getString("gender"),
+                            resultSet.getString("phone_Number"),
+                            resultSet.getString("address"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password"),
+                            resultSet.getString("role"),
+                            resultSet.getString("account_Status"),
+                            resultSet.getString("reset_Token"),
+                            resultSet.getDate("reset_Token_Requested_At")
+                    );
+                }
+            }
+        }
+        return user;
+    }
+
 }

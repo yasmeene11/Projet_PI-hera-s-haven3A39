@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 
 import services.ServiceAdoption;
 import services.ServiceAnimal;
+import services.ServiceBoarding;
 import services.ServiceUser;
 import java.sql.SQLException;
 import javafx.collections.FXCollections;
@@ -22,7 +23,7 @@ public class UpdateAdoptionB {
     private DatePicker adoptiondate;
 
     @FXML
-    private ComboBox<Animal> cmbAnimalName;
+    private ComboBox<String> cmbAnimalName;
 
     @FXML
     private ComboBox<String> cmbUserName;
@@ -71,11 +72,17 @@ public class UpdateAdoptionB {
                     .collect(Collectors.toList());
 
             // Set the ComboBox items with the available animals
-            cmbAnimalName.setItems(FXCollections.observableArrayList(availableAnimals));
+            // Extract the names of animals here for boarding
+            List<String> adoptionAnimalNames = availableAnimals.stream()
+                    .map(Animal::getAnimal_Name)
+                    .collect(Collectors.toList());
+
+            // Set the ComboBox items with the names of animals here for boarding
+            cmbAnimalName.setItems(FXCollections.observableArrayList(adoptionAnimalNames));
 
             // Set the default value of the ComboBox to the adoption's animal if available
             if (adoption != null && adoption.getAnimal_Key() != null) {
-                cmbAnimalName.setValue(adoption.getAnimal_Key());
+                cmbAnimalName.setValue(adoption.getAnimal_Key().getAnimal_Name());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -85,7 +92,7 @@ public class UpdateAdoptionB {
 
 
     @FXML
-    private void updateAdoption() {
+    private void updateAdoption() throws SQLException {
         if (adoption != null) {
             // Validate date
             LocalDate selectedDate = adoptiondate.getValue();
@@ -123,7 +130,7 @@ public class UpdateAdoptionB {
             // Rest of the update logic
             java.sql.Date newAdoptionDate = java.sql.Date.valueOf(selectedDate);
             String newAdoptionStatus = cmbadoptionstatus.getValue();
-            Animal newAnimalName = cmbAnimalName.getValue();
+            String newAnimalName = cmbAnimalName.getValue();
             String newUserName = cmbUserName.getValue();
 
             if (newAnimalName == null || newUserName == null) {
@@ -139,8 +146,16 @@ public class UpdateAdoptionB {
             adoption.setAdoption_Date(newAdoptionDate);
             adoption.setAdoption_Status(newAdoptionStatus);
             adoption.setAdoption_Fee(newAdoptionFee);
-            adoption.setAnimal_Key(newAnimalName);
-            adoption.getAccount_Key().setName(newUserName);
+
+            // Set new animal key if a different animal is selected
+            // Set new user key if a different user is selected
+            String selectedUserName = cmbUserName.getValue();
+            if (selectedUserName != null) {
+                ServiceUser userService = new ServiceUser();
+                ServiceAdoption adoptionService = new ServiceAdoption();
+                User selectedUser = adoptionService.getUserByName(selectedUserName);
+                adoption.setAccount_Key(selectedUser);
+            } // Missing closing bracket here
 
             try {
                 ServiceAdoption adoptionService = new ServiceAdoption();
@@ -166,6 +181,7 @@ public class UpdateAdoptionB {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
         }
     }
 

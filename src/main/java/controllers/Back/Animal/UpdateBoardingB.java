@@ -133,6 +133,24 @@ public class UpdateBoardingB {
                 boarding.setBoarding_Status(newBoardingStatus);
                 boarding.setBoarding_Fee(newBoardingFee);
 
+                // Set new animal key if a different animal is selected
+                String selectedAnimalName = cmbAnimalName.getValue();
+                if (selectedAnimalName != null) {
+                    ServiceAnimal animalService = new ServiceAnimal();
+                    ServiceBoarding boardingService = new ServiceBoarding();
+                    Animal selectedAnimal = boardingService.getAnimalByName(selectedAnimalName);
+                    boarding.setAnimal_Key(selectedAnimal);
+                }
+
+                // Set new user key if a different user is selected
+                String selectedUserName = cmbUserName.getValue();
+                if (selectedUserName != null) {
+                    ServiceUser userService = new ServiceUser();
+                    ServiceBoarding boardingService = new ServiceBoarding();
+                    User selectedUser = boardingService.getUserByName(selectedUserName);
+                    boarding.setAccount_Key(selectedUser);
+                }
+
                 // Perform the update operation (e.g., call a service method)
                 ServiceBoarding boardingService = new ServiceBoarding();
                 boardingService.update(boarding);
@@ -147,6 +165,7 @@ public class UpdateBoardingB {
             }
         }
     }
+
 
     // Helper method to display alert messages
     private void showAlert(String title, String header, String content) {
