@@ -115,6 +115,17 @@ public class AddBoarding2 {
             alert.setContentText("Boarding added successfully!");
             alert.showAndWait();
 
+            // Close the current stage
+            Stage stage = (Stage) startdate.getScene().getWindow();
+            stage.close();
+
+            // Load and display the indexBack page
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/indexFront.fxml"));
+            Parent root = loader.load();
+            Stage displayStage = new Stage();
+            displayStage.setScene(new Scene(root));
+            displayStage.show();
+
         } catch (Exception e) {
             // Display an error message if adding fails
             Alert alert = new Alert(Alert.AlertType.ERROR);

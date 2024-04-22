@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,26 +65,39 @@ public class UpdateAdoptionB {
     private void populateAnimalComboBox() {
         try {
             ServiceAnimal animalService = new ServiceAnimal();
-            List<Animal> animals = animalService.Show();
-            List<String> animalNames = animals.stream().map(Animal::getAnimal_Name).collect(Collectors.toList());
-            cmbAnimalName.setItems(FXCollections.observableArrayList(animalNames));
-            cmbAnimalName.setValue(adoption.getAnimal_Key().getAnimal_Name());
+            // Fetch animals with status "Available" from the database
+            List<Animal> availableAnimals = animalService.Show().stream()
+                    .filter(animal -> animal.getAnimal_Status().equals("Available"))
+                    .collect(Collectors.toList());
+
+            // Extract the names of available animals
+            List<String> availableAnimalNames = availableAnimals.stream()
+                    .map(Animal::getAnimal_Name)
+                    .collect(Collectors.toList());
+
+            // Set the ComboBox items with the names of available animals
+            cmbAnimalName.setItems(FXCollections.observableArrayList(availableAnimalNames));
+
+            // Set the default value of the ComboBox to the adoption's animal name if available
+            if (adoption != null && adoption.getAnimal_Key() != null) {
+                cmbAnimalName.setValue(adoption.getAnimal_Key().getAnimal_Name());
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     @FXML
     private void updateAdoption() {
         if (adoption != null) {
             // Validate date
             LocalDate selectedDate = adoptiondate.getValue();
-            if (selectedDate.isBefore(LocalDate.now())) {
+            if (selectedDate == null || selectedDate.isBefore(LocalDate.now())) {
                 // Display an error message or handle the invalid date scenario
-                // For example, you can show an alert dialog
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Date");
-                alert.setHeaderText("Please select a future date.");
+                alert.setHeaderText("Please select a valid future date.");
                 alert.showAndWait();
                 return; // Exit the method if the date is invalid
             }
@@ -95,7 +109,6 @@ public class UpdateAdoptionB {
                 newAdoptionFee = Float.parseFloat(adoptionFeeText);
                 if (newAdoptionFee < 0) {
                     // Adoption fee can't be negative
-                    // Display an error message or handle the invalid fee scenario
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Invalid Adoption Fee");
                     alert.setHeaderText("Adoption fee cannot be negative.");
@@ -104,7 +117,6 @@ public class UpdateAdoptionB {
                 }
             } catch (NumberFormatException e) {
                 // Adoption fee contains characters or is empty
-                // Display an error message or handle the invalid fee scenario
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Adoption Fee");
                 alert.setHeaderText("Please enter a valid number for adoption fee.");
@@ -118,9 +130,7 @@ public class UpdateAdoptionB {
             String newAnimalName = cmbAnimalName.getValue();
             String newUserName = cmbUserName.getValue();
 
-
-
-            if (cmbAnimalName.getValue() == null || cmbUserName.getValue() == null) {
+            if (newAnimalName == null || newUserName == null) {
                 // Display an error message if any of the combo boxes are left empty
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Missing Selection");
@@ -141,20 +151,24 @@ public class UpdateAdoptionB {
                 adoptionService.update(adoption);
 
                 // If adoption status is "Cancelled", update the related animal's status to "Available"
-                if (newAdoptionStatus.equals("Cancelled")) {
-                    int animalId = adoption.getAnimal_Key().getAnimalId(); // Assuming getId() returns the animal's ID
+                if ("Cancelled".equals(newAdoptionStatus)) {
+                    int animalId = adoption.getAnimal_Key().getAnimalId();
                     adoptionService.updateAnimalStatus(animalId, "Available");
                 }
 
+                // Close the window after successful update
+                adoptiondate.getScene().getWindow().hide();
 
+                // Update the ComboBox values
+                populateUserComboBox();
+                populateAnimalComboBox();
 
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
-            adoptiondate.getScene().getWindow().hide();
         }
     }
+
 
 
 }

@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 
 public class UpdateBoardingB {
     @FXML
-    private ComboBox<Animal> cmbAnimalName;
+    private ComboBox<String> cmbAnimalName;
 
     @FXML
-    private ComboBox<User> cmbUserName;
+    private ComboBox<String> cmbUserName;
 
     @FXML
     private ComboBox<String> cmbboardingstatus;
@@ -59,8 +59,9 @@ public class UpdateBoardingB {
         try {
             ServiceUser userService = new ServiceUser();
             List<User> users = userService.Show();
-            cmbUserName.setItems(FXCollections.observableArrayList(users));
-            cmbUserName.setValue(boarding.getAccount_Key());
+            List<String> userNames = users.stream().map(User::getName).collect(Collectors.toList());
+            cmbUserName.setItems(FXCollections.observableArrayList(userNames));
+            cmbUserName.setValue(boarding.getAccount_Key().getName());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -69,13 +70,28 @@ public class UpdateBoardingB {
     private void populateAnimalComboBox() {
         try {
             ServiceAnimal animalService = new ServiceAnimal();
-            List<Animal> animals = animalService.Show();
-            cmbAnimalName.setItems(FXCollections.observableArrayList(animals));
-            cmbAnimalName.setValue(boarding.getAnimal_Key());
+            // Fetch animals with status "Here for Boarding" from the database
+            List<Animal> boardingAnimals = animalService.Show().stream()
+                    .filter(animal -> animal.getAnimal_Status().equals("Here for Boarding"))
+                    .collect(Collectors.toList());
+
+            // Extract the names of animals here for boarding
+            List<String> boardingAnimalNames = boardingAnimals.stream()
+                    .map(Animal::getAnimal_Name)
+                    .collect(Collectors.toList());
+
+            // Set the ComboBox items with the names of animals here for boarding
+            cmbAnimalName.setItems(FXCollections.observableArrayList(boardingAnimalNames));
+
+            // Set the default value of the ComboBox to the boarding's animal name if available
+            if (boarding != null && boarding.getAnimal_Key() != null) {
+                cmbAnimalName.setValue(boarding.getAnimal_Key().getAnimal_Name());
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     @FXML
     private void updateBoarding() {

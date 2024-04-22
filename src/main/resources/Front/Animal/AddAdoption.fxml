@@ -107,15 +107,20 @@
             <Menu styleClass="menu" text="About">
             </Menu>
         </MenuBar>
-        <Label alignment="CENTER" layoutX="301.0" layoutY="294.0" prefHeight="35.0" prefWidth="151.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Date">
+        <Label alignment="CENTER" layoutX="494.0" layoutY="157.0" prefHeight="54.0" prefWidth="258.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Form">
+            <font>
+                <Font name="Segoe UI" size="18.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="418.0" layoutY="285.0" prefHeight="35.0" prefWidth="151.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Date">
             <font>
                 <Font name="Segoe UI" size="10.0" />
             </font>
         </Label>
 
-        <DatePicker fx:id="adoptiondate" layoutX="525.0" layoutY="294.0" prefHeight="34.0" prefWidth="170.0" promptText="Enrollement Date" />
+        <DatePicker fx:id="adoptiondate" layoutX="642.0" layoutY="285.0" prefHeight="34.0" prefWidth="170.0" promptText="Enrollement Date" />
 
-        <Button fx:id="btnconfirmadd" layoutX="431.0" layoutY="387.0" mnemonicParsing="false" onAction="#AddAdoptionF" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+        <Button fx:id="btnconfirmadd" layoutX="520.0" layoutY="386.0" mnemonicParsing="false" onAction="#AddAdoptionF" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
 
     </children>
 </AnchorPane>

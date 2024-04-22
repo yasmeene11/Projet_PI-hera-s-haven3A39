@@ -8,15 +8,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="410.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.UpdateAdoptionB">
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="600.0" spacing="10" styleClass="back" stylesheets="@../../styling/UpdateUserStyling.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.UpdateAdoptionB">
 
+    <Label alignment="CENTER" layoutX="275.0" layoutY="22.0" prefHeight="35.0" prefWidth="227.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Adoption Form">
+        <font>
+            <Font name="Segoe UI" size="18.0" />
+        </font>
+    </Label>
 
-    <Label text="Adoption Date:" />
+    <Label styleClass="bold-label" text="Adoption Date:" />
     <DatePicker fx:id="adoptiondate" />
 
-    <Label text="Animal Status:" />
-    <ComboBox fx:id="cmbadoptionstatus">
+    <Label styleClass="bold-label" text="Animal Status:" />
+    <ComboBox fx:id="cmbadoptionstatus" styleClass="comboStatus">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Cancelled" />
@@ -27,18 +33,18 @@
         </items>
     </ComboBox>
 
-    <Label text="Adoption Fee:" />
-    <TextField fx:id="txtAdoptionFee" />
+    <Label styleClass="bold-label" text="Adoption Fee:" />
+    <TextField fx:id="txtAdoptionFee" prefWidth="565.0" styleClass="text-field-custom" />
 
 
 
-    <Label text="Animal Name:" />
-    <ComboBox fx:id="cmbAnimalName" />
+    <Label styleClass="bold-label" text="Animal Name:" />
+    <ComboBox fx:id="cmbAnimalName" styleClass="comboStatus" />
 
-    <Label text="User Name:" />
-    <ComboBox fx:id="cmbUserName" />
+    <Label styleClass="bold-label" text="User Name:" />
+    <ComboBox fx:id="cmbUserName" styleClass="comboStatus" />
 
 
 
-    <Button onAction="#updateAdoption" text="Update" />
+    <Button onAction="#updateAdoption" styleClass="custom-button" text="Update" />
 </VBox>

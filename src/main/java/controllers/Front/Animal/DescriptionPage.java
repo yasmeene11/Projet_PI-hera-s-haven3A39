@@ -64,12 +64,12 @@ public class DescriptionPage {
                     String originalImagePath = "file:///" + animal.getAnimal_Image();
                     imageView.setImage(new Image(originalImagePath));
                 }
-
+// Add the ImageView to the VBox
+                ((VBox) animalNameLabel.getParent()).getChildren().add(imageView);
                 imageView.setFitWidth(200); // Set image width
                 imageView.setFitHeight(200); // Set image height
 
-                // Add the ImageView to the VBox
-                ((VBox) animalNameLabel.getParent()).getChildren().add(imageView);
+
             } else {
                 // Handle case when animal with given ID is not found
                 animalNameLabel.setText("Animal Not Found");

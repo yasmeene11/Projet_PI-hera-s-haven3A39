@@ -110,11 +110,12 @@
         </MenuBar>
 
 
-        <Label alignment="CENTER" layoutX="417.0" layoutY="146.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal List">
+        <Label alignment="CENTER" layoutX="482.0" layoutY="137.0" prefHeight="46.0" prefWidth="288.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal List">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
+
         <ScrollPane layoutX="89.0" layoutY="228.0" prefHeight="401.0" prefWidth="1114.0">
             <content>
                 <ListView fx:id="ListAnimals" orientation="HORIZONTAL">

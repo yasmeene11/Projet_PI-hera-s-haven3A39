@@ -9,8 +9,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="700.0" prefWidth="600.0" styleClass="back" stylesheets="@../../styling/UpdateUserStyling.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.UpdateAnimalB">
+<?import javafx.scene.text.Font?>
+<VBox alignment="CENTER" spacing="10" prefHeight="800.0" prefWidth="600.0" styleClass="back" stylesheets="@../../styling/UpdateUserStyling.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.UpdateAnimalB">
 
+    <Label alignment="CENTER" layoutX="275.0" layoutY="22.0" prefHeight="35.0" prefWidth="227.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal Form">
+        <font>
+            <Font name="Segoe UI" size="18.0" />
+        </font>
+    </Label>
     <Label styleClass="bold-label" text="Animal Name:" />
     <TextField fx:id="txtAnimalName" styleClass="text-field-custom" />
 

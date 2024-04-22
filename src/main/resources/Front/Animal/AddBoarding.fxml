@@ -83,13 +83,13 @@
                 </MenuItem>
             </Menu>
 
-            <Menu style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Animals">
+            <Menu  styleClass="menu" text="Animals">
                 <MenuItem fx:id="btnanimal" onAction="#NavigateToDisplayAnimal" styleClass="menu-item" text="Animals">
                 </MenuItem>
             </Menu>
 
             <!-- Pet Boarding Menu -->
-            <Menu styleClass="menu" text="Pet Boarding">
+            <Menu style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Pet Boarding">
                 <MenuItem fx:id="btnboarding" onAction="#NavigateToAddBoarding" styleClass="menu-item" text="Pet Boarding">
                 </MenuItem>
             </Menu>
@@ -111,11 +111,6 @@
             <Menu styleClass="menu" text="About">
             </Menu>
         </MenuBar>
-        <Label alignment="CENTER" layoutX="417.0" layoutY="146.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal Form">
-            <font>
-                <Font name="Segoe UI" size="18.0" />
-            </font>
-        </Label>
         <Label alignment="CENTER" layoutX="212.0" layoutY="233.0" prefHeight="44.0" prefWidth="170.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Animal Name">
             <font>
                 <Font name="Segoe UI" size="10.0" />
@@ -125,9 +120,9 @@
 
         <TextField fx:id="txtAge" layoutX="376.0" layoutY="434.0" prefHeight="44.0" prefWidth="170.0" promptText="Age" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
 
-        <Button fx:id="btnconfirmadd" layoutX="547.0" layoutY="597.0" mnemonicParsing="false" onAction="#AddBoardingF" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+        <Button fx:id="btnconfirmadd" layoutX="561.0" layoutY="597.0" mnemonicParsing="false" onAction="#AddBoardingF" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
 
-        <Label alignment="CENTER" layoutX="276.0" layoutY="21.0" prefHeight="35.0" prefWidth="227.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal Form">
+        <Label alignment="CENTER" layoutX="498.0" layoutY="149.0" prefHeight="54.0" prefWidth="258.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal Form">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>

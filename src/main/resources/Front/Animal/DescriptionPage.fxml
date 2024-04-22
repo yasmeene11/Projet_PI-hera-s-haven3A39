@@ -6,24 +6,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import java.net.URL?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front.Animal.DescriptionPage">
-    <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" spacing="10">
-        <Label text="Animal Information" alignment="CENTER">
-            <font>
-                <Font name="Segoe UI" size="24.0" />
-            </font>
-        </Label>
 
-        <Label fx:id="animalNameLabel" text="Name:"/>
-        <Label fx:id="animalAgeLabel" text="Age:"/>
-        <Label fx:id="animalBreedLabel" text="Breed:"/>
-        <Label fx:id="animalStatusLabel" text="Status:"/>
-        <Label fx:id="animalDescriptionLabel" text="Description:"/>
+    <VBox stylesheets="@../../styling/style1.css" alignment="CENTER" layoutX="134.0" layoutY="6.0" prefWidth="349.0" spacing="10">
+        <Label styleClass="title-label" text="Animal Information" />
 
-        <ImageView fx:id="animalImageView" fitWidth="200" fitHeight="200" preserveRatio="true"/>
+        <Label fx:id="animalNameLabel" />
+        <Label fx:id="animalAgeLabel" />
+        <Label fx:id="animalBreedLabel" />
+        <Label fx:id="animalStatusLabel" />
+        <Label fx:id="animalDescriptionLabel" />
 
-        <Label fx:id="animalImageLabel" text="Animal Image:"/>
+        <ImageView fx:id="animalImageView" fitHeight="200" fitWidth="200" preserveRatio="true" />
 
-
+        <Label fx:id="animalImageLabel" text="Animal Image:" />
     </VBox>
 </AnchorPane>
