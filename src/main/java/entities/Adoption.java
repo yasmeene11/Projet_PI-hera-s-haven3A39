@@ -27,9 +27,14 @@ public class Adoption {
                 this.Account_Key=Account_Key;
                 this.Animal_Key=Animal_Key;
 
+        }
+        public Adoption( int adoptionId,Date Adoption_Date,String Adoption_Status)
+        {
+                this.adoptionId=adoptionId;
+                this.Adoption_Date=Adoption_Date;
+                this.Adoption_Status=Adoption_Status;
 
         }
-
         public Adoption(Date Adoption_Date,String Adoption_Status,float Adoption_Fee,User Account_Key,Animal Animal_Key)
         {
 
@@ -38,8 +43,6 @@ public class Adoption {
                 this.Adoption_Fee=Adoption_Fee;
                 this.Account_Key=Account_Key;
                 this.Animal_Key=Animal_Key;
-
-
         }
         public int getAdoptionId() {
                 return adoptionId;

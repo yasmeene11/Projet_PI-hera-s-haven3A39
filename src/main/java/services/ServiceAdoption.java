@@ -97,6 +97,27 @@ public class ServiceAdoption implements IService<Adoption> {
         return animal;
     }
 
+    public Adoption getAdoptionById(int adoptionId) throws SQLException {
+        Adoption adoption = null;
+        String query = "SELECT Adoption_Date, Adoption_Status FROM adoption WHERE adoptionId = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setInt(1, adoptionId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Assuming you have an Animal constructor that takes parameters accordingly
+                    adoption = new Adoption(
+                            adoptionId,
+                            resultSet.getDate("Adoption_Date"),
+
+                            resultSet.getString("Adoption_Status")
+
+                    );
+                }
+            }
+        }
+        return adoption;
+    }
+
     public User fetchUserById(int accountId) throws SQLException {
         User user = null;
         String query = "SELECT name, surname FROM Account WHERE accountId = ?";

@@ -8,11 +8,30 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceAdoption;
 import services.ServiceAnimal;
 import services.ServiceUser;
 
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.DatePicker;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+
+import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -27,6 +46,9 @@ public class AddAdoptionF {
 
     @FXML
     private Button btnconfirmadd;
+
+    @FXML
+    private ImageView qrCodeImage;
 
     @FXML
     private MenuItem btndonationm;
@@ -66,11 +88,9 @@ public class AddAdoptionF {
 
 
 
-    @FXML
     public void AddAdoptionF() throws SQLException {
         LocalDate adoptionDateValue = adoptiondate.getValue();
         if (adoptionDateValue == null || adoptionDateValue.isBefore(LocalDate.now())) {
-            // Display an error message for invalid or missing date
             showAlert("Error", "Invalid Adoption Date", "Please select a valid future date for adoption.");
             return;
         }
@@ -90,12 +110,27 @@ public class AddAdoptionF {
             // Update the status of the selected animal to "Pending"
             adoptionService.updateAnimalStatus(selectedAnimal.getAnimalId(), "Pending");
 
+            // Generate QR code with adoption information
+            String adoptionInfo = "Adoption Date: " + adoptionDateValue.toString() +
+                    "\nAnimal Name: " + selectedAnimal.getAnimal_Name() +
+                    "\nAdoption Fee: $" + adoptionFee +
+                    "\nAdoption Status: " + adoptionStatus;
+
+            // Create a temporary file to save the QR code
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save QR Code");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
+            File file = fileChooser.showSaveDialog(null);
+
+            if (file != null) {
+                QRCodeWriter qrCodeWriter = new QRCodeWriter();
+                BitMatrix bitMatrix = qrCodeWriter.encode(adoptionInfo, BarcodeFormat.QR_CODE, 200, 200);
+                ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "PNG", file);
+            }
+
             // Display a success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Adoption added successfully");
-            alert.setHeaderText(null);
-            alert.setContentText("Adoption added successfully!");
-            alert.showAndWait();
+            showAlertS("Adoption added successfully", null, "Adoption added successfully!");
+
             // Close the current stage
             Stage stage = (Stage) adoptiondate.getScene().getWindow();
             stage.close();
@@ -107,13 +142,11 @@ public class AddAdoptionF {
             displayStage.setScene(new Scene(root));
             displayStage.show();
 
-        } catch (Exception e) {
-            // Display an error message if adding fails
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Add failed");
-            alert.setHeaderText(null);
-            alert.setContentText("Failed to add adoption");
-            alert.showAndWait();
+        } catch (SQLException e) {
+            showAlert("Add failed", null, "Failed to add adoption");
+            e.printStackTrace();
+        } catch (IOException | WriterException e) {
+            showAlert("Error", null, "Failed to save QR code");
             e.printStackTrace();
         }
     }
@@ -121,6 +154,13 @@ public class AddAdoptionF {
     // Helper method to display alert messages
     private void showAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    private void showAlertS(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);

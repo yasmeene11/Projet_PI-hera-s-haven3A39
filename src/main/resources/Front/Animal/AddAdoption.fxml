@@ -121,6 +121,7 @@
         <DatePicker fx:id="adoptiondate" layoutX="642.0" layoutY="285.0" prefHeight="34.0" prefWidth="170.0" promptText="Enrollement Date" />
 
         <Button fx:id="btnconfirmadd" layoutX="520.0" layoutY="386.0" mnemonicParsing="false" onAction="#AddAdoptionF" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+        <ImageView fx:id="qrCodeImage" />
 
     </children>
 </AnchorPane>

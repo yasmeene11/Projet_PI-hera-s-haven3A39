@@ -118,7 +118,7 @@
 
         <ScrollPane layoutX="89.0" layoutY="228.0" prefHeight="401.0" prefWidth="1114.0">
             <content>
-                <ListView fx:id="ListAnimals" orientation="HORIZONTAL">
+                <ListView fx:id="ListAnimals" orientation="HORIZONTAL" prefHeight="400.0" prefWidth="1100.0">
                     <cellFactory>
                         <javafx.scene.control.cell.TextFieldListCell fx:factory="forListView" />
                     </cellFactory>
