@@ -1,6 +1,11 @@
 package controllers.Front.DonationM;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import com.stripe.param.PaymentIntentCreateParams;
 import entities.DonationM;
+import entities.PaymentDialog;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -41,6 +46,10 @@ public class AddDonationMF {
     @FXML
     private MenuItem btnindexb;
 
+private ServiceDonationM serviceDonationM;
+public AddDonationMF(){
+    serviceDonationM=new ServiceDonationM();
+}
     private boolean validateAmount() {
         try {
             float amount = Float.parseFloat(donationAmount.getText());
@@ -117,12 +126,44 @@ public class AddDonationMF {
                 alert.setHeaderText(null);
                 alert.setContentText("Donation added successfully!");
                 alert.showAndWait();
+                PaymentDialog paymentDialog = new PaymentDialog();
+                paymentDialog.showAndWait().ifPresent(paymentInfo -> {
+                    // Appeler la méthode processPayment avec les informations de paiement
+                    processPayment(donationM, paymentInfo);
+                });
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Gérer les erreurs liées à la base de données
                 // Vous pouvez afficher un message d'erreur à l'utilisateur ici
             }}
+    }
+    private void processPayment(DonationM donationM,String paymentInfo) {
+        try {
+// Set your secret key here
+            Stripe.apiKey = "sk_test_51OpuslIobZsNpOWZGRgL1kyHnKIfMNRKKWk3QgZuP2Ry48sU5UOlPGZnp8dFMJlkfoYvcDGwQxvpK0qDWgydmt6h00pIUO7trA";
+            String userName= serviceDonationM.getDonorNameById(donationM.getAccountKey());
 
+// Create a PaymentIntent with other payment details
+            int roundedAmount = (int) Math.floor(donationM.getDonationAmount());
+            System.out.println(roundedAmount);
+            String amount= String.valueOf(roundedAmount);
+            PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+                    .setAmount(Long.parseLong(amount)) // Amount in cents (e.g., $10.00)
+                    .setCurrency("usd")
+                    .putMetadata("user_name", userName)
+                    .build();
+
+            PaymentIntent intent = PaymentIntent.create(params);
+
+// If the payment was successful, display a success message
+            System.out.println("Payment successful. PaymentIntent ID: " + intent.getId());
+        } catch (StripeException e) {
+// If there was an error processing the payment, display the error message
+            System.out.println("Payment failed. Error: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     public void NavigateToIndexBack() throws IOException {
