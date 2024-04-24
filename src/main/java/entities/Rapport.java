@@ -32,7 +32,7 @@ public class Rapport {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public String getVetName() {
         return vetName;
     }

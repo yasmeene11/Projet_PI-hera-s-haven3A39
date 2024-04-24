@@ -1,5 +1,11 @@
 package controllers.Back.Appointment;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import entities.Rapport;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -16,6 +22,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import services.ServiceRapport;
 
+import javax.swing.text.Document;
+import java.awt.event.ActionEvent;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -24,7 +33,8 @@ public class DisplayReportB {
 
     @FXML
     private Button btnAdoption;
-
+    @FXML
+    private Button btnGeneratePdf;
     @FXML
     private Button btnAnimal;
 
@@ -342,4 +352,62 @@ public class DisplayReportB {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+    private void handleGeneratePdf(javafx.event.ActionEvent actionEvent) {
+        try {
+            ServiceRapport serviceRapport = new ServiceRapport();
+            List<Rapport> rapports = serviceRapport.Show();
+            generatePdf(rapports, "rapport_table.pdf");
+            showAlert(Alert.AlertType.INFORMATION, "Success", "PDF file generated successfully.");
+        } catch (IOException | DocumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to generate PDF file: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void generatePdf(List<Rapport> rapports, String filePath) throws IOException, DocumentException {
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+        document.open();
+
+        Paragraph title = new Paragraph("Rapport Table");
+        title.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(title);
+
+        PdfPTable table = new PdfPTable(4); // 4 columns
+        table.setWidthPercentage(100);
+
+        PdfPCell cell = new PdfPCell(new Paragraph("Description"));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Vet Name"));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Pet Name"));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Appointment Key"));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        table.addCell(cell);
+
+        for (Rapport rapport : rapports) {
+            table.addCell(rapport.getDescription());
+            table.addCell(rapport.getVetName());
+            table.addCell(rapport.getPetName());
+            table.addCell(String.valueOf(rapport.getAppointmentKey().getAppointmentId()));
+        }
+
+        document.add(table);
+
+        document.close();
+    }
+
+
+
 }

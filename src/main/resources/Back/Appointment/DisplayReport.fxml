@@ -81,8 +81,10 @@
                         <TableColumn fx:id="descriptionColumn" prefWidth="300.0" text="Report" />
                         <TableColumn fx:id="vetNameColumn" prefWidth="150.0" text="Written by Doctor" />
                         <TableColumn fx:id="petNameColumn" prefWidth="150.0" text="Associated Pet" />
+
                     </columns>
                 </TableView>
+                <Button fx:id="btnGeneratePdf" layoutX="810.0" layoutY="700.0" mnemonicParsing="false" onAction="#handleGeneratePdf" text="Generate PDF" />
 
             </children>
         </AnchorPane>
