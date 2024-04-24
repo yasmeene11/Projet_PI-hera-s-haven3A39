@@ -1,5 +1,8 @@
 package entities;
 
+import services.ServiceProduct;
+
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Product {
@@ -9,7 +12,7 @@ public class Product {
   String ProductName;
   String ProductLabel;
  public  Date ExpirationDate;
-  int rating;
+  double Rating;
   String ProductImage;
 
     public Product() {
@@ -64,29 +67,16 @@ public class Product {
     public  void setProductImage(String productImage) {
         ProductImage = productImage;
     }
-    public  int getRating() {
-        return rating;
+    public  double getRating() {
+        return Rating;
     }
 
-    public  void setRating(int ratingp) {
-        ratingp = rating;
+
+    public void setRating(double rating) {
+        Rating = rating;
+
     }
 
-    public Product(int productId,String productName,  String productLabel,int productQuantity, Date expirationDate,Category categoryKey) {
-        ProductId = productId;
-        ProductName = productName;
-        ProductQuantity = productQuantity;
-        ProductLabel = productLabel;
-        ExpirationDate = expirationDate;
-        CategoryKey = categoryKey;
-    }
-    public Product(String productName, String productLabel, int productQuantity, Date expirationDate, Category categoryKey) {
-        ProductName = productName;
-        ProductQuantity = productQuantity;
-        ProductLabel = productLabel;
-        ExpirationDate = expirationDate;
-        CategoryKey = categoryKey;
-    }
     @Override
     public String toString() {
         return "Product{" +
@@ -97,30 +87,47 @@ public class Product {
                 ", ProductLabel='" + ProductLabel + '\'' +
                 ", ExpirationDate=" + ExpirationDate +'\''+
                 ", ProductImage=" + ProductImage +'\''+
+                ", Rating=" + Rating +'\''+
                 ", CategoryKey=" + CategoryKey +
                 '}';
     }
-
-   /* public Product(int productId,String productName,  String productLabel,int productQuantity, Date expirationDate, String ProductImage,Category categoryKey) {
+    public Product(int productId,String productName,  String productLabel,int productQuantity, Date expirationDate, String productImage,Category categoryKey) {
         ProductId = productId;
         ProductName = productName;
         ProductQuantity = productQuantity;
         ProductLabel = productLabel;
         ExpirationDate = expirationDate;
-        ProductImage= ProductImage;
+        ProductImage= productImage;
         CategoryKey = categoryKey;
-    }*/
-
-   /* public Product(String productName, String productLabel,  int productQuantity,Date expirationDate,String ProductImage, Category categoryKey) {
+    }
+   public Product(int productId,String productName,  String productLabel,int productQuantity, Date expirationDate, String productImage,Double rating,Category categoryKey) {
+        ProductId = productId;
         ProductName = productName;
         ProductQuantity = productQuantity;
         ProductLabel = productLabel;
         ExpirationDate = expirationDate;
-        ProductImage= ProductImage;
+        ProductImage= productImage;
+        Rating=rating;
         CategoryKey = categoryKey;
     }
-*/
+    public Product(String productName, String productLabel,  int productQuantity,Date expirationDate,String productImage,Double rating, Category categoryKey) {
+        ProductName = productName;
+        ProductQuantity = productQuantity;
+        ProductLabel = productLabel;
+        ExpirationDate = expirationDate;
+        ProductImage= productImage;
+        Rating=rating;
+        CategoryKey = categoryKey;
+    }
 
+    public Product(String productName, String productLabel,  int productQuantity,Date expirationDate,String productImage,Category categoryKey) {
+        ProductName = productName;
+        ProductQuantity = productQuantity;
+        ProductLabel = productLabel;
+        ExpirationDate = expirationDate;
+        ProductImage= productImage;
+        CategoryKey = categoryKey;
+    }
 
 
 }

@@ -9,13 +9,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import services.ServiceCategory;
 import services.ServiceProduct;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,11 +67,6 @@ public class AddProductB {
     private Button btnaddproduct;
 
     @FXML
-    private Button btnconfirmaddP;
-
-    @FXML
-    private Button btnlistproduct;
-    @FXML
     private TextField ProductName;
 
     @FXML
@@ -78,7 +78,11 @@ public class AddProductB {
     private DatePicker ExpirationDate;
     @FXML
     private ComboBox<Category> CategoryKey;
+    @FXML
+    private TextField txtImage; // Assuming this is the TextField for displaying the image path
 
+    private File selectedImageFile;
+    private String imagefullpath;
     ServiceProduct ps = new ServiceProduct();
     @FXML
     private void NavigateToDisplayUser() throws IOException {
@@ -231,6 +235,39 @@ public class AddProductB {
 
     }
     @FXML
+    private void handleSelectImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
+        );
+        selectedImageFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedImageFile != null && selectedImageFile.exists()) {
+            String imageFileName = selectedImageFile.getName(); // Get just the file name
+            String sourcePath = selectedImageFile.getAbsolutePath(); // Get the full path of the source image file
+            String targetPath = "C:/Users/user/IdeaProjects/UnitedPets/UnitedPets/src/main/resources/product_images/" + imageFileName;
+            try {
+                Files.copy(selectedImageFile.toPath(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
+                txtImage.setText(imageFileName); // Set the image file name in the text field
+                imagefullpath = sourcePath; // Set the full path of the image file
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to copy the image file.");
+                alert.showAndWait();
+            }
+        } else {
+            // Handle case where selected file does not exist
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Selected image file does not exist.");
+            alert.showAndWait();
+        }
+    }
+    @FXML
     public void initialize() {
         try {
             populateCategoryComboBox();
@@ -304,11 +341,11 @@ public class AddProductB {
         }
         try {
             LocalDate localDate = ExpirationDate.getValue();
-            // Convert LocalDate to java.sql.Date
             Date expirationDate = Date.valueOf(localDate);
-
+            String ImageFileName = txtImage.getText();
             Category selectedCategory = CategoryKey.getValue();
-            ps.add(new Product(ProductName.getText(), ProductLabel.getText(), Integer.parseInt(ProductQuantity.getText()), expirationDate, selectedCategory));
+
+            ps.add(new Product(ProductName.getText(), ProductLabel.getText(), Integer.parseInt(ProductQuantity.getText()), expirationDate, ImageFileName,selectedCategory));
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Add");
             alert.setContentText("Product Added");

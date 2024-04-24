@@ -6,23 +6,31 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
+<?import javafx.scene.text.Font?>
 <VBox prefHeight="410.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Product.UpdateProductB">
-
+    <Label alignment="CENTER" layoutX="238.0" layoutY="21.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Product Form">
+        <font>
+            <Font name="Segoe UI" size="18.0" />
+        </font>
+    </Label>
     <Label text="Product Name:" />
-    <TextField fx:id="txtProductName" />
+    <TextField fx:id="txtProductName" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css"/>
 
     <Label text="Product Label:" />
 
-    <TextField fx:id="txtProductLabel" />
+    <TextField fx:id="txtProductLabel" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css"/>
     <Label text="Product Quantity:" />
 
-    <TextField fx:id="txtProductQuantity" />
+    <TextField fx:id="txtProductQuantity" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css"/>
     <Label text="Expiration Date:" />
 
-    <DatePicker fx:id="txtExpirationDate" />
+    <DatePicker fx:id="txtExpirationDate" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css"/>
     <Label text="Category:" />
-
+    <TextField fx:id="txtImage" layoutX="600.0" layoutY="331.0" prefHeight="44.0" prefWidth="215.0" promptText="Product Image Path" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+    <Button layoutX="605.0" layoutY="389.0" onAction="#handleSelectImage" prefHeight="43.0" prefWidth="205.0" text="Select Image" />
     <ComboBox fx:id="txtCategory" prefHeight="25.0" prefWidth="178.0" />
 
     <Button onAction="#updateProduct" text="Update" />

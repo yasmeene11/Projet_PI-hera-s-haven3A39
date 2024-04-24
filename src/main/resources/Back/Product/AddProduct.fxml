@@ -132,6 +132,9 @@
 
                 <TextField fx:id="ProductLabel" layoutX="171.0" layoutY="177.0" prefHeight="44.0" prefWidth="170.0" promptText="Product Label" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
                 <DatePicker fx:id="ExpirationDate" layoutX="171.0" layoutY="309.0" prefHeight="44.0" prefWidth="170.0" promptText="Expiration Date " styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+                <TextField fx:id="txtImage" layoutX="600.0" layoutY="331.0" prefHeight="44.0" prefWidth="215.0" promptText="Product Image Path" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+
+                <Button layoutX="605.0" layoutY="389.0" onAction="#handleSelectImage" prefHeight="43.0" prefWidth="205.0" text="Select Image" />
 
                 <Button fx:id="btnconfirmaddP" layoutX="708.0" layoutY="510.0" mnemonicParsing="false" onAction="#AddProduct" onMouseClicked="#AddProduct" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
 

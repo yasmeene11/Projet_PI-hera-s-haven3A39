@@ -51,20 +51,20 @@ public class UpdateCategoryB {
                 alert.setTitle("Update");
                 alert.setContentText("Category Updated");
                 alert.show();
-                LoadPage();
+                //LoadPage();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
-            } catch (IOException e) {
+            } /*catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            txtProductType.getScene().getWindow().hide();
+            txtProductType.getScene().getWindow().hide();*/
         }
     }
-    private void LoadPage() throws IOException {
+   /* private void LoadPage() throws IOException {
         FXMLLoader loader=new FXMLLoader(getClass().getResource("/Back/Category/DisplayCategory.fxml"));
         Parent root=loader.load();
         txtProductType.getScene().setRoot(root);
-    }
+    }*/
 
 
 

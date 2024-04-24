@@ -11,13 +11,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.controlsfx.control.Rating;
 import services.ServiceProduct;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -44,6 +48,12 @@ public class DisplayProductF {
 
     @FXML
     private MenuItem btnindexb;
+    @FXML
+    private Button Food;
+    @FXML
+    private Button Medical;
+    @FXML
+    private Button Hygienic;
     @FXML
     private ListView<Product> ProductListView;
     private final ServiceProduct serviceprod;
@@ -112,13 +122,14 @@ public class DisplayProductF {
         stage.setTitle("United Pets");
         stage.show();
     }
-
     @FXML
     public void initialize() {
         try {
-            List<Product> products = serviceprod.Show();
-            ProductListView.getItems().addAll(products);
+            // Load all products initially
+            List<Product> allProducts = serviceprod.Show();
+            ProductListView.getItems().addAll(allProducts);
 
+            // Set cell factory for list view
             ProductListView.setCellFactory(param -> new ListCell<Product>() {
                 @Override
                 protected void updateItem(Product product, boolean empty) {
@@ -131,34 +142,83 @@ public class DisplayProductF {
 
                         Label productNameLabel = new Label("Product Name: " + product.getProductName());
                         Label productLabelLabel = new Label("Product Label: " + product.getProductLabel());
-                        Label CategoryLabel = new Label("Category: " + product.getCategoryKey());
+                        Label categoryLabel = new Label("Category: " + product.getCategoryKey().getProduct_Type());
 
+                        Rating ratingControl = new Rating();
+                        ratingControl.setRating(product.getRating());
+                        ratingControl.setMax(5); // Maximum rating
+                        ratingControl.setDisable(false); // Enable rating control
+
+                        ratingControl.ratingProperty().addListener((observable, oldValue, newValue) -> {
+                            // Update the product's rating when the user changes the rating
+                            product.setRating(newValue.intValue());
+                            try {
+                                // Update the rating in the database
+                                serviceprod.updateProductRating(product.getProductId(), newValue.intValue());
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                                // Handle the exception appropriately
+                            }
+                        });
+
+                        ImageView imageView = new ImageView();
+                        InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
+                        if (imageStream != null) {
+                            imageView.setImage(new javafx.scene.image.Image(imageStream)); // Load image from animal_images directory
+                        } else {
+                            String originalImagePath = "file:///" + product.getProductImage();
+                            imageView.setImage(new Image(originalImagePath));
+                        }
+
+                        imageView.setFitWidth(100); // Set image width
+                        imageView.setFitHeight(100); // Set image heightt
                         HBox buttonBox = new HBox(10);
                         buttonBox.setAlignment(Pos.CENTER);
 
-                        Button SeeButton = new Button("See");
-                        SeeButton.getStyleClass().add("Category-button");
-                        SeeButton.setOnAction(event -> handleSee(product));
+                        Button seeButton = new Button("See");
+                        seeButton.getStyleClass().add("Category-button");
+                        seeButton.setOnAction(event -> handleSee(product));
+                        buttonBox.getChildren().addAll(seeButton);
 
-
-                        buttonBox.getChildren().addAll(SeeButton);
-
-                        container.getChildren().addAll(productNameLabel,productLabelLabel, buttonBox);
+                        container.getChildren().addAll(productNameLabel, productLabelLabel,imageView, categoryLabel,  ratingControl, buttonBox);
                         setGraphic(container);
                     }
                 }
             });
 
-            ProductListView.getSelectionModel().selectedItemProperty().addListener((obs, oldProduct, newProduct) -> {
-                if (newProduct != null) {
-                    // Handle user selection here
-                }
-            });
+            // Event handlers for filter buttons
+            Food.setOnAction(event -> filterByCategory("Food Supplies"));
+            Medical.setOnAction(event -> filterByCategory("Medical"));
+            Hygienic.setOnAction(event -> filterByCategory("Hygienic"));
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    private void handleRate(Product product) {
+        double newRating = Math.random() * 5; // Generate a random rating between 0 and 5
+
+        // Update the product's rating
+        product.setRating(newRating);
+
+        // Update the UI to reflect the new rating
+        ProductListView.refresh(); // Refresh the list view to update the displayed rating
+    }
+    private void filterByCategory(String category) {
+        try {
+            // Clear existing items from the list view
+            ProductListView.getItems().clear();
+
+            // Retrieve products based on the selected category
+            List<Product> filteredProducts = serviceprod.filterByCategory(category);
+
+            // Add filtered products to the list view
+            ProductListView.getItems().addAll(filteredProducts);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleSee(Product product) {
         String category = product.getCategoryKey().getProduct_Type();
         String link = "";
@@ -171,11 +231,10 @@ public class DisplayProductF {
             case "Medical":
                 link = "https://zanimo.tn/category/31/products";
                 break;
-            case "Hygienix":
+            case "Hygienic":
                 link = "https://zanimo.tn/category/33/product";
                 break;
-                default:
-                // Default link if category not recognized
+            default:
                 link = "https://zanimo.tn";
                 break;
         }
@@ -189,4 +248,5 @@ public class DisplayProductF {
             }
         }
     }
-}
+
+    }

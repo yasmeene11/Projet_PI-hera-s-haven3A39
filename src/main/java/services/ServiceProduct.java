@@ -8,6 +8,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.DriverManager.getConnection;
+
 public class ServiceProduct implements IService<Product>{
     public static Connection con;
     public static Statement ste;
@@ -19,18 +21,20 @@ public class ServiceProduct implements IService<Product>{
 
 
     public void add(Product product) throws SQLException {
-        String req = "INSERT INTO product (product_name, product_quantity, product_label, expiration_date, Category_Key, product_image)"+ "VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO product (product_name, product_quantity, product_label, expiration_date, product_image,rating, Category_Key)"+ "VALUES (?, ?, ?, ?, ?, ?,?)";
 
         PreparedStatement pre = con.prepareStatement(req);
             pre.setString(1, product.getProductName());
             pre.setInt(2, product.getProductQuantity());
             pre.setString(3, product.getProductLabel());
             pre.setDate(4, new java.sql.Date(product.getExpirationDate().getTime()));
-            pre.setInt(5, product.getCategoryKey().getCategoryId());
+            pre.setString(5, product.getProductImage());
+            pre.setDouble(6,product.getRating());
+            pre.setInt(7, product.getCategoryKey().getCategoryId());
             if (product.getProductImage() != null) {
-                pre.setString(6, product.getProductImage());
+                pre.setString(5, product.getProductImage());
             } else {
-                pre.setString(6, "default_image.jpg");
+                pre.setString(5, "default_image.jpg");
             }
 
             pre.executeUpdate();
@@ -39,16 +43,17 @@ public class ServiceProduct implements IService<Product>{
 
     @Override
     public void update(Product product) throws SQLException {
-        String req = "UPDATE product SET product_name=?, product_quantity=?, product_label=?, expiration_date=?, product_image=?, Category_Key=? WHERE productId=?";
+        String req = "UPDATE product SET product_name=?, product_quantity=?, product_label=?, expiration_date=?, product_image=?,rating=?, Category_Key=? WHERE productId=?";
         PreparedStatement pre = con.prepareStatement(req);
         pre.setString(1, product.getProductName());
         pre.setInt(2, product.getProductQuantity());
         pre.setString(3, product.getProductLabel());
         pre.setDate(4, product.getExpirationDate());
-       // pre.setString(5, product.getProductImage());
+       pre.setString(5, product.getProductImage());
+       pre.setDouble(6,product.getRating());
         Category category = product.getCategoryKey();
-        pre.setInt(6, product.getCategoryKey().getCategoryId());
-        pre.setInt(7, product.getProductId());
+        pre.setInt(7, product.getCategoryKey().getCategoryId());
+        pre.setInt(8, product.getProductId());
         if (product.getProductImage() != null) {
             pre.setString(5, product.getProductImage());
         } else {
@@ -77,9 +82,11 @@ public class ServiceProduct implements IService<Product>{
                 String productlabel= res.getString("product_label");
                 int productquantity= res.getInt("product_quantity");
                 Date expirationdate= res.getDate("expiration_date");
+                String productImage=res.getString("product_image");
+                Double rating= res.getDouble("rating");
                int categoryId= res.getInt("Category_Key");
                 Category categoryKey = fetchCategoryById(categoryId);
-                Product p = new Product(id, productname,productlabel,productquantity,expirationdate,categoryKey);
+                Product p = new Product(id, productname,productlabel,productquantity,expirationdate,productImage,rating, categoryKey);
                 products.add(p);
             }
         }
@@ -102,5 +109,68 @@ public class ServiceProduct implements IService<Product>{
         }
         return category;
     }
+    public List<Product> filterByCategory(String category) throws SQLException {
+        // Implementation to retrieve products filtered by category from the database
+        List<Product> filteredProducts = new ArrayList<>();
+        // Example implementation: filtering products from a list based on category
+        List<Product> allProducts = Show(); // Get all products
+        for (Product product : allProducts) {
+            if (product.getCategoryKey().getProduct_Type().equals(category)) {
+                filteredProducts.add(product);
+            }
+        }
+        return filteredProducts;
+    }
+    /*public void updateProductRating(int productId, int newRating) throws SQLException {
+        PreparedStatement ste = null;
+        try {
+            String sql = "UPDATE product SET rating = ? WHERE productId = ?";
+            ste = con.prepareStatement(sql);
+            ste.setInt(1, newRating);
+            ste.setInt(2, productId);
+            ste.executeUpdate();
+        } finally {
+            // Close resources
+            if (ste != null) {
+                ste.close();
+            }
+        }
+    }*/
+    public void updateProductRating(int productId, int newRating) throws SQLException {
+        PreparedStatement selectStatement = null;
+        PreparedStatement updateStatement = null;
+        try {
+            // Select the existing rating
+            String selectSql = "SELECT rating FROM product WHERE ProductId = ?";
+            selectStatement = con.prepareStatement(selectSql);
+            selectStatement.setInt(1, productId);
+            ResultSet resultSet = selectStatement.executeQuery();
 
+            double currentRating = 0;
+            if (resultSet.next()) {
+                currentRating = resultSet.getDouble("Rating");
+            }
+
+            // Update the product with the new rating
+            double newRatingValue = newRating;
+            if (currentRating != 0) {
+                // If there's already a rating, calculate the average
+                newRatingValue = (currentRating + newRating) / 2.0;
+            }
+
+            String updateSql = "UPDATE product SET rating = ? WHERE ProductId = ?";
+            updateStatement = con.prepareStatement(updateSql);
+            updateStatement.setDouble(1, newRatingValue);
+            updateStatement.setInt(2, productId);
+            updateStatement.executeUpdate();
+        } finally {
+            // Close resources
+            if (selectStatement != null) {
+                selectStatement.close();
+            }
+            if (updateStatement != null) {
+                updateStatement.close();
+            }
+        }
+    }
 }

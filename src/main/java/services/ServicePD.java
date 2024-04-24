@@ -124,6 +124,7 @@ public class ServicePD implements IService<ProductDonation> {
                    rs.getString("product_label"),
                    rs.getInt("product_quantity"),
                    rs.getDate("expiration_date"),
+                   rs.getString("product_image"),
                    category);
         } else {
             // Handle case where product is not found (return null, throw exception, etc.)

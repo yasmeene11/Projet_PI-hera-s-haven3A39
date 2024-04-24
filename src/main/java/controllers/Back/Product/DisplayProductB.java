@@ -1,26 +1,48 @@
 package controllers.Back.Product;
-
-import controllers.Back.Category.UpdateCategoryB;
-import entities.Category;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import java.awt.Graphics;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+
+import java.io.File;
 import java.io.IOException;
 import entities.Product;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.cell.PropertyValueFactory;
-import services.ServiceCategory;
+import javafx.scene.image.Image;
+
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.sql.SQLException;
+import java.util.List;
+import javax.imageio.ImageIO;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import javafx.scene.image.Image;
 import services.ServiceProduct;
 
 import java.net.URL;
@@ -29,7 +51,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DisplayProductB{
+public class DisplayProductB {
 
     @FXML
     private Button btnAdoption;
@@ -86,8 +108,12 @@ public class DisplayProductB{
         stage.setTitle("Add Product");
         stage.show();
     }
-    public DisplayProductB(){serviceprod = new ServiceProduct();}
-@FXML
+
+    public DisplayProductB() {
+        serviceprod = new ServiceProduct();
+    }
+
+    @FXML
     public void initialize() {
         try {
             List<Product> products = serviceprod.Show();
@@ -107,7 +133,19 @@ public class DisplayProductB{
                         Label productLabelLabel = new Label("Product Label: " + product.getProductLabel());
                         Label productQuantityLabel = new Label("Product Quantity: " + product.getProductQuantity());
                         Label ExpirationDateLabel = new Label("Expiration Date: " + product.getExpirationDate());
+
                         Label CategoryLabel = new Label("Category: " + product.getCategoryKey());
+                        ImageView imageView = new ImageView();
+                        InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
+                        if (imageStream != null) {
+                            imageView.setImage(new Image(imageStream)); // Load image from animal_images directory
+                        } else {
+                            String originalImagePath = "file:///" + product.getProductImage();
+                            imageView.setImage(new Image(originalImagePath));
+                        }
+
+                        imageView.setFitWidth(100); // Set image width
+                        imageView.setFitHeight(100); // Set image heightt
 
                         HBox buttonBox = new HBox(10);
                         buttonBox.setAlignment(Pos.CENTER);
@@ -122,7 +160,7 @@ public class DisplayProductB{
 
                         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
-                        container.getChildren().addAll(productNameLabel,productLabelLabel,productQuantityLabel,ExpirationDateLabel,CategoryLabel, buttonBox);
+                        container.getChildren().addAll(productNameLabel, productLabelLabel, productQuantityLabel, ExpirationDateLabel, CategoryLabel, imageView, buttonBox);
                         setGraphic(container);
                     }
                 }
@@ -130,7 +168,6 @@ public class DisplayProductB{
 
             ProductListView.getSelectionModel().selectedItemProperty().addListener((obs, oldProduct, newProduct) -> {
                 if (newProduct != null) {
-                    // Handle user selection here
                 }
             });
 
@@ -154,11 +191,10 @@ public class DisplayProductB{
                 updateStage.initModality(Modality.WINDOW_MODAL);
                 updateStage.showAndWait();
             } catch (IOException e) {
-                e.printStackTrace(); // Handle IOException
+                e.printStackTrace();
             }
         }
     }
-
 
 
     @FXML
@@ -185,6 +221,7 @@ public class DisplayProductB{
         stage.setTitle("United Pets");
         stage.show();
     }
+
     @FXML
     private void NavigateToDisplayPD() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/ProductDonation/DisplayPD.fxml"));
@@ -218,6 +255,7 @@ public class DisplayProductB{
 
         stage.show();
     }
+
     @FXML
     private void NavigateToIndexBack() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/indexBack.fxml"));
@@ -245,7 +283,7 @@ public class DisplayProductB{
 
 
     @FXML
-    public void NavigateToDisplayBoarding()throws IOException {
+    public void NavigateToDisplayBoarding() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Animal/DisplayBoarding.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btnBoarding.getScene().getWindow();
@@ -258,7 +296,7 @@ public class DisplayProductB{
     }
 
     @FXML
-    public void NavigateToDisplayCashRegister()throws IOException {
+    public void NavigateToDisplayCashRegister() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/CashRegister/DisplayCashRegister.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btnCash.getScene().getWindow();
@@ -271,7 +309,7 @@ public class DisplayProductB{
     }
 
     @FXML
-    public void NavigateToDisplayCategory()throws IOException {
+    public void NavigateToDisplayCategory() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Category/DisplayCategory.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btnCategory.getScene().getWindow();
@@ -284,7 +322,7 @@ public class DisplayProductB{
     }
 
     @FXML
-    public void NavigateToDisplayDonation()throws IOException {
+    public void NavigateToDisplayDonation() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DisplayDonation.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btnDonation.getScene().getWindow();
@@ -297,7 +335,7 @@ public class DisplayProductB{
     }
 
     @FXML
-    public  void NavigateToDisplayProduct()throws IOException {
+    public void NavigateToDisplayProduct() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Product/DisplayProduct.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btnProduct.getScene().getWindow();
@@ -310,7 +348,7 @@ public class DisplayProductB{
     }
 
     @FXML
-    public void NavigateToDisplayReport()throws IOException {
+    public void NavigateToDisplayReport() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Appointment/DisplayReport.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) btnReport.getScene().getWindow();
@@ -321,4 +359,71 @@ public class DisplayProductB{
         stage.show();
 
     }
+
+
+    public void generatePDF(MouseEvent mouseEvent) {
+        String outputPath = "List_Product.pdf";
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.setLeading(20); // Set line spacing
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(100, 700);
+                contentStream.showText("Product List");
+                contentStream.newLine();
+                contentStream.endText();
+
+                List<Product> products = serviceprod.Show();
+                float yPosition = 680;
+                for (Product product : products) {
+                    String imagePath = product.getProductImage();
+                    Image image = loadImage(imagePath);
+                    if (image == null) {
+                        System.err.println("Error loading image: " + imagePath);
+                        continue;
+                    }
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                    contentStream.newLineAtOffset(200, yPosition);
+                    contentStream.showText("Product Name: " + product.getProductName());
+                    contentStream.newLine();
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.showText("Product Label: " + product.getProductLabel());
+                    contentStream.newLine();
+                    contentStream.showText("Product Quantity: " + product.getProductQuantity());
+                    contentStream.newLine();
+                    contentStream.showText("Expiration: " + product.getExpirationDate());
+                    contentStream.newLine();
+                    contentStream.endText();
+
+                    yPosition -= 100; // Adjust vertical position for the next product
+                }
+            } catch (SQLException e) {
+                System.err.println("Error fetching products from database: " + e.getMessage());
+                return; // Exit the method to avoid attempting to save the document without proper data
+            }
+            try {
+                document.save(outputPath);
+                System.out.println("PDF saved successfully.");
+            } catch (IOException e) {
+                System.err.println("Error saving PDF: " + e.getMessage());
+            }
+        } catch (IOException e) {
+            System.err.println("Error creating PDF document: " + e.getMessage());
+        }
+    }
+
+    private Image loadImage(String imagePath) {
+        try {
+            return new Image(new File(imagePath).toURI().toString());
+        } catch (Exception e) {
+            return null; // Return null if loading fails
+        }
+    }
+
+
+
 }

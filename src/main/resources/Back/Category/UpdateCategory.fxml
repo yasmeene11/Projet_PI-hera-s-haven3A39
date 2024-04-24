@@ -7,14 +7,19 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.text.Font?>
 <VBox prefHeight="410.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Category.UpdateCategoryB">
-
+    <Label alignment="CENTER" layoutX="238.0" layoutY="21.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Category Form">
+        <font>
+            <Font name="Segoe UI" size="18.0" />
+        </font>
+    </Label>
     <Label text="Product Type:" />
-    <TextField fx:id="txtProductType" />
+    <TextField fx:id="txtProductType" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css"/>
 
     <Label text="Product Source:" />
 
-    <TextField fx:id="txtProductSource" />
+    <TextField fx:id="txtProductSource" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css"/>
 
     <Button onAction="#updateCategory" text="Update" />
 </VBox>

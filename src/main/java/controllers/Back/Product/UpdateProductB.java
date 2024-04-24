@@ -11,7 +11,11 @@ import javafx.util.converter.IntegerStringConverter;
 import services.ServiceCategory;
 import services.ServiceProduct;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,6 +30,10 @@ public class UpdateProductB {
     private TextField txtProductLabel;
     @FXML
     private TextField txtProductQuantity;
+    @FXML
+    private TextField txtImage;
+    private File selectedImageFile;
+    private String imagefullpath;
     @FXML
     private DatePicker txtExpirationDate;
     @FXML
@@ -129,11 +137,13 @@ public class UpdateProductB {
             int newProductQuantity = Integer.parseInt(txtProductQuantity.getText());
             java.sql.Date newExpirationDate = java.sql.Date.valueOf(txtExpirationDate.getValue());
             Category newCategory = txtCategory.getValue();
+            String ImageFileName = txtImage.getText();
 
             product.setProductName(newProductName);
             product.setProductLabel(newProductLabel);
             product.setProductQuantity(newProductQuantity);
             product.setExpirationDate(newExpirationDate);
+            product.setProductImage(ImageFileName);
             product.setCategoryKey(newCategory);
 
             try {
@@ -144,19 +154,48 @@ public class UpdateProductB {
                 alert.setTitle("Update");
                 alert.setContentText("Product Updated");
                 alert.show();
-                LoadPage();
-            } catch (SQLException | IOException e) {
+
+               // LoadPage();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } /*catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            txtProductName.getScene().getWindow().hide();
+            txtProductName.getScene().getWindow().hide();*/
         }
     }
-
-    public void LoadPage() throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/Back/Product/DisplayProduct.fxml"));
-        Parent root=loader.load();
-        txtProductName.getScene().setRoot(root);
-
+    @FXML
+    private void handleSelectImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
+        );
+        selectedImageFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedImageFile != null && selectedImageFile.exists()) {
+            String imageFileName = selectedImageFile.getName(); // Get just the file name
+            String sourcePath = selectedImageFile.getAbsolutePath(); // Get the full path of the source image file
+            String targetPath = "C:/Users/user/IdeaProjects/UnitedPets/UnitedPets/src/main/resources/product_images/" + imageFileName;
+            try {
+                Files.copy(selectedImageFile.toPath(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
+                txtImage.setText(imageFileName); // Set the image file name in the text field
+                imagefullpath = sourcePath; // Set the full path of the image file
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to copy the image file.");
+                alert.showAndWait();
+            }
+        } else {
+            // Handle case where selected file does not exist
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Selected image file does not exist.");
+            alert.showAndWait();
+        }
     }
 
 
