@@ -1,6 +1,7 @@
 package controllers.Back.Appointment;
 
 import entities.Rapport;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -74,11 +75,15 @@ public class DisplayReportB {
     @FXML
     private TableColumn<Rapport, String> petNameColumn;
 
+
     public DisplayReportB(ServiceRapport serviceRapport) {
     }
+
     public DisplayReportB() {
         // Default constructor
     }
+
+
     @FXML
     private void NavigateToDisplayUser() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/User/DisplayUser.fxml"));
@@ -237,8 +242,11 @@ public class DisplayReportB {
             ObservableList<Rapport> rapportData = FXCollections.observableArrayList(serviceRapport.Show());
 
             descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-            vetNameColumn.setCellValueFactory(new PropertyValueFactory<>("vetName"));
-            petNameColumn.setCellValueFactory(new PropertyValueFactory<>("petName"));
+            vetNameColumn.setCellValueFactory(cellData -> {
+                Rapport rapport = cellData.getValue();
+                String vetName = (rapport.getAppointmentKey().getUser() != null) ? rapport.getAppointmentKey().getUser().getName() : "";
+                return new SimpleStringProperty(vetName);
+            });
 
             TableColumn<Rapport, Void> updateColumn = new TableColumn<>("Update");
             updateColumn.setCellFactory(param -> new TableCell<Rapport, Void>() {
@@ -247,19 +255,7 @@ public class DisplayReportB {
                 {
                     updateButton.setOnAction(event -> {
                         Rapport rapport = getTableView().getItems().get(getIndex());
-                        try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Appointment/UpdateReport.fxml"));
-                            Parent root = loader.load();
-                            UpdateReportB controller = loader.getController();
-                            controller.setRapport(rapport);
-                            Stage stage = new Stage();
-                            stage.setScene(new Scene(root));
-                            stage.setTitle("Update Rapport");
-                            stage.initModality(Modality.APPLICATION_MODAL);
-                            stage.showAndWait();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        handleUpdate(rapport);
                     });
                 }
 
@@ -281,18 +277,7 @@ public class DisplayReportB {
                 {
                     deleteButton.setOnAction(event -> {
                         Rapport rapport = getTableView().getItems().get(getIndex());
-                        try {
-                            // Perform the delete operation
-                            serviceRapport.delete(rapport);
-
-                            // Show a success message
-                            showAlert(Alert.AlertType.INFORMATION, "Success", "Rapport deleted successfully.");
-
-                            // Refresh the table data after deletion
-                            rapportData.remove(rapport);
-                        } catch (SQLException e) {
-                            showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete rapport: " + e.getMessage());
-                        }
+                        handleDelete(rapport);
                     });
                 }
 
@@ -311,6 +296,38 @@ public class DisplayReportB {
             rapportTableView.setItems(rapportData);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleUpdate(Rapport rapport) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Appointment/UpdateReport.fxml"));
+            Parent root = loader.load();
+            UpdateReportB controller = loader.getController();
+            controller.setRapport(rapport);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Update Rapport");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleDelete(Rapport rapport) {
+        try {
+            // Perform the delete operation
+            ServiceRapport serviceRapport = new ServiceRapport();
+            serviceRapport.delete(rapport);
+
+            // Show a success message
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Rapport deleted successfully.");
+
+            // Refresh the table data after deletion
+            rapportTableView.getItems().remove(rapport);
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete rapport: " + e.getMessage());
         }
     }
 

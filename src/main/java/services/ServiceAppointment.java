@@ -11,28 +11,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 public class ServiceAppointment implements IService<Appointment> {
 
     private static Connection con;
     private Statement ste;
-
+    private static final String ACCOUNT_SID = "AC8e74911161f2389f7b7c71bdcf84acf7";
+    private static final String AUTH_TOKEN = "5f386f568ff2a372f162450fbc94708e";
+    private static final String TWILIO_PHONE_NUMBER = "+19782212650";
     public ServiceAppointment() {
         con = MyBD.getInstance().getCon();
     }
 
     @Override
-        public void add(Appointment appointment) throws SQLException {
-            String req = "INSERT INTO appointment (appointment_date, appointment_time, appointment_status, Account_Key, Animal_Key) " +
-                    "VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement pre = con.prepareStatement(req);
-            pre.setDate(1, appointment.getAppointmentDate());
-            pre.setTime(2, appointment.getAppointmentTime());
-            pre.setString(3, "pending"); // Set appointment status to "pending"
-            pre.setInt(4, appointment.getUser().getAccountId()); // Assuming Account_Key is the foreign key for the User entity
-            pre.setInt(5, appointment.getAnimal().getAnimalId()); // Assuming Animal_Key is the foreign key for the Animal entity
-            pre.executeUpdate();
-        }
+    public void add(Appointment appointment) throws SQLException {
+        String req = "INSERT INTO appointment (appointment_date, appointment_time, appointment_status, Account_Key, Animal_Key) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement pre = con.prepareStatement(req);
+        pre.setDate(1, appointment.getAppointmentDate());
+        pre.setTime(2, appointment.getAppointmentTime());
+        pre.setString(3, "pending"); // Set appointment status to "pending"
+        pre.setInt(4, appointment.getUser().getAccountId()); // Assuming Account_Key is the foreign key for the User entity
+        pre.setInt(5, appointment.getAnimal().getAnimalId()); // Assuming Animal_Key is the foreign key for the Animal entity
+        pre.executeUpdate();
+    }
+    public void sendReminder(String doctorPhoneNumber, String appointmentDate, String appointmentTime) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+        Message message = Message.creator(
+                        new PhoneNumber("+216" + doctorPhoneNumber), // Added "+216" prefix
+                        new PhoneNumber(TWILIO_PHONE_NUMBER),
+                        "Reminder: You have an appointment on " + appointmentDate + " at " + appointmentTime)
+                .create();
+
+        System.out.println("Reminder sent. Message SID: " + message.getSid());
+    }
 
     @Override
     public void update(Appointment appointment) throws SQLException {
@@ -52,7 +68,8 @@ public class ServiceAppointment implements IService<Appointment> {
     public List<Appointment> Show() throws SQLException {
         List<Appointment> appointments = new ArrayList<>();
         String query = "SELECT a.appointmentId, a.appointment_date, a.appointment_time, a.appointment_status, " +
-                "u.name AS vet_name, an.animal_name AS pet_name " +
+                "u.accountId AS vet_id, u.name AS vet_name, u.phone_number AS vet_phone, " +
+                "an.animal_name AS pet_name " +
                 "FROM appointment a " +
                 "JOIN account u ON a.Account_Key = u.accountId " +
                 "JOIN animal an ON a.Animal_Key = an.animalId";
@@ -67,7 +84,9 @@ public class ServiceAppointment implements IService<Appointment> {
 
                 // Set vet and pet names
                 User vet = new User();
+                vet.setAccountId(resultSet.getInt("vet_id"));
                 vet.setName(resultSet.getString("vet_name"));
+                vet.setPhoneNumber(resultSet.getString("vet_phone"));
                 appointment.setUser(vet);
 
                 Animal pet = new Animal();
@@ -78,6 +97,18 @@ public class ServiceAppointment implements IService<Appointment> {
             }
         }
         return appointments;
+    }
+    public String getDoctorPhoneNumber(int accountId) throws SQLException {
+        String req = "SELECT phone_number FROM account WHERE accountId=?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setInt(1, accountId);
+            try (ResultSet res = pre.executeQuery()) {
+                if (res.next()) {
+                    return res.getString("phone_number");
+                }
+            }
+        }
+        return null; // Return null if doctor's phone number is not found
     }
 
     public Appointment get(int appointmentId) throws SQLException {
@@ -152,29 +183,29 @@ public class ServiceAppointment implements IService<Appointment> {
         return animalNames;
     }
 
-        public static Integer getUserIdByName(String userName) throws SQLException {
-            String req = "SELECT accountId FROM account WHERE name = ?";
-            try (PreparedStatement pre = con.prepareStatement(req)) {
-                pre.setString(1, userName);
-                try (ResultSet res = pre.executeQuery()) {
-                    if (res.next()) {
-                        return res.getInt("accountId");
-                    }
+    public static Integer getUserIdByName(String userName) throws SQLException {
+        String req = "SELECT accountId FROM account WHERE name = ?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setString(1, userName);
+            try (ResultSet res = pre.executeQuery()) {
+                if (res.next()) {
+                    return res.getInt("accountId");
                 }
             }
-            return null; // Return null if user is not found
         }
-
-        public static Integer getAnimalIdByName(String animalName) throws SQLException {
-            String req = "SELECT animalId FROM animal WHERE animal_name = ?";
-            try (PreparedStatement pre = con.prepareStatement(req)) {
-                pre.setString(1, animalName);
-                try (ResultSet res = pre.executeQuery()) {
-                    if (res.next()) {
-                        return res.getInt("animalId");
-                    }
-                }
-            }
-            return null; // Return null if animal is not found
-        }
+        return null; // Return null if user is not found
     }
+
+    public static Integer getAnimalIdByName(String animalName) throws SQLException {
+        String req = "SELECT animalId FROM animal WHERE animal_name = ?";
+        try (PreparedStatement pre = con.prepareStatement(req)) {
+            pre.setString(1, animalName);
+            try (ResultSet res = pre.executeQuery()) {
+                if (res.next()) {
+                    return res.getInt("animalId");
+                }
+            }
+        }
+        return null; // Return null if animal is not found
+    }
+}

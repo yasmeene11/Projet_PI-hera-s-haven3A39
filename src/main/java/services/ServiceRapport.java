@@ -58,7 +58,7 @@ public class ServiceRapport implements IService<Rapport> {
 
     public List<Rapport> Show() throws SQLException {
         List<Rapport> rapports = new ArrayList<>();
-        String query = "SELECT r.description, a.name AS vetName, an.animal_name AS petName " +
+        String query = "SELECT r.rapportId, r.description, r.Appointment_Key, a.name AS vetName, an.animal_name AS petName " +
                 "FROM rapport r " +
                 "INNER JOIN appointment ap ON r.Appointment_Key = ap.appointmentId " +
                 "INNER JOIN account a ON ap.Account_Key = a.accountId " +
@@ -66,11 +66,16 @@ public class ServiceRapport implements IService<Rapport> {
         try (PreparedStatement preparedStatement = con.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
+                int rapportId = resultSet.getInt("rapportId");
                 String description = resultSet.getString("description");
+                int appointmentKey = resultSet.getInt("Appointment_Key");
                 String vetName = resultSet.getString("vetName");
                 String petName = resultSet.getString("petName");
-                System.out.println("Description: " + description + ", Vet Name: " + vetName + ", Pet Name: " + petName);
-                Rapport rapport = new Rapport(description, vetName, petName);
+
+                Appointment appointment = new Appointment();
+                appointment.setAppointmentId(appointmentKey);
+
+                Rapport rapport = new Rapport(rapportId, description, vetName, petName, appointment);
                 rapports.add(rapport);
             }
         }

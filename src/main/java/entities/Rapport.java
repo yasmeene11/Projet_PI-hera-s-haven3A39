@@ -8,13 +8,13 @@ public class Rapport {
     private Appointment appointmentKey;
 
     // Constructor
-    public Rapport(int rapportId, String description, Appointment appointmentKey) {
+    public Rapport(int rapportId, String description, String vetName, String petName, Appointment appointmentKey) {
         this.rapportId = rapportId;
         this.description = description;
         this.appointmentKey = appointmentKey;
     }
 
-    public Rapport(String description, String vetName, String petName) {
+    public Rapport(String description, String vetName, String petName, Appointment appointment) {
         this.description = description;
         this.vetName = vetName;
         this.petName = petName;
@@ -61,6 +61,6 @@ public class Rapport {
         this.petName = petName;
     }
 
-    
-    
+
+
 }

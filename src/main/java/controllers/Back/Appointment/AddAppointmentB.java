@@ -274,56 +274,56 @@
         private ServiceAppointment serviceAppointment = new ServiceAppointment();
 
         @FXML
-        private void addAppointment() {
-            try {
-                // Get the selected values from the combo boxes
-                String patientName = patientComboBox.getValue();
-                String petName = petComboBox.getValue();
-                String appointmentTime = AptimeId.getValue();
-
-                // Check if appointmentTime is null or empty
-                if (appointmentTime == null || appointmentTime.isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Please select an appointment time.");
-                    return;
+            private void addAppointment() {
+                try {
+                    // Get the selected values from the combo boxes
+                    String patientName = patientComboBox.getValue();
+                    String petName = petComboBox.getValue();
+                    String appointmentTime = AptimeId.getValue();
+    
+                    // Check if appointmentTime is null or empty
+                    if (appointmentTime == null || appointmentTime.isEmpty()) {
+                        showAlert(Alert.AlertType.ERROR, "Error", "Please select an appointment time.");
+                        return;
+                    }
+    
+                    // Validate the appointmentTime format (HH:mm)
+                    if (!appointmentTime.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+                        showAlert(Alert.AlertType.ERROR, "Error", "Invalid appointment time format. Please use HH:mm.");
+                        return;
+                    }
+    
+                    // Get the IDs of the selected user and animal
+                    Integer userId = serviceAppointment.getUserIdByName(patientName);
+                    Integer animalId = serviceAppointment.getAnimalIdByName(petName);
+    
+                    // Check if user and animal IDs are valid
+                    if (userId == null || animalId == null) {
+                        showAlert(Alert.AlertType.ERROR, "Error", "User or animal not found.");
+                        return;
+                    }
+    
+                    // Create a new Appointment object with the selected values
+                    Appointment appointment = new Appointment();
+                    appointment.setAppointmentDate(Date.valueOf(ApDateID.getValue()));
+                    appointment.setAppointmentTime(Time.valueOf(appointmentTime + ":00")); // Adding seconds to format correctly
+                    appointment.setAppointmentStatus("pending"); // Set status to "pending"
+                    User user = new User();
+                    user.setAccountId(userId);
+                    appointment.setUser(user);
+                    Animal animal = new Animal();
+                    animal.setAnimalId(animalId);
+                    appointment.setAnimal(animal);
+    
+                    // Add the appointment to the database
+                    appointmentService.add(appointment);
+    
+                    // Show a success message
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Appointment added successfully.");
+                } catch (SQLException e) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Failed to add appointment: " + e.getMessage());
                 }
-
-                // Validate the appointmentTime format (HH:mm)
-                if (!appointmentTime.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Invalid appointment time format. Please use HH:mm.");
-                    return;
-                }
-
-                // Get the IDs of the selected user and animal
-                Integer userId = serviceAppointment.getUserIdByName(patientName);
-                Integer animalId = serviceAppointment.getAnimalIdByName(petName);
-
-                // Check if user and animal IDs are valid
-                if (userId == null || animalId == null) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "User or animal not found.");
-                    return;
-                }
-
-                // Create a new Appointment object with the selected values
-                Appointment appointment = new Appointment();
-                appointment.setAppointmentDate(Date.valueOf(ApDateID.getValue()));
-                appointment.setAppointmentTime(Time.valueOf(appointmentTime + ":00")); // Adding seconds to format correctly
-                appointment.setAppointmentStatus("pending"); // Set status to "pending"
-                User user = new User();
-                user.setAccountId(userId);
-                appointment.setUser(user);
-                Animal animal = new Animal();
-                animal.setAnimalId(animalId);
-                appointment.setAnimal(animal);
-
-                // Add the appointment to the database
-                appointmentService.add(appointment);
-
-                // Show a success message
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Appointment added successfully.");
-            } catch (SQLException e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to add appointment: " + e.getMessage());
             }
-        }
 
         private void showAlert(Alert.AlertType alertType, String title, String message) {
             Alert alert = new Alert(alertType);

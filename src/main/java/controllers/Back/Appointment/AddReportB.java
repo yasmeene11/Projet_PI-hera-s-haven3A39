@@ -269,7 +269,9 @@
                 }
 
                 // Create a new Rapport object
-                Rapport rapport = new Rapport(0, description, selectedAppointment);
+                String vetName = null;
+                String petName = null;
+                Rapport rapport = new Rapport(0, description, vetName, petName, selectedAppointment);
 
                 // Add the report using the rapportService
                 rapportService.add(rapport);

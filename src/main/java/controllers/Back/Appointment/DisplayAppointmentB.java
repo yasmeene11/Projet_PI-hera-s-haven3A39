@@ -94,8 +94,7 @@ public class DisplayAppointmentB {
     private void initialize() {
         try {
             ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-
-                List<Appointment> appointments = appointmentservice.Show();
+            List<Appointment> appointments = appointmentservice.Show();
             appointmentList.addAll(appointments);
 
             listAppointments.setItems(appointmentList);
@@ -110,6 +109,7 @@ public class DisplayAppointmentB {
                     } else {
                         setText("Date: " + item.getAppointmentDate() +
                                 "\nTime: " + item.getAppointmentTime() +
+                                "\nStatus: " + item.getAppointmentStatus() +
                                 "\nAssociated Vet: " + item.getUser().getName() +
                                 "\nAnimal: " + item.getAnimal().getAnimal_Name());
 
@@ -140,12 +140,31 @@ public class DisplayAppointmentB {
                             }
                         });
 
-                        HBox buttonsBox = new HBox(10, updateButton, deleteButton);
+                        Button remindButton = new Button("Send Reminder");
+
+                        remindButton.setOnAction(event -> {
+                            int accountId = item.getUser().getAccountId();
+                            String appointmentDate = item.getAppointmentDate().toString();
+                            String appointmentTime = item.getAppointmentTime().toString();
+                            System.out.println("Doctor account ID: " + accountId);
+                            try {
+                                String doctorPhoneNumber = appointmentservice.getDoctorPhoneNumber(accountId);
+                                if (doctorPhoneNumber != null) {
+                                    System.out.println("Doctor's phone number: " + doctorPhoneNumber);
+                                    appointmentservice.sendReminder(doctorPhoneNumber, appointmentDate, appointmentTime);
+                                } else {
+                                    System.out.println("Doctor's phone number not found.");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        HBox buttonsBox = new HBox(10, updateButton, deleteButton, remindButton);
                         setGraphic(buttonsBox);
                     }
                 }
             });
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
