@@ -79,17 +79,8 @@
                 <TableView fx:id="rapportTableView" layoutX="306.0" layoutY="109.0" prefHeight="562.0" prefWidth="955.0">
                     <columns>
                         <TableColumn fx:id="descriptionColumn" prefWidth="300.0" text="Report" />
-                        <TableColumn fx:id="vetNameColumn" prefWidth="150.0" text="Written by Doctor" >
-                            <cellValueFactory>
-                                <PropertyValueFactory property="vetName" />
-                            </cellValueFactory>
-                        </TableColumn>
-
-                        <TableColumn fx:id="petNameColumn" prefWidth="150.0" text="Associated Pet" >
-                            <cellValueFactory>
-                                <PropertyValueFactory property="petName" />
-                            </cellValueFactory>
-                        </TableColumn>
+                        <TableColumn fx:id="vetNameColumn" prefWidth="150.0" text="Written by Doctor" />
+                        <TableColumn fx:id="petNameColumn" prefWidth="150.0" text="Associated Pet" />
                     </columns>
                 </TableView>
 

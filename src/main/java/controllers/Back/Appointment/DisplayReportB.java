@@ -244,10 +244,14 @@ public class DisplayReportB {
             descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
             vetNameColumn.setCellValueFactory(cellData -> {
                 Rapport rapport = cellData.getValue();
-                String vetName = (rapport.getAppointmentKey().getUser() != null) ? rapport.getAppointmentKey().getUser().getName() : "";
+                String vetName = (rapport.getVetName()!= null)? rapport.getVetName() : "";
                 return new SimpleStringProperty(vetName);
             });
-
+            petNameColumn.setCellValueFactory(cellData -> {
+                Rapport rapport = cellData.getValue();
+                String petName = (rapport.getPetName()!= null)? rapport.getPetName() : "";
+                return new SimpleStringProperty(petName);
+            });
             TableColumn<Rapport, Void> updateColumn = new TableColumn<>("Update");
             updateColumn.setCellFactory(param -> new TableCell<Rapport, Void>() {
                 private final Button updateButton = new Button("Update");

@@ -1,23 +1,19 @@
 package entities;
 
 public class Rapport {
-    private String vetName;
-    private String petName;
     private int rapportId;
     private String description;
+    private String vetName;
+    private String petName;
     private Appointment appointmentKey;
 
     // Constructor
     public Rapport(int rapportId, String description, String vetName, String petName, Appointment appointmentKey) {
         this.rapportId = rapportId;
         this.description = description;
-        this.appointmentKey = appointmentKey;
-    }
-
-    public Rapport(String description, String vetName, String petName, Appointment appointment) {
-        this.description = description;
         this.vetName = vetName;
         this.petName = petName;
+        this.appointmentKey = appointmentKey;
     }
 
     // Getters and Setters
@@ -36,15 +32,7 @@ public class Rapport {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Appointment getAppointmentKey() {
-        return appointmentKey;
-    }
-
-    public void setAppointmentKey(Appointment appointmentKey) {
-        this.appointmentKey = appointmentKey;
-    }
-
+    
     public String getVetName() {
         return vetName;
     }
@@ -61,6 +49,11 @@ public class Rapport {
         this.petName = petName;
     }
 
+    public Appointment getAppointmentKey() {
+        return appointmentKey;
+    }
 
-
+    public void setAppointmentKey(Appointment appointmentKey) {
+        this.appointmentKey = appointmentKey;
+    }
 }

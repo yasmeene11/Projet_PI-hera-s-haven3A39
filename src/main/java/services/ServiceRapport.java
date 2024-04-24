@@ -58,22 +58,28 @@ public class ServiceRapport implements IService<Rapport> {
 
     public List<Rapport> Show() throws SQLException {
         List<Rapport> rapports = new ArrayList<>();
-        String query = "SELECT r.rapportId, r.description, r.Appointment_Key, a.name AS vetName, an.animal_name AS petName " +
-                "FROM rapport r " +
-                "INNER JOIN appointment ap ON r.Appointment_Key = ap.appointmentId " +
-                "INNER JOIN account a ON ap.Account_Key = a.accountId " +
-                "INNER JOIN animal an ON ap.Animal_Key = an.animalId";
+        String query = "SELECT r.rapportId, r.description, a.name AS vetName, an.animal_name AS petName, r.Appointment_Key "
+                + "FROM rapport r "
+                + "INNER JOIN appointment ap ON r.Appointment_Key = ap.appointmentId "
+                + "INNER JOIN account a ON ap.Account_Key = a.accountId "
+                + "INNER JOIN animal an ON ap.Animal_Key = an.animalId";
         try (PreparedStatement preparedStatement = con.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 int rapportId = resultSet.getInt("rapportId");
                 String description = resultSet.getString("description");
-                int appointmentKey = resultSet.getInt("Appointment_Key");
                 String vetName = resultSet.getString("vetName");
                 String petName = resultSet.getString("petName");
+                int appointmentKey = resultSet.getInt("Appointment_Key");
 
                 Appointment appointment = new Appointment();
                 appointment.setAppointmentId(appointmentKey);
+                User user = new User();
+                user.setName(vetName);
+                Animal animal = new Animal();
+                animal.setAnimal_Name(petName);
+                appointment.setUser(user);
+                appointment.setAnimal(animal);
 
                 Rapport rapport = new Rapport(rapportId, description, vetName, petName, appointment);
                 rapports.add(rapport);
