@@ -21,6 +21,7 @@ import services.ServiceUser;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javax.swing.*;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -28,13 +29,15 @@ import java.net.URL;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DisplayAnimalB {
 
     @FXML
     private ListView<Animal> ListAnimals;
-
 
     @FXML
     private Button btnAdoption;
@@ -75,6 +78,11 @@ public class DisplayAnimalB {
     @FXML
     private Button btnlistanimal;
 
+    @FXML
+    private Button buttonSearch;
+
+    @FXML
+    private TextField fieldSearch;
 
     private final ServiceAnimal animalService;
     private final ServiceAdoption adoptionService;
@@ -86,14 +94,16 @@ public class DisplayAnimalB {
         boardingService = new ServiceBoarding();
     }
 
-
-
-
     @FXML
     private void initialize() {
         try {
             List<Animal> animals = animalService.Show();
-            ListAnimals.getItems().addAll(animals);
+            ListAnimals.getItems().clear(); // Clear the ListView before adding items
+
+            // Create a Set to store unique animals
+            Set<Animal> uniqueAnimals = new HashSet<>(animals);
+
+            ListAnimals.getItems().addAll(uniqueAnimals);
 
             ListAnimals.setCellFactory(param -> new ListCell<Animal>() {
                 protected void updateItem(Animal animal, boolean empty) {
@@ -153,6 +163,44 @@ public class DisplayAnimalB {
                 }
             });
 
+            buttonSearch.setOnAction(event -> handleSearch());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<Animal> filterAnimals(String searchText, List<Animal> animals) {
+        List<Animal> filteredAnimals = new ArrayList<>();
+        String searchTextLowerCase = searchText.toLowerCase();
+
+        for (Animal animal : animals) {
+            String animalName = animal.getAnimal_Name().toLowerCase();
+            String animalBreed = animal.getAnimal_Breed().toLowerCase();
+            String animalType = animal.getAnimal_Type().toLowerCase();
+            String ageString = Integer.toString(animal.getAge()).toLowerCase(); // Convert int to String
+
+            if (animalName.contains(searchTextLowerCase) ||
+                    animalBreed.contains(searchTextLowerCase) ||
+                    animalType.contains(searchTextLowerCase) ||
+                    ageString.contains(searchTextLowerCase)) {
+                filteredAnimals.add(animal);
+            }
+        }
+
+        return filteredAnimals;
+    }
+
+    @FXML
+    private void handleSearch() {
+        String searchText = fieldSearch.getText().trim();
+        List<Animal> animals;
+
+        try {
+            animals = animalService.Show();
+            List<Animal> filteredAnimals = filterAnimals(searchText, animals);
+            ListAnimals.getItems().clear();
+            ListAnimals.getItems().addAll(filteredAnimals);
         } catch (SQLException e) {
             e.printStackTrace();
         }

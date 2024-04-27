@@ -24,7 +24,9 @@ import services.ServiceBoarding;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class DisplayAnimalF {
@@ -48,18 +50,21 @@ public class DisplayAnimalF {
     private MenuBar menuBar;
 
     @FXML
+    private Button btncat;
+
+    @FXML
+    private Button btndog;
+
+    @FXML
     private MenuItem btnindexb;
 
     @FXML
     private ListView<Animal> ListAnimals;
 
-
     private final ServiceAnimal animalService;
-
 
     public DisplayAnimalF() {
         animalService = new ServiceAnimal();
-
     }
 
     @FXML
@@ -73,7 +78,7 @@ public class DisplayAnimalF {
                     .collect(Collectors.toList());
 
             // Add filtered animals to the ListView
-            ListAnimals.getItems().addAll(availableAnimals);
+            ListAnimals.setItems(FXCollections.observableArrayList(availableAnimals));
 
             ListAnimals.setCellFactory(param -> new ListCell<Animal>() {
                 protected void updateItem(Animal animal, boolean empty) {
@@ -88,7 +93,6 @@ public class DisplayAnimalF {
                         Label animalbreedLabel = new Label("Animal Breed: " + animal.getAnimal_Breed());
                         Label animalstatusLabel = new Label("Animal Status: " + animal.getAnimal_Status());
                         Label ageLabel = new Label("Age: " + animal.getAge());
-
 
                         // Use an ImageView for the animal image
                         ImageView imageView = new ImageView();
@@ -159,8 +163,6 @@ public class DisplayAnimalF {
                             }
                         });
 
-
-
                         HBox buttonBox = new HBox(10);
                         buttonBox.setAlignment(Pos.CENTER);
                         buttonBox.getChildren().addAll(adoptButton, descriptionButton);
@@ -181,6 +183,38 @@ public class DisplayAnimalF {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void onFilterDogsClicked(ActionEvent event) {
+        filterByType("Dog");
+    }
+
+    @FXML
+    private void onFilterCatsClicked(ActionEvent event) {
+        filterByType("Cat");
+    }
+
+    private void filterByType(String type) {
+        try {
+            List<Animal> animals = animalService.Show();
+
+            // Filter out only the animals with status "Available" and the specified type
+            List<Animal> filteredAnimals = animals.stream()
+                    .filter(animal -> animal.getAnimal_Status().equals("Available") && animal.getAnimal_Type().equals(type))
+                    .collect(Collectors.toList());
+
+            // Clear the ListView before adding filtered animals
+            ListAnimals.getItems().clear();
+
+            // Add filtered animals to the ListView
+            ListAnimals.getItems().addAll(filteredAnimals);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     @FXML
