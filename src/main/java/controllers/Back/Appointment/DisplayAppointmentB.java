@@ -84,6 +84,14 @@ public class DisplayAppointmentB {
 
     @FXML
     private Button btnlistappointment;
+
+
+    @FXML
+    private Button btnAppStats;
+
+
+
+
     private final ServiceAppointment appointmentservice;
 
 
@@ -96,6 +104,7 @@ public class DisplayAppointmentB {
             ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
             List<Appointment> appointments = appointmentservice.Show();
             appointmentList.addAll(appointments);
+
 
             listAppointments.setItems(appointmentList);
 
@@ -251,6 +260,19 @@ public class DisplayAppointmentB {
         stage.show();
 
     }
+    @FXML
+    public void NavigateToDisplayStat()throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Appointment/DisplayAppStats.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnAppStats.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+
+        stage.show();
+
+    }
+
 
 }
 

@@ -1,4 +1,5 @@
 package controllers.Back.Appointment;
+import com.itextpdf.text.Image;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
@@ -6,6 +7,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import entities.Rapport;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -15,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -23,10 +26,14 @@ import javafx.stage.Stage;
 import services.ServiceRapport;
 
 import javax.swing.text.Document;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DisplayReportB {
@@ -355,58 +362,68 @@ public class DisplayReportB {
 
     @FXML
     private void handleGeneratePdf(javafx.event.ActionEvent actionEvent) {
-        try {
-            ServiceRapport serviceRapport = new ServiceRapport();
-            List<Rapport> rapports = serviceRapport.Show();
-            generatePdf(rapports, "rapport_table.pdf");
-            showAlert(Alert.AlertType.INFORMATION, "Success", "PDF file generated successfully.");
-        } catch (IOException | DocumentException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to generate PDF file: " + e.getMessage());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Rapport selectedRapport = rapportTableView.getSelectionModel().getSelectedItem();
+        if (selectedRapport!= null) {
+            try {
+                generatePdf(selectedRapport, "rapport_table.pdf");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "PDF file generated successfully.");
+            } catch (IOException | DocumentException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to generate PDF file: " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Please Select a Report first!");
         }
     }
 
-    private void generatePdf(List<Rapport> rapports, String filePath) throws IOException, DocumentException {
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+    private void generatePdf(Rapport rapport, String filePath) throws IOException, DocumentException {
+        String petName = rapport.getPetName();
+        String vetName = rapport.getVetName();
+        LocalDateTime now = LocalDateTime.now();
+        String datePart = now.format(DateTimeFormatter.ofPattern("yyyy_MM_dd"));
+        String timePart = now.format(DateTimeFormatter.ofPattern("HH_mm_ss"));
+        String fileName = String.format("%s_%s_%s_%s.pdf", petName, vetName, datePart, timePart);
+        String newFilePath = filePath.replace("rapport_table.pdf", fileName);
 
+        // Create a HTML string with CSS styles
+        String html = "<html><head><style>" +
+                "body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 0; }" +
+                ".content { border: 10px solid #38B6FF; padding: 20px; box-sizing: border-box; }" +
+                "table { border-collapse: collapse; width: 100%; background-color: #fff; border-radius: 30px; }" +
+                "th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }" +
+                "th { background-color: #38B6FF; }" +
+                ".logo { text-align: center; margin-bottom: 20px; }" +
+                "h1 { color: #333; border-bottom: 2px solid #38B6FF; padding-bottom: 5px; }" +
+                "</style></head><body>" +
+                "<div class='content'>" +
+                "<div class='logo'>" +
+                "<img src='C:/Users/asus/Documents/UnitedPets/src/main/resources/images/loga.png' alt='Logo' style='width: 100px; height: 100px; border-radius: 50%;' />" +
+                "</div>" +
+                "<h1>Report Details</h1>" +
+                "<table>" +
+                "<tr><th>Description</th><th>Vet Name</th><th>Pet Name</th></tr>" +
+                "<tr><td>" + rapport.getDescription() + "</td><td>" + rapport.getVetName() + "</td><td>" + rapport.getPetName() + "</td></tr>" +
+                "</table>" +
+                "</div>" +
+                "</body></html>";
+
+
+
+
+        // Create a PDF document
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(newFilePath));
         document.open();
 
-        Paragraph title = new Paragraph("Rapport Table");
-        title.setAlignment(Paragraph.ALIGN_CENTER);
-        document.add(title);
-
-        PdfPTable table = new PdfPTable(4); // 4 columns
-        table.setWidthPercentage(100);
-
-        PdfPCell cell = new PdfPCell(new Paragraph("Description"));
-        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        table.addCell(cell);
-
-        cell = new PdfPCell(new Paragraph("Vet Name"));
-        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        table.addCell(cell);
-
-        cell = new PdfPCell(new Paragraph("Pet Name"));
-        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        table.addCell(cell);
-
-        cell = new PdfPCell(new Paragraph("Appointment Key"));
-        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        table.addCell(cell);
-
-        for (Rapport rapport : rapports) {
-            table.addCell(rapport.getDescription());
-            table.addCell(rapport.getVetName());
-            table.addCell(rapport.getPetName());
-            table.addCell(String.valueOf(rapport.getAppointmentKey().getAppointmentId()));
-        }
-
-        document.add(table);
+        // Parse the HTML and add it to the PDF document
+        InputStream is = new ByteArrayInputStream(html.getBytes());
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, is);
 
         document.close();
     }
+
+
+
+
 
 
 
