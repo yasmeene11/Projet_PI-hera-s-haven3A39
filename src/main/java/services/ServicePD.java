@@ -10,13 +10,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static services.ServiceProduct.con;
-
+import utils.MyBD;
+import java.sql.*;
 public class ServicePD implements IService<ProductDonation> {
-
+    public static Connection con;
+    public static Statement ste;
+    public ServicePD(){
+        con= MyBD.getInstance().getCon();
+    }
     @Override
     public void add(ProductDonation productDonation) throws SQLException {
+
         String req = "INSERT INTO donation_product (Donation_Key, Product_Key) " +
                 "VALUES ( ?, ?)";
         PreparedStatement pre = con.prepareStatement(req);
@@ -72,26 +76,27 @@ public class ServicePD implements IService<ProductDonation> {
     @Override
     public List<ProductDonation> Show() throws SQLException {
         List<ProductDonation> pd = new ArrayList<>();
-        String req = "SELECT dp.dpId, dp.donation_key, dp.product_key " +
-                "FROM donation_product dp";
-        Statement ste = con.createStatement();
-        ResultSet res = ste.executeQuery(req);
-        while (res.next()) {
-            int dpId = res.getInt(1);
-            int donationKey = res.getInt(2);
-            int productKey = res.getInt(3);
+        String req = "SELECT * FROM donation_product";
+         ste = con.createStatement();
+        ResultSet res =ste.executeQuery(req);
+            while (res.next()) {
+                int dpId = res.getInt(1);
+                int donationKey = res.getInt(2);
+                int productKey = res.getInt(3);
 
-            // Fetch DonationP object from database using donationKey
-            DonationP donation = fetchDonation(donationKey);
-            // Fetch Product object from database using productKey
-            Product product = fetchProduct(productKey);
+                // Fetch DonationP object from database using donationKey
+                DonationP donation = fetchDonation(donationKey);
+                // Fetch Product object from database using productKey
+                Product product = fetchProduct(productKey);
 
-            // Assuming ProductDonation constructor takes dpId, DonationP, and Product as parameters
-            ProductDonation productDonation = new ProductDonation(dpId, donation, product);
-            pd.add(productDonation);
+                // Assuming ProductDonation constructor takes dpId, DonationP, and Product as parameters
+                ProductDonation productDonation = new ProductDonation(dpId, donation, product);
+                pd.add(productDonation);
+            }
+            return pd;
         }
-        return pd;
-    }
+
+
 
     private DonationP fetchDonation(int donationKey) throws SQLException {
         // Implement logic to fetch DonationP object from database using donationKey
@@ -104,32 +109,31 @@ public class ServicePD implements IService<ProductDonation> {
             // Assuming DonationP constructor takes necessary parameters
            return new DonationP();
         } else {
-            // Handle case where donation is not found (return null, throw exception, etc.)
-            return null;
+            return new DonationP(rs.getString("donation_product_name"), rs.getInt("donation_product_quantity"),rs.getString("donation_product_label"),rs.getDate("donation_product_expiration_date"),rs.getDate("donation_p_date"),rs.getString("donation_p_type"));
         }
     }
 
     private Product fetchProduct(int productKey) throws SQLException {
-        // Implement logic to fetch Product object from database using productKey
-        // Example:
         String query = "SELECT * FROM product WHERE productId = ?";
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setInt(1, productKey);
         ResultSet rs = stmt.executeQuery();
-        ServiceProduct p= new ServiceProduct();
-        Category category = p.fetchCategoryById(rs.getInt("Category_Key"));
+
+        // Check if the ResultSet has any rows
         if (rs.next()) {
-           return new Product(rs.getInt("productId"),
-                   rs.getString("product_name"),
-                   rs.getString("product_label"),
-                   rs.getInt("product_quantity"),
-                   rs.getDate("expiration_date"),
-                   rs.getString("product_image"),
-                   category);
+            // Fetch category for the product
+            ServiceProduct p = new ServiceProduct();
+            Category category = p.fetchCategoryById(rs.getInt("Category_Key"));
+
+            return new Product(rs.getInt("productId"), rs.getString("product_name"), rs.getString("product_label"),
+                    rs.getInt("product_quantity"), rs.getDate("expiration_date"), rs.getString("product_image"), category);
         } else {
             // Handle case where product is not found (return null, throw exception, etc.)
             return null;
         }
 
     }
+
+
 }
+

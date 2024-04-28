@@ -68,7 +68,7 @@ public class AddPD {
     @FXML
     private ComboBox<Product> product;
     @FXML
-            private Button btnPD;
+    private Button btnPD;
     ServicePD pd= new ServicePD();
 
     @FXML
@@ -247,14 +247,17 @@ public class AddPD {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    @FXML
     public void initialize() {
         try {
+            donationp = new ComboBox<>();
+            product = new ComboBox<>();
             populateDonationP();
             populateProduct();
         } catch (SQLException e) {
             handleException("SQL Exception", e.getMessage());
         }}
-
+@FXML
     private void populateProduct() throws SQLException {
         ServiceProduct p= new ServiceProduct();
         List<Product> products= p.Show();
@@ -272,10 +275,10 @@ public class AddPD {
         });
 
     }
-
+@FXML
     private void populateDonationP() throws SQLException {
-        ServiceDonationP dp = new ServiceDonationP();
-        List<DonationP> donations= dp.Show();
+        ServiceDonationP d= new ServiceDonationP();
+        List<DonationP> donations= d.Show();
         donationp.setItems(FXCollections.observableArrayList(donations));
         donationp.setConverter(new StringConverter<DonationP>() {
             @Override

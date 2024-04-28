@@ -46,6 +46,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import javafx.scene.image.Image;
+import services.ServicePD;
 import services.ServiceProduct;
 
 import java.net.URL;
@@ -65,8 +66,6 @@ public class DisplayProductB {
 
     @FXML
     private Button btnBoarding;
-    @FXML
-    GridPane grid;
     @FXML
     private JFXTextField searchField;
     @FXML
@@ -141,7 +140,9 @@ public class DisplayProductB {
                         Label productQuantityLabel = new Label("Product Quantity: " + product.getProductQuantity());
                         Label expirationDateLabel = new Label("Expiration Date: " + product.getExpirationDate());
                         Label categoryLabel = new Label("Category: " + product.getCategoryKey().getProduct_Type());
+                      //  int donationCount = serviceprod.getDonationCount(product.getProductId());
 
+                       // Label donationCountLabel = new Label("Number of Donations: " + donationCount);
                         ImageView imageView = new ImageView();
                         InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
                         if (imageStream != null) {
@@ -164,7 +165,7 @@ public class DisplayProductB {
                         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
                         container.getChildren().addAll(productNameLabel, productLabelLabel, productQuantityLabel,
-                                expirationDateLabel, categoryLabel, imageView, buttonBox);
+                                expirationDateLabel, categoryLabel,imageView, buttonBox);
                         setGraphic(container);
                     }
                 }

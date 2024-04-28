@@ -103,7 +103,7 @@
                         <Image url="@../../images/form.png" />
                     </image>
                 </ImageView>
-                <Label alignment="CENTER" layoutX="238.0" layoutY="21.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Category Form">
+                <Label alignment="CENTER" layoutX="238.0" layoutY="21.0" prefHeight="37.0" prefWidth="272.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Product Donation Form">
                     <font>
                         <Font name="Segoe UI" size="18.0" />
                     </font>
