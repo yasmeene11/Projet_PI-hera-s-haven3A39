@@ -121,21 +121,7 @@ public class ServiceProduct implements IService<Product>{
         }
         return filteredProducts;
     }
-    /*public void updateProductRating(int productId, int newRating) throws SQLException {
-        PreparedStatement ste = null;
-        try {
-            String sql = "UPDATE product SET rating = ? WHERE productId = ?";
-            ste = con.prepareStatement(sql);
-            ste.setInt(1, newRating);
-            ste.setInt(2, productId);
-            ste.executeUpdate();
-        } finally {
-            // Close resources
-            if (ste != null) {
-                ste.close();
-            }
-        }
-    }*/
+
     public void updateProductRating(int productId, int newRating) throws SQLException {
         PreparedStatement selectStatement = null;
         PreparedStatement updateStatement = null;

@@ -1,4 +1,7 @@
 package controllers.Back.Product;
+import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -11,12 +14,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import java.awt.Graphics;
+
+import javafx.scene.layout.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -35,7 +38,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 import javax.imageio.ImageIO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -47,9 +50,7 @@ import services.ServiceProduct;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class DisplayProductB {
 
@@ -64,7 +65,10 @@ public class DisplayProductB {
 
     @FXML
     private Button btnBoarding;
-
+    @FXML
+    GridPane grid;
+    @FXML
+    private JFXTextField searchField;
     @FXML
     private Button btnCash;
 
@@ -90,14 +94,14 @@ public class DisplayProductB {
     private Button btnaddproduct;
     @FXML
     private Button btnPD;
+    private ObservableList<Product> allProducts;
 
     @FXML
     private Button btnlistproduct;
+
     @FXML
     private ListView<Product> ProductListView;
     private final ServiceProduct serviceprod;
-
-
     @FXML
     public void NavigateToAddProduct() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Product/AddProduct.fxml"));
@@ -113,11 +117,14 @@ public class DisplayProductB {
         serviceprod = new ServiceProduct();
     }
 
+
+
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         try {
             List<Product> products = serviceprod.Show();
-            ProductListView.getItems().addAll(products);
+            allProducts = FXCollections.observableArrayList(products);
+            ProductListView.setItems(allProducts);
 
             ProductListView.setCellFactory(param -> new ListCell<Product>() {
                 @Override
@@ -132,49 +139,66 @@ public class DisplayProductB {
                         Label productNameLabel = new Label("Product Name: " + product.getProductName());
                         Label productLabelLabel = new Label("Product Label: " + product.getProductLabel());
                         Label productQuantityLabel = new Label("Product Quantity: " + product.getProductQuantity());
-                        Label ExpirationDateLabel = new Label("Expiration Date: " + product.getExpirationDate());
+                        Label expirationDateLabel = new Label("Expiration Date: " + product.getExpirationDate());
+                        Label categoryLabel = new Label("Category: " + product.getCategoryKey().getProduct_Type());
 
-                        Label CategoryLabel = new Label("Category: " + product.getCategoryKey());
                         ImageView imageView = new ImageView();
                         InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
                         if (imageStream != null) {
-                            imageView.setImage(new Image(imageStream)); // Load image from animal_images directory
+                            imageView.setImage(new Image(imageStream)); // Load image from product_images directory
                         } else {
                             String originalImagePath = "file:///" + product.getProductImage();
                             imageView.setImage(new Image(originalImagePath));
                         }
-
                         imageView.setFitWidth(100); // Set image width
-                        imageView.setFitHeight(100); // Set image heightt
+                        imageView.setFitHeight(100); // Set image height
 
                         HBox buttonBox = new HBox(10);
-                        buttonBox.setAlignment(Pos.CENTER);
 
                         Button updateButton = new Button("Update");
-                        updateButton.getStyleClass().add("Category-button");
                         updateButton.setOnAction(event -> handleUpdate(product));
 
                         Button deleteButton = new Button("Delete");
-                        deleteButton.getStyleClass().add("Product-button");
                         deleteButton.setOnAction(event -> handleDelete(product));
 
                         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
-                        container.getChildren().addAll(productNameLabel, productLabelLabel, productQuantityLabel, ExpirationDateLabel, CategoryLabel, imageView, buttonBox);
+                        container.getChildren().addAll(productNameLabel, productLabelLabel, productQuantityLabel,
+                                expirationDateLabel, categoryLabel, imageView, buttonBox);
                         setGraphic(container);
                     }
                 }
             });
-
-            ProductListView.getSelectionModel().selectedItemProperty().addListener((obs, oldProduct, newProduct) -> {
-                if (newProduct != null) {
-                }
-            });
-
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> searchProduct(newValue));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    private void searchProduct(String keyword) {
+        ProductListView.getItems().clear();
+
+        // Check if there are products to search through
+        if (allProducts == null || allProducts.isEmpty()) {
+            System.out.println("No products found. allProducts is empty or null.");
+            return;
+        }
+
+        // If the keyword is empty, add all products back to the list view
+        if (keyword == null || keyword.isEmpty()) {
+            ProductListView.getItems().addAll(allProducts);
+        } else {
+            // If there is a keyword, filter products based on it
+            for (Product product : allProducts) {
+                if (product != null && product.getProductName() != null &&
+                        product.getProductName().toLowerCase().contains(keyword.toLowerCase())) {
+                    ProductListView.getItems().add(product);
+                }
+            }
+        }
+    }
+
+
 
     @FXML
     private void handleUpdate(Product product) {

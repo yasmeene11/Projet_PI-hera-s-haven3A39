@@ -1,9 +1,12 @@
 package entities;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import services.ServiceProduct;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Properties;
 
 public class Product {
  int ProductId;
@@ -128,6 +131,5 @@ public class Product {
         ProductImage= productImage;
         CategoryKey = categoryKey;
     }
-
 
 }

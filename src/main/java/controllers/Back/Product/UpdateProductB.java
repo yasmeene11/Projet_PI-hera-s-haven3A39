@@ -1,12 +1,14 @@
 package controllers.Back.Product;
 import entities.Category;
 import entities.Product;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import services.ServiceCategory;
 import services.ServiceProduct;
@@ -43,11 +45,21 @@ public class UpdateProductB {
     private void populateCategoryComboBox() throws SQLException {
         ServiceCategory sc = new ServiceCategory();
         List<Category> categories = sc.Show();
-        System.out.println(categories);
-        for (Category category: categories){
-            txtCategory.getItems().add(category);}
+        txtCategory.setItems(FXCollections.observableArrayList(categories));
+        txtCategory.setConverter(new StringConverter<Category>() {
+            @Override
+            public String toString(Category object) {
+                return object.getProduct_Type();
+            }
+
+            @Override
+            public Category fromString(String string) {
+                return null;
+            }
+        });
 
     }
+
     @FXML
     public void initialize() {
         try {
@@ -107,6 +119,7 @@ public class UpdateProductB {
             txtProductLabel.setText(product.getProductLabel());
             txtProductQuantity.setText(String.valueOf(product.getProductQuantity()));
             txtExpirationDate.setValue(product.getExpirationDate().toLocalDate());
+            //String ImageFileName = txtImage.setText(product.getProductImage());
 
             Category category = product.getCategoryKey();
 
@@ -158,10 +171,7 @@ public class UpdateProductB {
                // LoadPage();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
-            } /*catch (IOException e) {
-                throw new RuntimeException(e);
             }
-            txtProductName.getScene().getWindow().hide();*/
         }
     }
     @FXML
