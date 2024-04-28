@@ -52,7 +52,7 @@ public class ServicePD implements IService<ProductDonation> {
     }
 
     private boolean isProductValid(Product product) throws SQLException {
-        String query = "SELECT COUNT(*) FROM product WHERE donationPId = ?";
+        String query = "SELECT COUNT(*) FROM product WHERE productId = ?";
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setInt(1, product.getProductId());
         ResultSet rs = stmt.executeQuery();
@@ -80,9 +80,9 @@ public class ServicePD implements IService<ProductDonation> {
          ste = con.createStatement();
         ResultSet res =ste.executeQuery(req);
             while (res.next()) {
-                int dpId = res.getInt(1);
-                int donationKey = res.getInt(2);
-                int productKey = res.getInt(3);
+                int dpId = res.getInt("dpId");
+                int donationKey = res.getInt("Donation_Key");
+                int productKey = res.getInt("Product_Key");
 
                 // Fetch DonationP object from database using donationKey
                 DonationP donation = fetchDonation(donationKey);
@@ -99,17 +99,17 @@ public class ServicePD implements IService<ProductDonation> {
 
 
     private DonationP fetchDonation(int donationKey) throws SQLException {
-        // Implement logic to fetch DonationP object from database using donationKey
-        // Example:
         String query = "SELECT * FROM donation_p WHERE donationPId = ?";
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setInt(1, donationKey);
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             // Assuming DonationP constructor takes necessary parameters
-           return new DonationP();
+            return new DonationP(rs.getString("donation_product_name"), rs.getInt("donation_product_quantity"),
+                    rs.getString("donation_product_label"), rs.getDate("donation_product_expiration_date"),
+                    rs.getDate("donation_p_date"), rs.getString("donation_p_type"));
         } else {
-            return new DonationP(rs.getString("donation_product_name"), rs.getInt("donation_product_quantity"),rs.getString("donation_product_label"),rs.getDate("donation_product_expiration_date"),rs.getDate("donation_p_date"),rs.getString("donation_p_type"));
+            return null;
         }
     }
 

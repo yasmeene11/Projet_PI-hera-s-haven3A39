@@ -238,10 +238,8 @@ public class DisplayPD {
                     } else {
                         VBox container = new VBox(5);
                         container.getStyleClass().add("Category-card");
-
-                        Label donationplabel = new Label("Donation : " + pd.getDonation_Key().getDonation_product_name());
-                        Label productlabel = new Label("Product : " + pd.getProduct_Key().getProductName());
-
+                       Label donationplabel = new Label("Donation : " + pd.getDonation_Key().getDonation_product_name());
+                       Label productlabel = new Label("Product : " + pd.getProduct_Key().getProductName());
                         HBox buttonBox = new HBox(10);
                         buttonBox.setAlignment(Pos.CENTER);
                         container.getChildren().addAll(donationplabel, productlabel, buttonBox);

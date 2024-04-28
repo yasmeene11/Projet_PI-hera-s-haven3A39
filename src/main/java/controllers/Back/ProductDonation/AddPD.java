@@ -228,7 +228,7 @@ public class AddPD {
             pd.add(new ProductDonation(selectedDonation,selectedProduct));
             Alert alert=new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Add");
-            alert.setContentText("Category Added");
+            alert.setContentText("Product Donation Added");
             alert.show();
             LoadPage();
 
@@ -250,8 +250,8 @@ public class AddPD {
     @FXML
     public void initialize() {
         try {
-            donationp = new ComboBox<>();
-            product = new ComboBox<>();
+           // donationp = new ComboBox<>();
+            //product = new ComboBox<>();
             populateDonationP();
             populateProduct();
         } catch (SQLException e) {

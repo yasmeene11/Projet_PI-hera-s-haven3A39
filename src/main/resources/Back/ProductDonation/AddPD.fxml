@@ -108,8 +108,8 @@
                         <Font name="Segoe UI" size="18.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="DonationP" layoutX="187.0" layoutY="94.0" prefHeight="44.0" prefWidth="170.0" promptText="Donation" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
-                <ComboBox fx:id="Product" layoutX="194.0" layoutY="185.0" prefHeight="44.0" prefWidth="170.0" promptText="Product" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+                <ComboBox fx:id="donationp" layoutX="187.0" layoutY="94.0" prefHeight="44.0" prefWidth="170.0" promptText="Donation" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+                <ComboBox fx:id="product" layoutX="194.0" layoutY="185.0" prefHeight="44.0" prefWidth="170.0" promptText="Product" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
                 <Label alignment="CENTER" layoutX="14.0" layoutY="101.0" prefHeight="44.0" prefWidth="170.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Donation">
                     <font>
                         <Font name="Segoe UI" size="10.0" />
