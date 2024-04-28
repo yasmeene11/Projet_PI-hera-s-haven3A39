@@ -48,10 +48,13 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import javafx.scene.image.Image;
 import services.ServicePD;
 import services.ServiceProduct;
+import utils.MyBD;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+
+import static services.ServicePD.con;
 
 public class DisplayProductB {
 
@@ -124,7 +127,7 @@ public class DisplayProductB {
             List<Product> products = serviceprod.Show();
             allProducts = FXCollections.observableArrayList(products);
             ProductListView.setItems(allProducts);
-
+ServicePD pd= new ServicePD();
             ProductListView.setCellFactory(param -> new ListCell<Product>() {
                 @Override
                 protected void updateItem(Product product, boolean empty) {
@@ -140,9 +143,8 @@ public class DisplayProductB {
                         Label productQuantityLabel = new Label("Product Quantity: " + product.getProductQuantity());
                         Label expirationDateLabel = new Label("Expiration Date: " + product.getExpirationDate());
                         Label categoryLabel = new Label("Category: " + product.getCategoryKey().getProduct_Type());
-                      //  int donationCount = serviceprod.getDonationCount(product.getProductId());
-
-                       // Label donationCountLabel = new Label("Number of Donations: " + donationCount);
+                        int donationCount = pd.getDonationCount(product.getProductId());
+                        Label donationCountLabel = new Label("Number of Donations: " + donationCount);
                         ImageView imageView = new ImageView();
                         InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
                         if (imageStream != null) {
@@ -165,7 +167,7 @@ public class DisplayProductB {
                         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
                         container.getChildren().addAll(productNameLabel, productLabelLabel, productQuantityLabel,
-                                expirationDateLabel, categoryLabel,imageView, buttonBox);
+                                expirationDateLabel, categoryLabel,donationCountLabel,imageView, buttonBox);
                         setGraphic(container);
                     }
                 }

@@ -134,6 +134,26 @@ public class ServicePD implements IService<ProductDonation> {
 
     }
 
+    public int getDonationCount(int productId) {
+        try {
+            String sql = "SELECT COUNT(*) AS donationCount FROM donation_product WHERE Product_Key = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, productId);
 
+            // Execute the query and retrieve the donation count
+            ResultSet resultSet = statement.executeQuery();
+            int donationCount = 0;
+            if (resultSet.next()) {
+                donationCount = resultSet.getInt("donationCount");
+            }
+            resultSet.close();
+            statement.close();
+
+            return donationCount;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
 
