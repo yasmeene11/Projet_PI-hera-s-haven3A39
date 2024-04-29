@@ -108,15 +108,6 @@
             </cellFactory>
         </ListView>
       <Button layoutX="808.0" layoutY="90.0" mnemonicParsing="false" text="PDF" onMouseClicked="#generatePDF" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css"/>
-        <JFXTextField fx:id="searchField" layoutX="400.0" layoutY="114.0" promptText="Search Product" unFocusColor="WHITE">
-            <font>
-                <Font size="17.0" />
-            </font>
-        </JFXTextField>
-        <JFXButton fx:id="search" buttonType="RAISED" layoutX="600.0" layoutY="111.0"  styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css"  text="Search" textFill="WHITE">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </JFXButton>
+
   </children>
 </AnchorPane>

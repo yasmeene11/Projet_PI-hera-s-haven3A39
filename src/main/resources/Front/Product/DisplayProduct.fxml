@@ -11,6 +11,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXButton?>
+
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front.Product.DisplayProductF">
     <children>
         <AnchorPane prefHeight="34.0" prefWidth="1280.0" style="-fx-background-color: #38B6FF;" AnchorPane.bottomAnchor="691.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -108,10 +111,14 @@
             </Menu>
         </MenuBar>
       <ListView fx:id="ProductListView" layoutX="181.0" layoutY="215.0" prefHeight="394.0" prefWidth="697.0" />
-      <Button fx:id="Food" layoutX="320.0" layoutY="138.0" mnemonicParsing="false" text="Food Supplies" />
-      <Button fx:id="Medical" layoutX="539.0" layoutY="138.0" mnemonicParsing="false"  text="Medical" />
-      <Button fx:id="Hygienic" layoutX="732.0" layoutY="138.0" mnemonicParsing="false" text="Hygienic" />
+      <Button fx:id="Food" layoutX="320.0" layoutY="120.0" mnemonicParsing="false" text="Food Supplies" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" />
+      <Button fx:id="Medical" layoutX="539.0" layoutY="120.0" mnemonicParsing="false"  text="Medical" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" />
+      <Button fx:id="Hygienic" layoutX="732.0" layoutY="120.0" mnemonicParsing="false" text="Hygienic" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" />
 
-
+        <JFXTextField fx:id="searchField" layoutX="370.0" layoutY="180.0" promptText="Search Product" unFocusColor="WHITE">
+            <font>
+                <Font size="17.0" />
+            </font>
+        </JFXTextField>
     </children>
 </AnchorPane>

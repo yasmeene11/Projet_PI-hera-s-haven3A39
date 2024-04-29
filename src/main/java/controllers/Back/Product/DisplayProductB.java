@@ -70,8 +70,6 @@ public class DisplayProductB {
     @FXML
     private Button btnBoarding;
     @FXML
-    private JFXTextField searchField;
-    @FXML
     private Button btnCash;
 
     @FXML
@@ -96,7 +94,6 @@ public class DisplayProductB {
     private Button btnaddproduct;
     @FXML
     private Button btnPD;
-    private ObservableList<Product> allProducts;
 
     @FXML
     private Button btnlistproduct;
@@ -124,10 +121,9 @@ public class DisplayProductB {
     @FXML
     public void initialize() throws SQLException {
         try {
-            List<Product> products = serviceprod.Show();
-            allProducts = FXCollections.observableArrayList(products);
-            ProductListView.setItems(allProducts);
-ServicePD pd= new ServicePD();
+             ServicePD pd= new ServicePD();
+            List<Product> allProducts = serviceprod.Show();
+            ProductListView.getItems().addAll(allProducts);
             ProductListView.setCellFactory(param -> new ListCell<Product>() {
                 @Override
                 protected void updateItem(Product product, boolean empty) {
@@ -172,34 +168,11 @@ ServicePD pd= new ServicePD();
                     }
                 }
             });
-            searchField.textProperty().addListener((observable, oldValue, newValue) -> searchProduct(newValue));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void searchProduct(String keyword) {
-        ProductListView.getItems().clear();
-
-        // Check if there are products to search through
-        if (allProducts == null || allProducts.isEmpty()) {
-            System.out.println("No products found. allProducts is empty or null.");
-            return;
-        }
-
-        // If the keyword is empty, add all products back to the list view
-        if (keyword == null || keyword.isEmpty()) {
-            ProductListView.getItems().addAll(allProducts);
-        } else {
-            // If there is a keyword, filter products based on it
-            for (Product product : allProducts) {
-                if (product != null && product.getProductName() != null &&
-                        product.getProductName().toLowerCase().contains(keyword.toLowerCase())) {
-                    ProductListView.getItems().add(product);
-                }
-            }
-        }
-    }
 
 
 
@@ -227,6 +200,8 @@ ServicePD pd= new ServicePD();
     @FXML
     private void handleDelete(Product product) {
         try {
+            serviceprod.deletePDbyProduct(product);
+
             serviceprod.delete(product);
             ProductListView.getItems().remove(product);
             NavigateToDisplayProduct();

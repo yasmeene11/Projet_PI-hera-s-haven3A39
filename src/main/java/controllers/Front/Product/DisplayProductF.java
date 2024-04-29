@@ -1,6 +1,9 @@
 package controllers.Front.Product;
 
+import com.jfoenix.controls.JFXTextField;
 import entities.Product;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -58,7 +61,12 @@ public class DisplayProductF {
     @FXML
     private Button Hygienic;
     @FXML
+    private JFXTextField searchField;
+
+    @FXML
     private ListView<Product> ProductListView;
+    private ObservableList<Product> allProducts;
+
     private final ServiceProduct serviceprod;
     public DisplayProductF(){serviceprod = new ServiceProduct();}
     @FXML
@@ -128,9 +136,10 @@ public class DisplayProductF {
     @FXML
     public void initialize() {
         try {
-            // Load all products initially
-            List<Product> allProducts = serviceprod.Show();
-            ProductListView.getItems().addAll(allProducts);
+                  allProducts = FXCollections.observableArrayList(serviceprod.Show());
+                  ProductListView.getItems().addAll(allProducts);
+            //List<Product> allProducts = serviceprod.Show();
+            //ProductListView.getItems().addAll(allProducts);
 
             // Set cell factory for list view
             ProductListView.setCellFactory(param -> new ListCell<Product>() {
@@ -185,7 +194,10 @@ public class DisplayProductF {
 
                         container.getChildren().addAll(productNameLabel, productLabelLabel,imageView, categoryLabel,  ratingControl, buttonBox);
                         setGraphic(container);
+                        searchField.textProperty().addListener((observable, oldValue, newValue) -> searchProduct(newValue));
+
                     }
+
                 }
             });
 
@@ -198,6 +210,29 @@ public class DisplayProductF {
             e.printStackTrace();
         }
     }
+    private void searchProduct(String keyword) {
+        ProductListView.getItems().clear();
+
+        // Check if there are products to search through
+        if (allProducts == null || allProducts.isEmpty()) {
+            System.out.println("No products found. allProducts is empty or null.");
+            return;
+        }
+
+        // If the keyword is empty, add all products back to the list view
+        if (keyword == null || keyword.isEmpty()) {
+            ProductListView.getItems().addAll(allProducts);
+        } else {
+            // If there is a keyword, filter products based on it
+            for (Product product : allProducts) {
+                if (product != null && product.getProductName() != null &&
+                        product.getProductName().toLowerCase().contains(keyword.toLowerCase())) {
+                    ProductListView.getItems().add(product);
+                }
+            }
+        }
+    }
+
     private void handleRate(Product product) {
         double newRating = Math.random() * 5; // Generate a random rating between 0 and 5
 

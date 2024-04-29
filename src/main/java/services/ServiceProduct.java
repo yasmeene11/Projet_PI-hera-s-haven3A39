@@ -10,35 +10,35 @@ import java.util.List;
 
 import static java.sql.DriverManager.getConnection;
 
-public class ServiceProduct implements IService<Product>{
+public class ServiceProduct implements IService<Product> {
     public static Connection con;
     public static Statement ste;
 
 
-    public ServiceProduct(){
-        con= MyBD.getInstance().getCon();
+    public ServiceProduct() {
+        con = MyBD.getInstance().getCon();
     }
 
 
     public void add(Product product) throws SQLException {
-        String req = "INSERT INTO product (product_name, product_quantity, product_label, expiration_date, product_image,rating, Category_Key)"+ "VALUES (?, ?, ?, ?, ?, ?,?)";
+        String req = "INSERT INTO product (product_name, product_quantity, product_label, expiration_date, product_image,rating, Category_Key)" + "VALUES (?, ?, ?, ?, ?, ?,?)";
 
         PreparedStatement pre = con.prepareStatement(req);
-            pre.setString(1, product.getProductName());
-            pre.setInt(2, product.getProductQuantity());
-            pre.setString(3, product.getProductLabel());
-            pre.setDate(4, new java.sql.Date(product.getExpirationDate().getTime()));
+        pre.setString(1, product.getProductName());
+        pre.setInt(2, product.getProductQuantity());
+        pre.setString(3, product.getProductLabel());
+        pre.setDate(4, new java.sql.Date(product.getExpirationDate().getTime()));
+        pre.setString(5, product.getProductImage());
+        pre.setDouble(6, product.getRating());
+        pre.setInt(7, product.getCategoryKey().getCategoryId());
+        if (product.getProductImage() != null) {
             pre.setString(5, product.getProductImage());
-            pre.setDouble(6,product.getRating());
-            pre.setInt(7, product.getCategoryKey().getCategoryId());
-            if (product.getProductImage() != null) {
-                pre.setString(5, product.getProductImage());
-            } else {
-                pre.setString(5, "default_image.jpg");
-            }
-
-            pre.executeUpdate();
+        } else {
+            pre.setString(5, "default_image.jpg");
         }
+
+        pre.executeUpdate();
+    }
 
 
     @Override
@@ -49,8 +49,8 @@ public class ServiceProduct implements IService<Product>{
         pre.setInt(2, product.getProductQuantity());
         pre.setString(3, product.getProductLabel());
         pre.setDate(4, product.getExpirationDate());
-       pre.setString(5, product.getProductImage());
-       pre.setDouble(6,product.getRating());
+        pre.setString(5, product.getProductImage());
+        pre.setDouble(6, product.getRating());
         Category category = product.getCategoryKey();
         pre.setInt(7, product.getCategoryKey().getCategoryId());
         pre.setInt(8, product.getProductId());
@@ -65,32 +65,35 @@ public class ServiceProduct implements IService<Product>{
 
     @Override
     public void delete(Product product) throws SQLException {
-      String req = "delete from product where productId=? ";
+        String req = "delete from product where productId=? ";
         PreparedStatement pre = con.prepareStatement(req);
-        pre.setInt(1,product.getProductId());
+        pre.setInt(1, product.getProductId());
         pre.executeUpdate();
     }
+
     @Override
     public List<Product> Show() throws SQLException {
-       List<Product> products = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
         String req = "SELECT * FROM product ";
         try (Statement ste = con.createStatement();
              ResultSet res = ste.executeQuery(req)) {
             while (res.next()) {
                 int id = res.getInt(1);
-                String productname= res.getString("product_name");
-                String productlabel= res.getString("product_label");
-                int productquantity= res.getInt("product_quantity");
-                Date expirationdate= res.getDate("expiration_date");
-                String productImage=res.getString("product_image");
-                Double rating= res.getDouble("rating");
-               int categoryId= res.getInt("Category_Key");
+                String productname = res.getString("product_name");
+                String productlabel = res.getString("product_label");
+                int productquantity = res.getInt("product_quantity");
+                Date expirationdate = res.getDate("expiration_date");
+                String productImage = res.getString("product_image");
+                Double rating = res.getDouble("rating");
+                int categoryId = res.getInt("Category_Key");
                 Category categoryKey = fetchCategoryById(categoryId);
-                Product p = new Product(id, productname,productlabel,productquantity,expirationdate,productImage,rating, categoryKey);
+                Product p = new Product(id, productname, productlabel, productquantity, expirationdate, productImage, rating, categoryKey);
                 products.add(p);
             }
         }
-        return products;   }
+        return products;
+    }
+
     public Category fetchCategoryById(int categoryId) throws SQLException {
         Category category = null;
         String query = "SELECT * FROM category WHERE categoryId = ?";
@@ -109,6 +112,7 @@ public class ServiceProduct implements IService<Product>{
         }
         return category;
     }
+
     public List<Product> filterByCategory(String category) throws SQLException {
         // Implementation to retrieve products filtered by category from the database
         List<Product> filteredProducts = new ArrayList<>();
@@ -160,4 +164,15 @@ public class ServiceProduct implements IService<Product>{
         }
     }
 
+    public void deletePDbyProduct(Product product) {
+        String deletePDQuery = "DELETE FROM donation_product WHERE Product_Key=?";
+        try (PreparedStatement deletePDsStatement = con.prepareStatement(deletePDQuery)) {
+            deletePDsStatement.setInt(1, product.getProductId());
+            deletePDsStatement.executeUpdate();
+        } catch (SQLException e) {
+            // Handle exception
+            e.printStackTrace();
+            // Optionally, throw an exception or handle the error gracefully
+        }
+    }
 }
