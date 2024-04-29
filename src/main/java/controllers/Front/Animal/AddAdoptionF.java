@@ -8,12 +8,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import services.ServiceAdoption;
 import services.ServiceAnimal;
 import services.ServiceUser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Date;
@@ -32,10 +41,21 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 
 import javax.imageio.ImageIO;
+import java.io.IOException;import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+
+
+import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
 
 public class AddAdoptionF {
     @FXML
@@ -88,6 +108,8 @@ public class AddAdoptionF {
 
 
 
+
+
     public void AddAdoptionF() throws SQLException {
         LocalDate adoptionDateValue = adoptiondate.getValue();
         if (adoptionDateValue == null || adoptionDateValue.isBefore(LocalDate.now())) {
@@ -112,20 +134,83 @@ public class AddAdoptionF {
 
             // Generate QR code with adoption information
             String adoptionInfo = "Adoption Date: " + adoptionDateValue.toString() +
-                    "\nAnimal Name: " + selectedAnimal.getAnimal_Name() +
-                    "\nAdoption Fee: $" + adoptionFee +
-                    "\nAdoption Status: " + adoptionStatus;
+                    "    Animal Name: " + selectedAnimal.getAnimal_Name() +
+                    "    Adoption Fee: TD " + adoptionFee +
+                    "    Adoption Status: " + adoptionStatus;
+
 
             // Create a temporary file to save the QR code
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save QR Code");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
-            File file = fileChooser.showSaveDialog(null);
+            File qrCodeFile = File.createTempFile("adoption_qr_code", ".png");
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(adoptionInfo, BarcodeFormat.QR_CODE, 200, 200);
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", qrCodeFile.toPath());
 
-            if (file != null) {
-                QRCodeWriter qrCodeWriter = new QRCodeWriter();
-                BitMatrix bitMatrix = qrCodeWriter.encode(adoptionInfo, BarcodeFormat.QR_CODE, 200, 200);
-                ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "PNG", file);
+            // Create a PDF document
+            try (PDDocument document = new PDDocument()) {
+                PDPage page = new PDPage();
+                document.addPage(page);
+
+                try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                    contentStream.setLeading(20f);
+                    contentStream.newLineAtOffset(50, 700);
+
+                    // Title
+                    contentStream.setNonStrokingColor(Color.BLUE);
+                    contentStream.showText("Adoption Information:");
+                    contentStream.newLine();
+                    contentStream.newLine();
+
+                    // Adoption Date
+                    contentStream.setNonStrokingColor(Color.BLACK);
+                    contentStream.showText("Adoption Date: ");
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.showText(adoptionDateValue.toString());
+                    contentStream.newLine();
+
+                    // Animal Name
+                    contentStream.setNonStrokingColor(Color.BLACK);
+                    contentStream.showText("Animal Name: ");
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.showText(selectedAnimal.getAnimal_Name());
+                    contentStream.newLine();
+
+                    // Adoption Fee
+                    contentStream.setNonStrokingColor(Color.BLACK);
+                    contentStream.showText("Adoption Fee: ");
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.showText("TD " + adoptionFee);
+                    contentStream.newLine();
+
+                    // Adoption Status
+                    contentStream.setNonStrokingColor(Color.BLACK);
+                    contentStream.showText("Adoption Status: ");
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.showText(adoptionStatus);
+                    contentStream.newLine();
+                    contentStream.newLine();
+
+                    // QR Code
+                    contentStream.setNonStrokingColor(Color.RED);
+                    contentStream.showText("QR Code:");
+                    contentStream.newLine();
+                    contentStream.endText();
+
+                    // Embed QR code into PDF
+                    PDImageXObject qrCodeImage = PDImageXObject.createFromFileByContent(qrCodeFile, document);
+                    contentStream.drawImage(qrCodeImage, 50, 400);
+                }
+
+                // Save the PDF
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save PDF");
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
+                File file = fileChooser.showSaveDialog(null);
+
+                if (file != null) {
+                    document.save(file);
+                }
             }
 
             // Display a success message
@@ -146,7 +231,7 @@ public class AddAdoptionF {
             showAlert("Add failed", null, "Failed to add adoption");
             e.printStackTrace();
         } catch (IOException | WriterException e) {
-            showAlert("Error", null, "Failed to save QR code");
+            showAlert("Error", null, "Failed to save QR code or PDF");
             e.printStackTrace();
         }
     }
@@ -166,7 +251,6 @@ public class AddAdoptionF {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
 
 
 

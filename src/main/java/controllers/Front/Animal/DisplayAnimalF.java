@@ -196,6 +196,7 @@ public class DisplayAnimalF {
 
     private void filterByType(String type) {
         try {
+            // Get all animals from the service
             List<Animal> animals = animalService.Show();
 
             // Filter out only the animals with status "Available" and the specified type
@@ -203,11 +204,11 @@ public class DisplayAnimalF {
                     .filter(animal -> animal.getAnimal_Status().equals("Available") && animal.getAnimal_Type().equals(type))
                     .collect(Collectors.toList());
 
-            // Clear the ListView before adding filtered animals
+            // Clear the ListView
             ListAnimals.getItems().clear();
 
             // Add filtered animals to the ListView
-            ListAnimals.getItems().addAll(filteredAnimals);
+            ListAnimals.setItems(FXCollections.observableArrayList(filteredAnimals));
 
         } catch (SQLException e) {
             e.printStackTrace();

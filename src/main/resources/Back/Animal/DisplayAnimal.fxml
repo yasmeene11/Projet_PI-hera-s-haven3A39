@@ -86,10 +86,16 @@
                 <Image url="@../../images/list.png" />
             </image>
         </ImageView>
-        <Button fx:id="btnaddanimal" layoutX="611.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#NavigateToAddAnimal" prefHeight="42.0" prefWidth="181.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     Add Animal" />
-        <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="631.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+        <Button fx:id="btnaddanimal" layoutX="617.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#NavigateToAddAnimal" prefHeight="42.0" prefWidth="181.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     Add Animal" />
+        <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="636.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../images/add.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnCalendar" layoutX="857.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayCalendar" prefHeight="45.0" prefWidth="162.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     Calendar" />
+        <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="876.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/calendar.png" />
             </image>
         </ImageView>
 

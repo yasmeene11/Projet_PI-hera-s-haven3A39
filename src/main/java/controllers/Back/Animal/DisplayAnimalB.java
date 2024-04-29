@@ -317,6 +317,11 @@ public class DisplayAnimalB {
 
 
     }
+
+    @FXML
+    public void NavigateToDisplayCalendar() throws IOException {
+        loadFXML("/Back/Animal/Calendar.fxml");
+    }
     private void loadFXML(String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
         Parent root = loader.load();
