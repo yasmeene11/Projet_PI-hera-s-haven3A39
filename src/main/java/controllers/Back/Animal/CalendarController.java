@@ -1,5 +1,7 @@
 package controllers.Back.Animal;
 
+
+
 import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.Entry;
 import entities.Adoption;
@@ -10,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import com.calendarfx.model.Calendar;
@@ -71,18 +74,27 @@ public class CalendarController {
     private final ServiceAdoption adoptionService = new ServiceAdoption();
     private final ServiceBoarding boardingService = new ServiceBoarding();
 
+
+
+    @FXML
+    private Label infoTextArea;
+
+
+    private Calendar adoptionCalendar;
+    private Calendar boardingCalendar;
+
     @FXML
     private void initialize() throws SQLException {
         // Create a calendar source
         CalendarSource calendarSource = new CalendarSource("Pet Events");
 
         // Create a calendar for adoptions
-        Calendar adoptionCalendar = new Calendar("Adoptions");
+        adoptionCalendar = new Calendar("Adoptions");
         adoptionCalendar.setStyle(Calendar.Style.STYLE1); // Set style for adoptions
         calendarSource.getCalendars().add(adoptionCalendar);
 
         // Create a calendar for pet boardings
-        Calendar boardingCalendar = new Calendar("Boardings");
+        boardingCalendar = new Calendar("Boardings");
         boardingCalendar.setStyle(Calendar.Style.STYLE2); // Set style for boardings
         calendarSource.getCalendars().add(boardingCalendar);
 
@@ -110,10 +122,52 @@ public class CalendarController {
             }
         }
 
+        // Set up event handlers for calendar entries
+        calendarView.setEntryDetailsPopOverContentCallback(param -> {
+            Entry<?> entry = param.getEntry();
+            if (entry != null) {
+                // Retrieve additional information based on the entry type
+                String info = "";
+                if (entry.getCalendar().equals(adoptionCalendar)) {
+                    // This is an adoption entry
+                    Adoption adoption = null;
+                    try {
+                        adoption = adoptionService.getAdoptionByAnimalNameAndDate(entry.getTitle(), entry.getStartDate());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (adoption != null) {
+                        info += "Adoption Details:\n";
+                        info += "Animal Name: " + adoption.getAnimal_Key().getAnimal_Name() + "\n";
+                        info += "Adoption Date: " + adoption.getAdoption_Date() + "\n";
+                        // Add more information if needed
+                    }
+                } else if (entry.getCalendar().equals(boardingCalendar)) {
+                    // This is a boarding entry
+                    Boarding boarding = null;
+                    try {
+                        boarding = boardingService.getBoardingByAnimalNameAndDate(entry.getTitle(), entry.getStartDate());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (boarding != null) {
+                        info += "Boarding Details:\n";
+                        info += "Animal Name: " + boarding.getAnimal_Key().getAnimal_Name() + "\n";
+                        info += "Start Date: " + boarding.getStart_Date() + "\n";
+                        info += "End Date: " + boarding.getEnd_Date() + "\n";
+                        // Add more information if needed
+                    }
+                }
+
+                // Update the infoTextArea with the information
+                infoTextArea.setText(info);
+            }
+            return infoTextArea;
+        });
+
         // Add the calendar source to the calendar view
         calendarView.getCalendarSources().add(calendarSource);
     }
-
     private void showAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

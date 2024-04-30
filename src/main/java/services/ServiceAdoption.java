@@ -5,6 +5,7 @@ import entities.Adoption;
 import entities.Animal;
 import entities.User;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -216,4 +217,14 @@ public class ServiceAdoption implements IService<Adoption> {
     }
 
 
+    public Adoption getAdoptionByAnimalNameAndDate(String animalName, LocalDate adoptionDate) throws SQLException {
+        List<Adoption> allAdoptions = Show();
+        for (Adoption adoption : allAdoptions) {
+            if (adoption.getAnimal_Key().getAnimal_Name().equals(animalName) &&
+                    adoption.getAdoption_Date().toLocalDate().isEqual(adoptionDate)) {
+                return adoption;
+            }
+        }
+        return null; // Return null if no matching adoption is found
+    }
 }

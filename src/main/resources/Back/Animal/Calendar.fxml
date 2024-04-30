@@ -113,7 +113,7 @@
             </image>
         </ImageView>
         <Button fx:id="btnIndex" layoutX="71.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#NavigateToIndexBack" prefHeight="63.0" prefWidth="170.0" styleClass="btnlogo" stylesheets="@../../styling/fullpackstyling.css" />
-
+              <Label  fx:id="infoTextArea"  prefHeight="150.0" prefWidth="300.0" />
             <CalendarView  fx:id="calendarView" layoutX="333.0" layoutY="100.0" prefHeight="600.0" prefWidth="864.0"  />
 
 

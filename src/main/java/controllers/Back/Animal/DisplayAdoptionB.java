@@ -14,6 +14,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -74,7 +76,8 @@ public class DisplayAdoptionB {
     public DisplayAdoptionB() {
         adoptionService = new ServiceAdoption();
     }
-
+    @FXML
+    private GridPane statsGrid;
 
 
 
@@ -82,7 +85,50 @@ public class DisplayAdoptionB {
     @FXML
     private void initialize() {
         try {
+            // Initialize statistics variables
+            int totalAdoptions = 0;
+            int completedAdoptions = 0;
+            int cancelledAdoptions = 0;
+            int pendingAdoptions = 0;
+
+            for (int i = 0; i < 4; i++) {
+                ColumnConstraints column = new ColumnConstraints();
+                column.setPercentWidth(25); // Each column takes up 25% of the width
+                statsGrid.getColumnConstraints().add(column);
+            }
+
             List<Adoption> adoptions = adoptionService.Show();
+
+            // Iterate through the adoptions to calculate statistics
+            for (Adoption adoption : adoptions) {
+                switch (adoption.getAdoption_Status()) {
+                    case "Completed":
+                        completedAdoptions++;
+                        break;
+                    case "Cancelled":
+                        cancelledAdoptions++;
+                        break;
+                    case "Pending":
+                        pendingAdoptions++;
+                        break;
+                }
+                // Increment total adoptions
+                totalAdoptions++;
+            }
+
+            // Display statistics in the grid pane
+            Label totalAdoptionsLabel = new Label("Total Adoptions: " + totalAdoptions);
+            Label completedAdoptionsLabel = new Label("Completed Adoptions: " + completedAdoptions);
+            Label cancelledAdoptionsLabel = new Label("Cancelled Adoptions: " + cancelledAdoptions);
+            Label pendingAdoptionsLabel = new Label("Pending Adoptions: " + pendingAdoptions);
+
+            statsGrid.add(totalAdoptionsLabel, 0, 0);
+            statsGrid.add(completedAdoptionsLabel, 1, 0);
+            statsGrid.add(cancelledAdoptionsLabel, 2, 0);
+            statsGrid.add(pendingAdoptionsLabel, 3, 0);
+
+
+           // List<Adoption> adoptions = adoptionService.Show();
             ListAdoptions.getItems().addAll(adoptions);
 
             ListAdoptions.setCellFactory(param -> new ListCell<Adoption>() {

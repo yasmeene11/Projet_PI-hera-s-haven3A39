@@ -5,6 +5,7 @@ import entities.Boarding;
 import entities.Animal;
 import entities.User;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -195,5 +196,14 @@ public class ServiceBoarding implements IService<Boarding>{
         }
         return user;
     }
-
+    public Boarding getBoardingByAnimalNameAndDate(String animalName, LocalDate startDate) throws SQLException {
+        List<Boarding> allBoardings = Show();
+        for (Boarding boarding : allBoardings) {
+            if (boarding.getAnimal_Key().getAnimal_Name().equals(animalName) &&
+                    boarding.getStart_Date().toLocalDate().isEqual(startDate)) {
+                return boarding;
+            }
+        }
+        return null; // Return null if no matching boarding is found
+    }
 }
