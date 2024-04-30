@@ -29,10 +29,7 @@ import java.net.URL;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DisplayAnimalB {
 
@@ -79,7 +76,16 @@ public class DisplayAnimalB {
     private Button btnlistanimal;
 
     @FXML
-    private Button buttonSearch;
+    private CheckBox chkName;
+
+    @FXML
+    private CheckBox chkBreed;
+
+    @FXML
+    private CheckBox chkType;
+
+    @FXML
+    private CheckBox chkAge;
 
     @FXML
     private TextField fieldSearch;
@@ -93,6 +99,7 @@ public class DisplayAnimalB {
         adoptionService = new ServiceAdoption();
         boardingService = new ServiceBoarding();
     }
+
 
     @FXML
     private void initialize() {
@@ -163,7 +170,17 @@ public class DisplayAnimalB {
                 }
             });
 
-            buttonSearch.setOnAction(event -> handleSearch());
+            // Add listener to the search field
+            fieldSearch.textProperty().addListener((obs, oldValue, newValue) -> handleSearch(newValue.trim()));
+
+            // Add listeners to the checkboxes
+            chkName.setOnAction(event -> handleSort());
+            chkBreed.setOnAction(event -> handleSort());
+            chkType.setOnAction(event -> handleSort());
+            chkAge.setOnAction(event -> handleSort());
+
+            // Initially, sort by name
+            handleSort();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -192,8 +209,7 @@ public class DisplayAnimalB {
     }
 
     @FXML
-    private void handleSearch() {
-        String searchText = fieldSearch.getText().trim();
+    private void handleSearch(String searchText) {
         List<Animal> animals;
 
         try {
@@ -206,6 +222,28 @@ public class DisplayAnimalB {
         }
     }
 
+    @FXML
+    private void handleSort() {
+        // Retrieve animals from the ListView
+        List<Animal> animals = new ArrayList<>(ListAnimals.getItems());
+
+        // Apply sorting based on checked checkboxes
+        if (chkName.isSelected()) {
+            Collections.sort(animals, Comparator.comparing(Animal::getAnimal_Name));
+        }
+        if (chkBreed.isSelected()) {
+            Collections.sort(animals, Comparator.comparing(Animal::getAnimal_Breed));
+        }
+        if (chkType.isSelected()) {
+            Collections.sort(animals, Comparator.comparing(Animal::getAnimal_Type));
+        }
+        if (chkAge.isSelected()) {
+            Collections.sort(animals, Comparator.comparingInt(Animal::getAge));
+        }
+
+        // Update the ListView with sorted animals
+        ListAnimals.getItems().setAll(animals);
+    }
 
     @FXML
     private void handleUpdate(Animal animal) {

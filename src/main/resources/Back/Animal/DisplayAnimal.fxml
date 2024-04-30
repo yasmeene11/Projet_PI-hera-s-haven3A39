@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -120,8 +121,12 @@
             </cellFactory>
         </ListView>
         <HBox alignment="CENTER" spacing="5" />
-         <Button fx:id="buttonSearch" layoutX="493.0" layoutY="147.0" text="Search" />
-         <TextField fx:id="fieldSearch" layoutX="333.0" layoutY="147.0" promptText="Search by breed, type, or age" />
 
+         <TextField fx:id="fieldSearch" layoutX="333.0" layoutY="147.0" promptText="Search by breed, type, or age" stylesheets="@../../styling/style.css" />
+        <CheckBox fx:id="chkName" layoutX="630.0" layoutY="164.0" mnemonicParsing="false" text="Name" />
+        <CheckBox fx:id="chkBreed" layoutX="683.0" layoutY="164.0" mnemonicParsing="false" text="Breed" />
+        <CheckBox fx:id="chkType" layoutX="739.0" layoutY="164.0" mnemonicParsing="false" text="Type" />
+        <CheckBox fx:id="chkAge" layoutX="788.0" layoutY="164.0" mnemonicParsing="false" text="Age" />
+        
     </children>
 </AnchorPane>
