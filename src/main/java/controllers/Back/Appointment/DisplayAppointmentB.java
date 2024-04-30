@@ -15,6 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import services.ServiceAppointment;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+import services.ServiceRapport;
 
 import java.io.IOException;
 import java.sql.SQLException;

@@ -19,9 +19,9 @@
 
         private static Connection con;
         private Statement ste;
-        private static final String ACCOUNT_SID = "*****HiddenOnpurpose";
-        private static final String AUTH_TOKEN = "*****HiddenOnPurpose";
-        private static final String TWILIO_PHONE_NUMBER = "+*****HiddenOnPurpose";
+        private static final String ACCOUNT_SID = "******Hidden****";
+        private static final String AUTH_TOKEN = "******Hidden****";
+        private static final String TWILIO_PHONE_NUMBER = "+******Hidden****";
         public ServiceAppointment() {
             con = MyBD.getInstance().getCon();
         }

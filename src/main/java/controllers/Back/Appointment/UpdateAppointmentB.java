@@ -124,10 +124,12 @@ public class UpdateAppointmentB {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.showAndWait().ifPresent(response -> closeWindow());
     }
 
-
+    private void closeWindow() {
+        ((Stage) comboappointmentstatus.getScene().getWindow()).close();
+    }
     @FXML
     private void initialize() {
         fillComboBoxes();

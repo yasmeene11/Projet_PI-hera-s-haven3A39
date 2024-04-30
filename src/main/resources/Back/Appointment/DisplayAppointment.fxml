@@ -9,7 +9,7 @@
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Appointment.DisplayAppointmentB">
 
     <children>
-      <Button fx:id="btnAppStats" onMouseClicked="#NavigateToDisplayStat" layoutX="848.0" layoutY="45.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="208.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="Display Statistics" />
+      <Button fx:id="btnAppStats" layoutX="848.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayStat" prefHeight="44.0" prefWidth="208.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="Display Statistics" />
         <AnchorPane layoutX="-23.2" prefHeight="720.0" prefWidth="287.0" style="-fx-background-color: #fff; -fx-border-radius: 30; -fx-border-color: #38B6FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-23.0" AnchorPane.topAnchor="0.0">
             <children>
 
@@ -76,8 +76,8 @@
                 </ImageView>
             </children>
         </AnchorPane>
-        <Button fx:id="btnlistappointment" layoutX="371.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="44.0" prefWidth="218.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     List of Appointment" />
-        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="380.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+        <Button fx:id="btnlistappointment" layoutX="380.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="44.0" prefWidth="218.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     List of Appointment" />
+        <ImageView fitHeight="35.0" fitWidth="28.0" layoutX="391.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../images/list.png" />
             </image>

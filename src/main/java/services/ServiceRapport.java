@@ -1,5 +1,6 @@
 package services;
 
+import controllers.Back.Appointment.QuartzScheduler;
 import entities.Animal;
 import entities.Appointment;
 import entities.Rapport;
@@ -17,6 +18,7 @@ public class ServiceRapport implements IService<Rapport> {
     public ServiceRapport() {
         con = MyBD.getInstance().getCon();
     }
+
 
     @Override
     public void add(Rapport rapport) throws SQLException {
@@ -123,6 +125,8 @@ public class ServiceRapport implements IService<Rapport> {
     }
 
 
-
+    public void startScheduler(ServiceRapport serviceRapport) {
+        QuartzScheduler.scheduleReportGeneration(serviceRapport);
+    }
 
 }
