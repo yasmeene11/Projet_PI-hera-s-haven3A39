@@ -42,6 +42,7 @@ public class UpdateProductB {
     private ComboBox<Category> txtCategory;
 
     private Product product;
+
     private void populateCategoryComboBox() throws SQLException {
         ServiceCategory sc = new ServiceCategory();
         List<Category> categories = sc.Show();
@@ -119,7 +120,7 @@ public class UpdateProductB {
             txtProductLabel.setText(product.getProductLabel());
             txtProductQuantity.setText(String.valueOf(product.getProductQuantity()));
             txtExpirationDate.setValue(product.getExpirationDate().toLocalDate());
-            //String ImageFileName = txtImage.setText(product.getProductImage());
+            txtImage.setText(product.getProductImage());
 
             Category category = product.getCategoryKey();
 
@@ -207,7 +208,4 @@ public class UpdateProductB {
             alert.showAndWait();
         }
     }
-
-
-
 }

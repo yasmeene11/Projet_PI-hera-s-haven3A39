@@ -1,73 +1,37 @@
 package controllers.Back.Product;
-import com.jfoenix.controls.JFXTextField;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
-import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.chart.PieChart;
+import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
-import java.awt.Graphics;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
-import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.*;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 import javafx.stage.Modality;
-import javafx.stage.Stage;
-
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
-
-import java.io.File;
 import java.io.IOException;
 import entities.Product;
 import javafx.scene.image.Image;
-
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.security.cert.PolicyNode;
 import java.sql.SQLException;
-import java.util.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import javafx.scene.image.Image;
 import services.ServicePD;
 import services.ServiceProduct;
-import utils.MyBD;
-
-import java.net.URL;
-import java.sql.SQLException;
 import java.util.List;
-
-import static services.ServicePD.con;
 
 public class DisplayProductB {
 
@@ -133,11 +97,10 @@ public class DisplayProductB {
     }
 
 
-
     @FXML
     public void initialize() throws SQLException {
         try {
-             ServicePD pd= new ServicePD();
+            ServicePD pd = new ServicePD();
             List<Product> allProducts = serviceprod.Show();
             ProductListView.getItems().addAll(allProducts);
             ProductListView.setCellFactory(param -> new ListCell<Product>() {
@@ -179,7 +142,7 @@ public class DisplayProductB {
                         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
                         container.getChildren().addAll(productNameLabel, productLabelLabel, productQuantityLabel,
-                                expirationDateLabel, categoryLabel,donationCountLabel,imageView, buttonBox);
+                                expirationDateLabel, categoryLabel, donationCountLabel, imageView, buttonBox);
                         setGraphic(container);
                     }
                 }
@@ -221,7 +184,6 @@ public class DisplayProductB {
 
         return chart;
     }
-
 
 
     @FXML
@@ -409,57 +371,6 @@ public class DisplayProductB {
         stage.show();
 
     }
-
-
-    public void generatePDF(MouseEvent mouseEvent) {
-        String outputPath = "List_Product.pdf";
-        try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage();
-            document.addPage(page);
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
-                contentStream.setLeading(20); // Set line spacing
-
-                contentStream.beginText();
-                contentStream.newLineAtOffset(100, 700);
-                contentStream.showText("Product List");
-                contentStream.newLine();
-                contentStream.endText();
-
-                List<Product> products = serviceprod.Show();
-                float yPosition = 680;
-                for (Product product : products) {
-                    contentStream.beginText();
-                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-                    contentStream.newLineAtOffset(200, yPosition);
-                    contentStream.showText("Product Name: " + product.getProductName());
-                    contentStream.newLine();
-                    contentStream.setFont(PDType1Font.HELVETICA, 12);
-                    contentStream.showText("Product Label: " + product.getProductLabel());
-                    contentStream.newLine();
-                    contentStream.showText("Product Quantity: " + product.getProductQuantity());
-                    contentStream.newLine();
-                    contentStream.showText("Expiration: " + product.getExpirationDate());
-                    contentStream.newLine();
-                    contentStream.endText();
-
-                    yPosition -= 100; // Adjust vertical position for the next product
-                }
-            } catch (SQLException e) {
-                System.err.println("Error fetching products from database: " + e.getMessage());
-                return; // Exit the method to avoid attempting to save the document without proper data
-            }
-            try {
-                document.save(outputPath);
-                System.out.println("PDF saved successfully.");
-            } catch (IOException e) {
-                System.err.println("Error saving PDF: " + e.getMessage());
-            }
-        } catch (IOException e) {
-            System.err.println("Error creating PDF document: " + e.getMessage());
-        }
-    }
-
     public void generateProductRatingsPieChart(MouseEvent mouseEvent) throws SQLException {
         ServiceProduct p= new ServiceProduct();
         DefaultPieDataset dataset = p.createDataset();

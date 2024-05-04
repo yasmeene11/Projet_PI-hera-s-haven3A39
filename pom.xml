@@ -49,15 +49,6 @@
             <artifactId>javafx-swing</artifactId>
             <version>17</version>
         </dependency>
-        <!-- PDF -->
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.24</version>
-        </dependency>
-
-
-
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
