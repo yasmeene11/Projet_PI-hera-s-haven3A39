@@ -7,10 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +25,25 @@ import java.util.List;
 import java.util.Map;
 
 public class Recommendation {
+    @FXML
+    private MenuItem btnanimal;
+
+    @FXML
+    private MenuItem btnboarding;
+
+    @FXML
+    private MenuItem btndonationm;
+
+    @FXML
+    private MenuItem btndonationp;
+
+    @FXML
+    private MenuItem btnproduct;
+
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private MenuItem btnindexb;
 
     @FXML
     private ListView<Animal> recommendationListView;
@@ -161,7 +177,70 @@ public class Recommendation {
             });
         }
     }
+    @FXML
+    public void NavigateToIndexBack() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/indexFront.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnindexb.getParentPopup().getOwnerWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+        stage.show();
+    }
+    @FXML
+    public void NavigateToDisplayAnimal() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/Animal/DisplayAnimal.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnanimal.getParentPopup().getOwnerWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+        stage.show();
+    }
 
+    @FXML
+    public void NavigateToAddBoarding() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/Animal/AddBoarding.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnboarding.getParentPopup().getOwnerWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+        stage.show();
+    }
+
+    @FXML
+    public void NavigateToDisplayProduct() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/Product/DisplayProduct.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnproduct.getParentPopup().getOwnerWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+        stage.show();
+    }
+
+    @FXML
+    public void NavigateToDisplayDonationM() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/DonationM/DisplayDonationM.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btndonationm.getParentPopup().getOwnerWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+        stage.show();
+    }
+
+    @FXML
+    public void NavigateToDisplayDonationP() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/DonationP/DisplayDonationP.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btndonationp.getParentPopup().getOwnerWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("United Pets");
+        stage.show();
+    }
 
 }
 

@@ -1,6 +1,7 @@
 package controllers.Front.Animal;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
@@ -28,13 +29,19 @@ import services.ServiceAdoption;
 import services.ServiceAnimal;
 import services.ServiceUser;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Hashtable;
+import java.util.Optional;
 
 public class AddAdoptionF {
     @FXML
@@ -68,7 +75,7 @@ public class AddAdoptionF {
     private DatePicker adoptiondate;
 
 
-    private final GoogleDriveService driveService;
+
     private final ServiceAdoption adoptionService;
     private final ServiceAnimal animalService;
     private final ServiceUser userService;
@@ -81,7 +88,7 @@ public class AddAdoptionF {
         this.adoptionService = new ServiceAdoption();
         this.animalService = new ServiceAnimal();
         this.userService = new ServiceUser();
-        this.driveService = new GoogleDriveService();
+
 
 
     }
@@ -91,9 +98,33 @@ public class AddAdoptionF {
         this.selectedAnimalId = animalId;
     }
 
-
+    private BufferedImage generateQRCodeImage(String text, int width, int height) throws WriterException {
+        Hashtable<EncodeHintType, String> hints = new Hashtable<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        BitMatrix bitMatrix;
+        try {
+            bitMatrix = new QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);
+        } catch (WriterException e) {
+            throw new WriterException(e.getMessage());
+        }
+        int matrixWidth = bitMatrix.getWidth();
+        BufferedImage image = new BufferedImage(matrixWidth, matrixWidth, BufferedImage.TYPE_INT_RGB);
+        image.createGraphics();
+        java.awt.Graphics2D graphics = (java.awt.Graphics2D) image.getGraphics();
+        graphics.setColor(java.awt.Color.WHITE);
+        graphics.fillRect(0, 0, matrixWidth, matrixWidth);
+        graphics.setColor(java.awt.Color.BLACK);
+        for (int i = 0; i < matrixWidth; i++) {
+            for (int j = 0; j < matrixWidth; j++) {
+                if (bitMatrix.get(i, j)) {
+                    graphics.fillRect(i, j, 1, 1);
+                }
+            }
+        }
+        return image;
+    }
     @FXML
-    public void AddAdoptionF() throws SQLException {
+    public void AddAdoptionF() throws SQLException, WriterException, GeneralSecurityException {
         LocalDate adoptionDateValue = adoptiondate.getValue();
         if (adoptionDateValue == null || adoptionDateValue.isBefore(LocalDate.now())) {
             showAlert("Error", "Invalid Adoption Date", "Please select a valid future date for adoption.");
@@ -128,7 +159,9 @@ public class AddAdoptionF {
             MatrixToImageWriter.writeToPath(bitMatrix, "PNG", qrCodeFile.toPath());
 
             // Create a PDF document
-            try (PDDocument document = new PDDocument()) {
+            try (PDDocument document = new PDDocument();
+                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+
                 PDPage page = new PDPage();
                 document.addPage(page);
 
@@ -180,51 +213,76 @@ public class AddAdoptionF {
                     contentStream.endText();
 
                     // Embed QR code into PDF
-                    PDImageXObject qrCodeImage = PDImageXObject.createFromFileByContent(qrCodeFile, document);
-                    contentStream.drawImage(qrCodeImage, 50, 400);
+                    //PDImageXObject qrCodeImage = PDImageXObject.createFromFileByContent(qrCodeFile, document);
+                    //contentStream.drawImage(qrCodeImage, 50, 400);
                 }
 
-   /*
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Save PDF");
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
-                File file = fileChooser.showSaveDialog(null);
+                // Save the PDF content to ByteArrayOutputStream
+                document.save(byteArrayOutputStream);
 
-                if (file != null) {
+                // Convert the ByteArrayOutputStream to a byte array
+                byte[] pdfContent = byteArrayOutputStream.toByteArray();
 
-                    String folderId = "1_dd7iLOySZ0QwIJn66wWIM_CWcc6ghpt"; // Specify the ID of the folder in Google Drive where you want to upload the PDF
-                    driveService.uploadPDF(file.getAbsolutePath(), folderId);
+                // Call the uploadPDFAndGetFileId method from GoogleDriveService class, passing the pdfContent byte array and get the file ID
+                String pdfFileName = "Adoption_Details.pdf"; // Provide a file name for the PDF
+                String pdfFileId = GoogleDriveService.uploadPDFAndGetFileId(pdfContent, pdfFileName);
+
+                String pdfUrl = "https://drive.google.com/uc?id=" + pdfFileId;
+
+                // Generate QR code with the URL of the PDF file in Google Drive
+                BufferedImage qrCodeImage = generateQRCodeImage(pdfUrl, 200, 200);
+
+                // Convert BufferedImage to Image
+                ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream(); // Rename byteArrayOutputStream to byteArrayOutputStream2
+                ImageIO.write(qrCodeImage, "png", byteArrayOutputStream2);
+                byteArrayOutputStream2.flush();
+                byte[] imageInByte = byteArrayOutputStream2.toByteArray();
+                byteArrayOutputStream2.close();
+                javafx.scene.image.Image qrCodeFXImage = new javafx.scene.image.Image(new ByteArrayInputStream(imageInByte));
+
+                // Create ImageView with the Image
+                javafx.scene.image.ImageView qrCodeView = new javafx.scene.image.ImageView(qrCodeFXImage);
+
+                // Create a VBox to hold the QR code image
+                javafx.scene.layout.VBox qrCodeBox = new javafx.scene.layout.VBox();
+                qrCodeBox.getChildren().addAll(qrCodeView);
+
+                // Create a confirmation dialog with the QR code
+                Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmationDialog.setTitle("Adoption Completed");
+                confirmationDialog.setHeaderText(null);
+                confirmationDialog.setContentText("Adoption process completed. QR code with PDF URL:");
+
+                // Set the dialog's graphic to display the QR code
+                confirmationDialog.getDialogPane().setContent(qrCodeBox);
+
+                // Add "Download" and "Cancel" buttons
+                ButtonType downloadButton = new ButtonType("Download");
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                confirmationDialog.getButtonTypes().setAll(downloadButton, cancelButton);
+
+                // Show the dialog and wait for user input
+                Optional<ButtonType> result = confirmationDialog.showAndWait();
+                if (result.isPresent() && result.get() == downloadButton) {
+                    // If "Download" button is clicked, prompt user to choose download location
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Save QR Code Image");
+                    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Files", "*.png"));
+                    File file = fileChooser.showSaveDialog(new Stage());
+
+                    // Save the QR code image to the selected location
+                    if (file != null) {
+                        ImageIO.write(qrCodeImage, "PNG", file);
+                    }
                 }
-*/
 
-
-                // Save the PDF
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Save PDF");
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
-                File file = fileChooser.showSaveDialog(null);
-
-                if (file != null) {
-                    document.save(file);
-                }
+                // Your existing code for closing the stage and loading another FXML
+            } catch (IOException | WriterException | GeneralSecurityException e) {
+                showAlert("Error", null, "Failed to complete adoption process");
+                e.printStackTrace();
             }
-
-            // Display a success message
-            showAlertS("Adoption added successfully", null, "Adoption added successfully!");
-
-            // Close the current stage
-            Stage stage = (Stage) adoptiondate.getScene().getWindow();
-            stage.close();
-
-            // Load and display the indexBack page
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/indexFront.fxml"));
-            Parent root = loader.load();
-            Stage displayStage = new Stage();
-            displayStage.setScene(new Scene(root));
-            displayStage.show();
-        } catch (SQLException | IOException | WriterException e) {
-            showAlert("Error", null, "Failed to complete adoption process");
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -311,6 +369,3 @@ public class AddAdoptionF {
         stage.show();
     }
 }
-
-
-//AddAdoptionF
