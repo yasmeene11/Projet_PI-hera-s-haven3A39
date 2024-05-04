@@ -271,7 +271,7 @@ public class DisplayProductF {
                 link = "https://zanimo.tn/category/31/products";
                 break;
             case "Hygienic":
-                link = "https://zanimo.tn/category/33/product";
+                link = "https://zanimo.tn/category/33/products";
                 break;
             default:
                 link = "https://zanimo.tn";

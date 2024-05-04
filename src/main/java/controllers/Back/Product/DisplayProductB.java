@@ -152,8 +152,6 @@ public class DisplayProductB {
             e.printStackTrace();
         }
     }
-
-
     private static JFreeChart createChart(DefaultPieDataset dataset, String title) {
         JFreeChart chart = ChartFactory.createPieChart(
                 title,  // chart title
@@ -184,7 +182,6 @@ public class DisplayProductB {
 
         return chart;
     }
-
 
     @FXML
     private void handleUpdate(Product product) {
