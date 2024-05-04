@@ -2,18 +2,28 @@ package controllers.Back.Product;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import java.awt.Graphics;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -37,9 +47,12 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.security.cert.PolicyNode;
 import java.sql.SQLException;
 import java.util.*;
 import javax.imageio.ImageIO;
+import javax.swing.*;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -102,6 +115,9 @@ public class DisplayProductB {
     private ListView<Product> ProductListView;
     private final ServiceProduct serviceprod;
     @FXML
+    AnchorPane chartAnchorPane;
+
+    @FXML
     public void NavigateToAddProduct() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Product/AddProduct.fxml"));
         Parent root = loader.load();
@@ -141,6 +157,7 @@ public class DisplayProductB {
                         Label categoryLabel = new Label("Category: " + product.getCategoryKey().getProduct_Type());
                         int donationCount = pd.getDonationCount(product.getProductId());
                         Label donationCountLabel = new Label("Number of Donations: " + donationCount);
+
                         ImageView imageView = new ImageView();
                         InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
                         if (imageStream != null) {
@@ -159,7 +176,6 @@ public class DisplayProductB {
 
                         Button deleteButton = new Button("Delete");
                         deleteButton.setOnAction(event -> handleDelete(product));
-
                         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
                         container.getChildren().addAll(productNameLabel, productLabelLabel, productQuantityLabel,
@@ -168,11 +184,43 @@ public class DisplayProductB {
                     }
                 }
             });
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+
+    private static JFreeChart createChart(DefaultPieDataset dataset, String title) {
+        JFreeChart chart = ChartFactory.createPieChart(
+                title,  // chart title
+                dataset,             // data
+                true,               // include legend
+                true,
+                false);
+
+        chart.setBackgroundPaint(Color.white);
+
+        // Customize the plot
+        chart.getPlot().setBackgroundPaint(Color.white);
+        chart.getPlot().setOutlinePaint(null); // Remove plot border
+
+        // Set custom colors for pie sections
+        PiePlot plot = (PiePlot) chart.getPlot();
+        ServiceProduct p = new ServiceProduct();
+        plot.setSectionPaint("Product", Color.BLUE);
+        plot.setSectionPaint("Rating 4", Color.GREEN);
+        plot.setSectionPaint("Rating 3", Color.ORANGE);
+        plot.setSectionPaint("Rating 2", Color.RED);
+        plot.setSectionPaint("Rating 1", Color.YELLOW);
+
+        // Customize the legend
+        chart.getLegend().setFrame(BlockBorder.NONE);
+        chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, 12));
+
+
+        return chart;
+    }
 
 
 
@@ -381,12 +429,6 @@ public class DisplayProductB {
                 List<Product> products = serviceprod.Show();
                 float yPosition = 680;
                 for (Product product : products) {
-                    String imagePath = product.getProductImage();
-                    Image image = loadImage(imagePath);
-                    if (image == null) {
-                        System.err.println("Error loading image: " + imagePath);
-                        continue;
-                    }
                     contentStream.beginText();
                     contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                     contentStream.newLineAtOffset(200, yPosition);
@@ -418,14 +460,20 @@ public class DisplayProductB {
         }
     }
 
-    private Image loadImage(String imagePath) {
-        try {
-            return new Image(new File(imagePath).toURI().toString());
-        } catch (Exception e) {
-            return null; // Return null if loading fails
-        }
+    public void generateProductRatingsPieChart(MouseEvent mouseEvent) throws SQLException {
+        ServiceProduct p= new ServiceProduct();
+        DefaultPieDataset dataset = p.createDataset();
+        JFreeChart chart = createChart(dataset, "Product Ratings");
+
+        // Create and configure a panel to display the chart
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        // Display the chart in a frame
+        JFrame frame = new JFrame("Product Ratings Pie Chart");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(chartPanel);
+        frame.pack();
+        frame.setVisible(true);
     }
-
-
-
 }

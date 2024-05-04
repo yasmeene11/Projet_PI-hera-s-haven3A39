@@ -1,7 +1,5 @@
 package entities;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import services.ServiceProduct;
 
 import java.sql.SQLException;
@@ -17,6 +15,7 @@ public class Product {
  public  Date ExpirationDate;
   double Rating;
   String ProductImage;
+
 
     public Product() {
     }

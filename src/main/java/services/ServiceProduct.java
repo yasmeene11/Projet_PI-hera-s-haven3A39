@@ -2,7 +2,7 @@ package services;
 
 import entities.Category;
 import entities.Product;
-import org.springframework.security.core.parameters.P;
+import org.jfree.data.general.DefaultPieDataset;
 import utils.MyBD;
 import java.sql.*;
 import java.util.ArrayList;
@@ -164,6 +164,40 @@ public class ServiceProduct implements IService<Product> {
         }
     }
 
+
+    public static DefaultPieDataset createDataset() throws SQLException {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+
+        PreparedStatement selectStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            String query = "SELECT product_name, rating FROM product";
+            selectStatement = con.prepareStatement(query);
+            resultSet = selectStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String productName = resultSet.getString("product_name");
+                double rating = resultSet.getDouble("rating");
+                dataset.setValue(productName, rating);
+            }
+        } catch (SQLException e) {
+            // Handle any SQL errors
+            e.printStackTrace();
+        } finally {
+            // Close resources in the reverse order of their creation to avoid potential exceptions
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (selectStatement != null) {
+                selectStatement.close();
+            }
+        }
+
+        return dataset;
+    }
+
+
     public void deletePDbyProduct(Product product) {
         String deletePDQuery = "DELETE FROM donation_product WHERE Product_Key=?";
         try (PreparedStatement deletePDsStatement = con.prepareStatement(deletePDQuery)) {
@@ -175,4 +209,5 @@ public class ServiceProduct implements IService<Product> {
             // Optionally, throw an exception or handle the error gracefully
         }
     }
+
 }

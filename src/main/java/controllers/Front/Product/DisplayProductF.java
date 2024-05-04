@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTextField;
 import entities.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -19,8 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.controlsfx.control.Rating;
 import services.ServiceProduct;
 
@@ -68,7 +67,11 @@ public class DisplayProductF {
     private ObservableList<Product> allProducts;
 
     private final ServiceProduct serviceprod;
-    public DisplayProductF(){serviceprod = new ServiceProduct();}
+
+    public DisplayProductF() {
+        serviceprod = new ServiceProduct();
+    }
+
     @FXML
     public void NavigateToIndexBack() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/indexFront.fxml"));
@@ -79,6 +82,7 @@ public class DisplayProductF {
         stage.setTitle("United Pets");
         stage.show();
     }
+
     @FXML
     public void NavigateToDisplayAnimal() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/Animal/DisplayAnimal.fxml"));
@@ -133,11 +137,12 @@ public class DisplayProductF {
         stage.setTitle("United Pets");
         stage.show();
     }
+
     @FXML
     public void initialize() {
         try {
-                  allProducts = FXCollections.observableArrayList(serviceprod.Show());
-                  ProductListView.getItems().addAll(allProducts);
+            allProducts = FXCollections.observableArrayList(serviceprod.Show());
+            ProductListView.getItems().addAll(allProducts);
             //List<Product> allProducts = serviceprod.Show();
             //ProductListView.getItems().addAll(allProducts);
 
@@ -188,11 +193,16 @@ public class DisplayProductF {
                         buttonBox.setAlignment(Pos.CENTER);
 
                         Button seeButton = new Button("See");
+                        Button mapbutton= new Button("See on Map");
+
                         seeButton.getStyleClass().add("Category-button");
                         seeButton.setOnAction(event -> handleSee(product));
-                        buttonBox.getChildren().addAll(seeButton);
 
-                        container.getChildren().addAll(productNameLabel, productLabelLabel,imageView, categoryLabel,  ratingControl, buttonBox);
+                        mapbutton.getStyleClass().add("Category-button");
+                        mapbutton.setOnAction(event -> seeOnMapButtonClicked());
+                        buttonBox.getChildren().addAll(seeButton,mapbutton);
+
+                        container.getChildren().addAll(productNameLabel, productLabelLabel, imageView, categoryLabel, ratingControl, buttonBox);
                         setGraphic(container);
                         searchField.textProperty().addListener((observable, oldValue, newValue) -> searchProduct(newValue));
 
@@ -210,6 +220,7 @@ public class DisplayProductF {
             e.printStackTrace();
         }
     }
+
     private void searchProduct(String keyword) {
         ProductListView.getItems().clear();
 
@@ -231,16 +242,6 @@ public class DisplayProductF {
                 }
             }
         }
-    }
-
-    private void handleRate(Product product) {
-        double newRating = Math.random() * 5; // Generate a random rating between 0 and 5
-
-        // Update the product's rating
-        product.setRating(newRating);
-
-        // Update the UI to reflect the new rating
-        ProductListView.refresh(); // Refresh the list view to update the displayed rating
     }
     private void filterByCategory(String category) {
         try {
@@ -285,6 +286,36 @@ public class DisplayProductF {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void openGoogleMaps(List<String> locations) {
+        StringBuilder urlBuilder = new StringBuilder("https://www.google.com/maps/search/?api=1");
+
+        // Append each location to the URL
+        for (String location : locations) {
+            // Replace any spaces in the location with '+' for the query parameter
+            String encodedLocation = location.replace(" ", "+");
+            urlBuilder.append("&query=").append(encodedLocation);
+        }
+
+        try {
+            // Open the URL in the default web browser
+            Desktop.getDesktop().browse(new URI(urlBuilder.toString()));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+    }
+    @FXML
+    private void seeOnMapButtonClicked() {
+        // List of locations to display on Google Maps
+        List<String> locations = List.of(
+                "Zanimo,Tunis"
+
+        );
+
+        // Open Google Maps with the specified locations
+        openGoogleMaps(locations);
     }
 
     }
