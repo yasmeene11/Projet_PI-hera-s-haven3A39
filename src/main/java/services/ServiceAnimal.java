@@ -130,6 +130,78 @@ public class ServiceAnimal implements IService<Animal> {
         return animal;
     }
 
+    public List<Animal> fetchAnimalsByType(String name) throws SQLException {
+        List<Animal> animals = new ArrayList<>();
+        String query = "SELECT * FROM Animal WHERE animal_type = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Assuming you have a Animal constructor that takes parameters accordingly
+                    Animal animal = new Animal(
+                            resultSet.getString("Animal_Name"),
+                            resultSet.getString("Animal_Breed"),
+                            resultSet.getString("Animal_Status"),
+                            resultSet.getInt("Age"),
+                            resultSet.getString("Animal_Image"),
+                            resultSet.getString("Animal_Description")
+                    );
+                    animals.add(animal);
+                }
+            }
+        }
+        return animals;
+    }
+
+    public List<Animal> fetchAvailableAnimals() throws SQLException {
+        List<Animal> availableAnimals = new ArrayList<>();
+        String query = "SELECT * FROM Animal WHERE animal_status = 'Available'";
+
+        try (PreparedStatement preparedStatement = con.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                // Assuming you have a Animal constructor that takes parameters accordingly
+                Animal animal = new Animal(
+                        resultSet.getString("Animal_Name"),
+                        resultSet.getString("Animal_Breed"),
+                        resultSet.getString("Animal_Status"),
+                        resultSet.getInt("Age"),
+                        resultSet.getString("Animal_Image"),
+                        resultSet.getString("Animal_Description")
+                );
+                availableAnimals.add(animal);
+            }
+        }
+
+        return availableAnimals;
+    }
+    public List<Animal> fetchAnimalsByTypeAndStatus(String type, String status) throws SQLException {
+        List<Animal> animals = new ArrayList<>();
+        String query = "SELECT * FROM Animal WHERE animal_type = ? AND animal_status = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, type);
+            preparedStatement.setString(2, status);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Fetch Animal Id along with other information
+                    int animalId = resultSet.getInt("animalId");
+                    Animal animal = new Animal(
+                            animalId,
+                            resultSet.getString("Animal_Name"),
+                            resultSet.getString("Animal_Breed"),
+                            resultSet.getString("Animal_Status"),
+                            resultSet.getInt("Age"),
+                            resultSet.getString("Animal_Image"),
+                            resultSet.getString("Animal_Description")
+                    );
+                    animals.add(animal);
+                }
+            }
+        }
+        return animals;
+    }
+
 
 
 }

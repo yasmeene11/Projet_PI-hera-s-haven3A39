@@ -9,7 +9,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Animal.DisplayAnimalB">
@@ -107,14 +110,44 @@
         </ImageView>
         <Button fx:id="btnIndex" layoutX="71.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#NavigateToIndexBack" prefHeight="63.0" prefWidth="170.0" styleClass="btnlogo" stylesheets="@../../styling/fullpackstyling.css" />
 
-        <Label alignment="CENTER" layoutX="586.0" layoutY="110.0" prefHeight="37.0" prefWidth="302.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal List">
+        <Label alignment="CENTER" layoutX="557.0" layoutY="107.0" prefHeight="42.0" prefWidth="357.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal List">
             <font>
                 <Font name="Segoe UI" size="18.0" />
             </font>
         </Label>
+        
+        <GridPane fx:id="statsGrid" layoutX="511.0" layoutY="141.0" prefHeight="65.0" prefWidth="693.0" stylesheets="@../../styling/stat.css">
+            <!-- Total Adoptions -->
+            <HBox styleClass="hbox">
+                <Label prefHeight="25.0" prefWidth="148.0" styleClass="label" text="Total Animals" />
+            </HBox>
 
+            <!-- Completed Adoptions -->
+            <HBox styleClass="hbox" GridPane.columnIndex="1">
+                <Label prefHeight="17.0" prefWidth="186.0" styleClass="label" text="Available Animals" />
+            </HBox>
+
+            <!-- Cancelled Adoptions -->
+            <HBox styleClass="hbox" GridPane.columnIndex="2">
+                <Label prefHeight="25.0" prefWidth="155.0" styleClass="label" text="Adopted Animals" />
+            </HBox>
+
+            <!-- Pending Adoptions -->
+            <HBox styleClass="hbox" GridPane.columnIndex="3">
+                <Label prefHeight="25.0" prefWidth="171.0" styleClass="label" text="Pet Boarded Animals" />
+            </HBox>
+         <columnConstraints>
+            <ColumnConstraints maxWidth="143.0" minWidth="123.0" prefWidth="123.0" />
+            <ColumnConstraints maxWidth="190.0" minWidth="162.0" prefWidth="169.0" />
+            <ColumnConstraints maxWidth="190.0" minWidth="127.0" prefWidth="157.0" />
+            <ColumnConstraints maxWidth="183.0" minWidth="150.0" prefWidth="183.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
         <HBox spacing="5" />
-        <ListView fx:id="ListAnimals" layoutX="333.0" layoutY="203.0" prefHeight="502.0" prefWidth="864.0" stylesheets="@../../styling/style.css">
+        <ListView fx:id="ListAnimals" layoutX="300.0" layoutY="199.0" prefHeight="502.0" prefWidth="941.0" stylesheets="@../../styling/style.css">
 
             <cellFactory>
                 <javafx.scene.control.cell.TextFieldListCell fx:factory="forListView" />
@@ -122,11 +155,11 @@
         </ListView>
         <HBox alignment="CENTER" spacing="5" />
 
-         <TextField fx:id="fieldSearch" layoutX="333.0" layoutY="147.0" promptText="Search by breed, type, or age" stylesheets="@../../styling/style.css" />
-        <CheckBox fx:id="chkName" layoutX="630.0" layoutY="164.0" mnemonicParsing="false" text="Name" />
-        <CheckBox fx:id="chkBreed" layoutX="683.0" layoutY="164.0" mnemonicParsing="false" text="Breed" />
-        <CheckBox fx:id="chkType" layoutX="739.0" layoutY="164.0" mnemonicParsing="false" text="Type" />
-        <CheckBox fx:id="chkAge" layoutX="788.0" layoutY="164.0" mnemonicParsing="false" text="Age" />
+            <TextField fx:id="fieldSearch" layoutX="304.0" layoutY="129.0" promptText="Search by breed, type, or age" stylesheets="@../../styling/style.css" />
+        <CheckBox fx:id="chkName" layoutX="283.0" layoutY="165.0" mnemonicParsing="false" text="Name" />
+        <CheckBox fx:id="chkBreed" layoutX="336.0" layoutY="165.0" mnemonicParsing="false" text="Breed" />
+        <CheckBox fx:id="chkType" layoutX="392.0" layoutY="165.0" mnemonicParsing="false" text="Type" />
+        <CheckBox fx:id="chkAge" layoutX="441.0" layoutY="165.0" mnemonicParsing="false" text="Age" />
         
     </children>
 </AnchorPane>

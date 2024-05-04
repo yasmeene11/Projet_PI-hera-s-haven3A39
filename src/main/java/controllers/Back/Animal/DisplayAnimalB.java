@@ -1,5 +1,6 @@
 package controllers.Back.Animal;
 
+import entities.Adoption;
 import entities.Animal;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -93,7 +96,8 @@ public class DisplayAnimalB {
     private final ServiceAnimal animalService;
     private final ServiceAdoption adoptionService;
     private final ServiceBoarding boardingService;
-
+    @FXML
+    private GridPane statsGrid;
     public DisplayAnimalB() {
         animalService = new ServiceAnimal();
         adoptionService = new ServiceAdoption();
@@ -104,7 +108,50 @@ public class DisplayAnimalB {
     @FXML
     private void initialize() {
         try {
+
+            // Initialize statistics variables
+            int totalAnimals = 0;
+            int AvailabledAnimals = 0;
+            int AdoptedAnimals = 0;
+            int PetBoardedAnimals = 0;
+
+            for (int i = 0; i < 4; i++) {
+                ColumnConstraints column = new ColumnConstraints();
+                column.setPercentWidth(25); // Each column takes up 25% of the width
+                statsGrid.getColumnConstraints().add(column);
+            }
+
             List<Animal> animals = animalService.Show();
+
+            // Iterate through the adoptions to calculate statistics
+            for (Animal animal : animals) {
+                switch (animal.getAnimal_Status()) {
+                    case "Available":
+                        AvailabledAnimals++;
+                        break;
+                    case "Adopted":
+                        AdoptedAnimals++;
+                        break;
+                    case "Here for Boarding":
+                        PetBoardedAnimals++;
+                        break;
+                }
+                // Increment total adoptions
+                totalAnimals++;
+            }
+
+            // Display statistics in the grid pane
+            Label totalAnimalsLabel = new Label("Total Animals: " + totalAnimals);
+            Label AvailabledAnimalsLabel = new Label("Available Animals: " + AvailabledAnimals);
+            Label AdoptedAnimalsLabel = new Label("Adopted Animals: " + AdoptedAnimals);
+            Label PetBoardedAnimalsLabel = new Label("Pet Boarded Animals: " + PetBoardedAnimals);
+
+            statsGrid.add(totalAnimalsLabel, 0, 0);
+            statsGrid.add(AvailabledAnimalsLabel, 1, 0);
+            statsGrid.add(AdoptedAnimalsLabel, 2, 0);
+            statsGrid.add(PetBoardedAnimalsLabel, 3, 0);
+
+
             ListAnimals.getItems().clear(); // Clear the ListView before adding items
 
             // Create a Set to store unique animals

@@ -1,5 +1,6 @@
 package controllers.Front.Animal;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,6 +70,7 @@ public class DisplayAnimalF {
 
     @FXML
     private void initialize() {
+        showRecommendationPopup();
         try {
             List<Animal> animals = animalService.Show();
 
@@ -183,6 +185,54 @@ public class DisplayAnimalF {
             e.printStackTrace();
         }
     }
+    private void showRecommendationPopup() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Recommendation Quiz");
+        alert.setHeaderText("Would you like to take a recommendations quiz?");
+        alert.setContentText("This quiz will help you find the perfect pet for you.");
+
+        ButtonType yesButton = new ButtonType("Yes");
+        ButtonType noButton = new ButtonType("No");
+
+        alert.getButtonTypes().setAll(yesButton, noButton);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == yesButton) {
+                // Delay opening the quiz page until the scene is fully initialized
+                Platform.runLater(this::openQuizPage);
+            } else if (buttonType == noButton) {
+                // Close the popup
+                alert.close();
+            }
+        });
+    }
+
+
+    private void openQuizPage() {
+        try {
+            // Load the Quiz.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/Animal/Quiz.fxml"));
+            Parent quizRoot = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) ListAnimals.getScene().getWindow();
+
+            // Replace the scene content with the Quiz.fxml content
+            stage.getScene().setRoot(quizRoot);
+
+            // Set the title for the stage
+            stage.setTitle("Recommendations Quiz");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    private void handleButtonAction(ActionEvent event) {
+        showRecommendationPopup();
+    }
+
 
     @FXML
     private void onFilterDogsClicked(ActionEvent event) {

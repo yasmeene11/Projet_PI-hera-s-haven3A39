@@ -140,6 +140,9 @@ public class CalendarController {
                         info += "Adoption Details:\n";
                         info += "Animal Name: " + adoption.getAnimal_Key().getAnimal_Name() + "\n";
                         info += "Adoption Date: " + adoption.getAdoption_Date() + "\n";
+                        info += "Adoption Fee: " + adoption.getAdoption_Fee() + "\n";
+                        info += "Adoption Status: " + adoption.getAdoption_Status() + "\n";
+                        info += "Owner: " + adoption.getAccount_Key().getName() + "\n";
                         // Add more information if needed
                     }
                 } else if (entry.getCalendar().equals(boardingCalendar)) {
@@ -155,6 +158,9 @@ public class CalendarController {
                         info += "Animal Name: " + boarding.getAnimal_Key().getAnimal_Name() + "\n";
                         info += "Start Date: " + boarding.getStart_Date() + "\n";
                         info += "End Date: " + boarding.getEnd_Date() + "\n";
+                        info += "Pet Boarding Fee: " + boarding.getBoarding_Fee() + "\n";
+                        info += "Pet Boarding Status: " + boarding.getBoarding_Status() + "\n";
+                        info += "Owner: " + boarding.getAccount_Key().getName() + "\n";
                         // Add more information if needed
                     }
                 }

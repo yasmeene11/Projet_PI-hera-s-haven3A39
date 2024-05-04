@@ -13,6 +13,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -70,6 +72,8 @@ public class DisplayBoardingB {
     private ListView<Boarding> ListBoardings;
 
     private final ServiceBoarding boardingService;
+    @FXML
+    private GridPane statsGrid;
 
     public DisplayBoardingB() {
         boardingService = new ServiceBoarding();
@@ -78,7 +82,51 @@ public class DisplayBoardingB {
     @FXML
     private void initialize() {
         try {
+
+            // Initialize statistics variables
+            int totalBoardings = 0;
+            int completedBoardings = 0;
+            int cancelledBoardings = 0;
+            int pendingBoardings = 0;
+
+            for (int i = 0; i < 4; i++) {
+                ColumnConstraints column = new ColumnConstraints();
+                column.setPercentWidth(25); // Each column takes up 25% of the width
+                statsGrid.getColumnConstraints().add(column);
+            }
+
             List<Boarding> boardings = boardingService.Show();
+
+            // Iterate through the adoptions to calculate statistics
+            for (Boarding boarding : boardings) {
+                switch (boarding.getBoarding_Status()) {
+                    case "Completed":
+                        completedBoardings++;
+                        break;
+                    case "Cancelled":
+                        cancelledBoardings++;
+                        break;
+                    case "Pending":
+                        pendingBoardings++;
+                        break;
+                }
+                // Increment total adoptions
+                totalBoardings++;
+            }
+
+            // Display statistics in the grid pane
+            Label totalBoardingsLabel = new Label("Total Pet Boardings: " + totalBoardings);
+            Label completedBoardingsLabel = new Label("Completed Pet Boardings: " + completedBoardings);
+            Label cancelledBoardingsLabel = new Label("Cancelled Pet Boardings: " + cancelledBoardings);
+            Label pendingBoardnigsLabel = new Label("Pending Pet Boardings: " + pendingBoardings);
+
+            statsGrid.add(totalBoardingsLabel, 0, 0);
+            statsGrid.add(completedBoardingsLabel, 1, 0);
+            statsGrid.add(cancelledBoardingsLabel, 2, 0);
+            statsGrid.add(pendingBoardnigsLabel, 3, 0);
+
+
+
             ListBoardings.getItems().addAll(boardings);
 
             ListBoardings.setCellFactory(param -> new ListCell<Boarding>() {

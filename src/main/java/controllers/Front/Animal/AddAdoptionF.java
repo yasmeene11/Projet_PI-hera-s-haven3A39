@@ -31,6 +31,7 @@ import services.ServiceUser;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -67,16 +68,22 @@ public class AddAdoptionF {
     private DatePicker adoptiondate;
 
 
-
+    private final GoogleDriveService driveService;
     private final ServiceAdoption adoptionService;
     private final ServiceAnimal animalService;
     private final ServiceUser userService;
     private int selectedAnimalId;
 
-    public AddAdoptionF() {
+
+
+
+    public AddAdoptionF() throws GeneralSecurityException, IOException {
         this.adoptionService = new ServiceAdoption();
         this.animalService = new ServiceAnimal();
         this.userService = new ServiceUser();
+        this.driveService = new GoogleDriveService();
+
+
     }
 
     // Method to receive the selected animal's ID
@@ -85,9 +92,7 @@ public class AddAdoptionF {
     }
 
 
-
-
-
+    @FXML
     public void AddAdoptionF() throws SQLException {
         LocalDate adoptionDateValue = adoptiondate.getValue();
         if (adoptionDateValue == null || adoptionDateValue.isBefore(LocalDate.now())) {
@@ -115,7 +120,6 @@ public class AddAdoptionF {
                     "    Animal Name: " + selectedAnimal.getAnimal_Name() +
                     "    Adoption Fee: TD " + adoptionFee +
                     "    Adoption Status: " + adoptionStatus;
-
 
             // Create a temporary file to save the QR code
             File qrCodeFile = File.createTempFile("adoption_qr_code", ".png");
@@ -180,6 +184,20 @@ public class AddAdoptionF {
                     contentStream.drawImage(qrCodeImage, 50, 400);
                 }
 
+   /*
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Save PDF");
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
+                File file = fileChooser.showSaveDialog(null);
+
+                if (file != null) {
+
+                    String folderId = "1_dd7iLOySZ0QwIJn66wWIM_CWcc6ghpt"; // Specify the ID of the folder in Google Drive where you want to upload the PDF
+                    driveService.uploadPDF(file.getAbsolutePath(), folderId);
+                }
+*/
+
+
                 // Save the PDF
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Save PDF");
@@ -204,12 +222,8 @@ public class AddAdoptionF {
             Stage displayStage = new Stage();
             displayStage.setScene(new Scene(root));
             displayStage.show();
-
-        } catch (SQLException e) {
-            showAlert("Add failed", null, "Failed to add adoption");
-            e.printStackTrace();
-        } catch (IOException | WriterException e) {
-            showAlert("Error", null, "Failed to save QR code or PDF");
+        } catch (SQLException | IOException | WriterException e) {
+            showAlert("Error", null, "Failed to complete adoption process");
             e.printStackTrace();
         }
     }
@@ -297,3 +311,6 @@ public class AddAdoptionF {
         stage.show();
     }
 }
+
+
+//AddAdoptionF
