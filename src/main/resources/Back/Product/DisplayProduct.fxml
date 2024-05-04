@@ -113,6 +113,7 @@
             <PieChart layoutX="10.0" layoutY="10.0" prefHeight="380.0" prefWidth="580.0" fx:id="PieChart" />
         </AnchorPane>
         <Button layoutX="908.0" layoutY="100.0" mnemonicParsing="false" text="Statistic" onMouseClicked="#generateProductRatingsPieChart" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css"/>
+        <Button layoutX="908.0" layoutY="200.0" mnemonicParsing="false" text="PDF" onMouseClicked="#generatePDF" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css"/>
 
   </children>
 </AnchorPane>

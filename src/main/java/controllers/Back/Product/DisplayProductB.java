@@ -1,36 +1,39 @@
 package controllers.Back.Product;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import entities.Product;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.*;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
-
-import javafx.scene.layout.*;
-
-import javafx.stage.Modality;
-import java.awt.*;
-import java.io.IOException;
-import entities.Product;
-import javafx.scene.image.Image;
-import java.io.InputStream;
-import java.sql.SQLException;
-import javax.swing.*;
-
 import services.ServicePD;
 import services.ServiceProduct;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.Font;
+import java.io.*;
+import java.sql.SQLException;
 import java.util.List;
 
 public class DisplayProductB {
@@ -98,7 +101,7 @@ public class DisplayProductB {
 
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() {
         try {
             ServicePD pd = new ServicePD();
             List<Product> allProducts = serviceprod.Show();
@@ -124,10 +127,23 @@ public class DisplayProductB {
                         ImageView imageView = new ImageView();
                         InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
                         if (imageStream != null) {
-                            imageView.setImage(new Image(imageStream)); // Load image from product_images directory
+                            try {
+                                // Load image from product_images directory
+                                Image image = new Image(imageStream);
+                                imageView.setImage(image);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                try {
+                                    imageStream.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         } else {
                             String originalImagePath = "file:///" + product.getProductImage();
-                            imageView.setImage(new Image(originalImagePath));
+                            Image image = new Image(originalImagePath);
+                            imageView.setImage(image);
                         }
                         imageView.setFitWidth(100); // Set image width
                         imageView.setFitHeight(100); // Set image height
@@ -182,6 +198,7 @@ public class DisplayProductB {
 
         return chart;
     }
+
 
     @FXML
     private void handleUpdate(Product product) {
@@ -384,4 +401,91 @@ public class DisplayProductB {
         frame.pack();
         frame.setVisible(true);
     }
+
+    public void generatePDF() throws SQLException, DocumentException, IOException {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("products.pdf"));
+
+        document.open(); // Open the document before adding content
+
+        try {
+            // Define blue color
+            BaseColor blueColor = new BaseColor(0, 0, 255);
+
+            // Add title
+            com.itextpdf.text.Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, blueColor);
+            Paragraph title = new Paragraph("Product List", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            title.setSpacingAfter(20); // Add spacing after title
+            document.add(title);
+
+            ServicePD pd = new ServicePD();
+            List<Product> allProducts = serviceprod.Show();
+
+            for (Product product : allProducts) {
+                // Add product information
+                com.itextpdf.text.Font productInfoFont = FontFactory.getFont(FontFactory.HELVETICA, 12, blueColor);
+                Paragraph productInfo = new Paragraph();
+                productInfo.setIndentationLeft(20); // Add left indentation to the text
+                productInfo.add(new Phrase("Product Name: " + product.getProductName(), productInfoFont));
+                productInfo.add(Chunk.NEWLINE); // Add line break
+                productInfo.add(new Phrase("Product Label: " + product.getProductLabel(), productInfoFont));
+                productInfo.add(Chunk.NEWLINE);
+                productInfo.add(new Phrase("Product Quantity: " + product.getProductQuantity(), productInfoFont));
+                productInfo.add(Chunk.NEWLINE);
+                productInfo.add(new Phrase("Expiration Date: " + product.getExpirationDate(), productInfoFont));
+                productInfo.add(Chunk.NEWLINE);
+                productInfo.add(new Phrase("Category: " + product.getCategoryKey().getProduct_Type(), productInfoFont));
+                productInfo.add(Chunk.NEWLINE);
+                productInfo.setSpacingAfter(10); // Add spacing after product information
+
+                // Add product image
+                InputStream imageStream = getClass().getResourceAsStream("/product_images/" + product.getProductImage());
+                if (imageStream != null) {
+                    try {
+                        byte[] imageData = inputStreamToByteArray(imageStream);
+                        com.itextpdf.text.Image image = com.itextpdf.text.Image.getInstance(imageData);
+                        image.scaleToFit(200, 200); // Resize image
+                        document.add(image);
+                        document.add(Chunk.NEWLINE); // Add spacing after image
+                    } finally {
+                        imageStream.close();
+                    }
+                }
+
+                // Add product information to the document
+                document.add(productInfo);
+
+                // Add border after each product information block
+                Paragraph border = new Paragraph(new Chunk(new LineSeparator(1, 100, blueColor, Element.ALIGN_CENTER, -5)));
+                document.add(border);
+
+                // Add space between products
+                document.add(Chunk.NEWLINE);
+            }
+
+            // Close the document after adding all content
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Ensure that the document is closed in case of any exceptions
+            if (document.isOpen()) {
+                document.close();
+            }
+        }
+    }
+
+
+    // Helper method to convert InputStream to byte array
+    private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            byteArrayOutputStream.write(buffer, 0, bytesRead);
+        }
+        byteArrayOutputStream.close();
+        return byteArrayOutputStream.toByteArray();
+    }
+
 }
