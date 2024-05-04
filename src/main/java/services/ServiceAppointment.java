@@ -19,9 +19,9 @@
 
         private static Connection con;
         private Statement ste;
-        private static final String ACCOUNT_SID = "******Hidden****";
-        private static final String AUTH_TOKEN = "******Hidden****";
-        private static final String TWILIO_PHONE_NUMBER = "+******Hidden****";
+        private static final String ACCOUNT_SID = "*****HiddenOnPurpose*********";
+        private static final String AUTH_TOKEN = "*****HiddenOnPurpose*********";
+        private static final String TWILIO_PHONE_NUMBER = "*****HiddenOnPurpose*********";
         public ServiceAppointment() {
             con = MyBD.getInstance().getCon();
         }
@@ -139,6 +139,18 @@
             pre.setInt(1, appointment.getAppointmentId());
             pre.executeUpdate();
         }
+
+
+        public boolean isReportAssociated(Appointment appointment) throws SQLException {
+            String req = "SELECT * FROM rapport WHERE Appointment_Key = ?";
+            try (PreparedStatement pre = con.prepareStatement(req)) {
+                pre.setInt(1, appointment.getAppointmentId());
+                try (ResultSet res = pre.executeQuery()) {
+                    return res.next();
+                }
+            }
+        }
+
 
         private Rapport fetchRapportById(int rapportId) throws SQLException {
             // Implement logic to fetch Rapport from the database
