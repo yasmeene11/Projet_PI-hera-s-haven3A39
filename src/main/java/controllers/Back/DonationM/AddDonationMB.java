@@ -13,16 +13,26 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.Image;
+
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
 import services.ServiceDonationM;
 
+//import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
+import javafx.scene.image.ImageView;
+
 
 public class AddDonationMB {
 
@@ -38,7 +48,8 @@ public class AddDonationMB {
 
     @FXML
     private Button btnBoarding;
-
+    @FXML
+    private ImageView gifImageView;
     @FXML
     private Button btnCash;
 
@@ -171,7 +182,16 @@ public class AddDonationMB {
             alert.showAndWait();
             String donorName= serviceDonationM.getDonorNameById(accountId);
             String thankYouMessage = generateThankYouMessage(donorName);
-            displayThankYouMessage(thankYouMessage);
+
+
+            // Charger l'image GIF
+            Image gifImage = loadThankYouGif();
+
+// Afficher le message de remerciement avec la vidéo
+            displayThankYouDialog(thankYouMessage, gifImage);
+            //loadThankYouGif();
+
+            //displayThankYouMessage(thankYouMessage);
         } catch (SQLException e) {
             e.printStackTrace();
             // Gérer les erreurs liées à la base de données
@@ -179,16 +199,121 @@ public class AddDonationMB {
         }}
 
     }
+    //videp
+
+    //gif mahabesh yekhdem
+    /*private Image loadThankYouGif() {
+        OkHttpClient client = new OkHttpClient();
+        String apiKey = "BATFVvFWfiErz5jFuCVDfM3EkQfLW3Rk";
+        String keyword = "thank you";
+        Image gifImage = null;
+
+        Request request = new Request.Builder()
+                .url("https://api.giphy.com/v1/gifs/random?api_key=" + apiKey + "&tag=" + keyword)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println("Code de réponse : " + response.code());
+            System.out.println("Message de réponse : " + response.message());
+            if (response.isSuccessful()) {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                JSONObject data = jsonObject.getJSONObject("data");
+                String gifUrl = data.getJSONObject("images").getJSONObject("original").getString("url");
+
+                System.out.println("URL de l'image : " + gifUrl);
+
+                // Charger le GIF à partir de l'URL
+                gifImage = new Image(gifUrl);
+
+                // Vérifier si l'image a été correctement chargée
+                if (gifImage.isError()) {
+                    System.err.println("Erreur lors du chargement de l'image : " + gifImage.getException().getMessage());
+                } else {
+                    System.out.println("Dimensions de l'image : " + gifImage.getWidth() + "x" + gifImage.getHeight());
+                }
+            } else {
+                System.err.println("Erreur lors de la requête : " + response.code() + " " + response.message());
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+        }
+
+        return gifImage;
+    }
+
+*/
+    private Image loadThankYouGif() {
+        OkHttpClient client = new OkHttpClient();
+        String apiKey = "BATFVvFWfiErz5jFuCVDfM3EkQfLW3Rk";
+        String keyword = "thank you";
+        Image gifImage = null;
+
+        Request request = new Request.Builder()
+                .url("https://api.giphy.com/v1/gifs/random?api_key=" + apiKey + "&tag=" + keyword)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                JSONObject data = jsonObject.getJSONObject("data");
+                String gifUrl = data.getJSONObject("images").getJSONObject("original").getString("url");
+
+                // Charger le GIF à partir de l'URL
+                gifImage = new Image(gifUrl);
+
+                // Vérifier si l'image a été correctement chargée
+                if (gifImage.isError()) {
+                    System.err.println("Erreur lors du chargement de l'image : " + gifImage.getException().getMessage());
+                } else {
+                    System.out.println("Dimensions de l'image : " + gifImage.getWidth() + "x" + gifImage.getHeight());
+                }
+            } else {
+                System.err.println("Erreur lors de la requête : " + response.code() + " " + response.message());
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+        }
+
+        return gifImage;
+    }
+
+/*
     private void displayThankYouMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Merci !");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
+    }*/
     private String generateThankYouMessage(String donorName) {
-        return "Thank you, " + donorName + ", for you generous donation ! We appreciate your support.";
+
+        return "Thank you, " + donorName + ", for you generous donation ! We appreciate your support .";
     }
+    private void displayThankYouDialog(String message, Image image) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DonationM/ThankYouDialog.fxml"));
+            Parent root = loader.load();
+
+            thankYouCardController controller = loader.getController();
+            controller.setMessage(message);
+
+            controller.setImage(image);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Thank You!");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void NavigateToDisplayUser() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/User/DisplayUser.fxml"));

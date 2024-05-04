@@ -9,25 +9,32 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- MySQL Connector -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
 
+        <!-- Spring Security Core -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>5.3.10.RELEASE</version>
         </dependency>
 
-
+        <!-- JavaFX modules -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.2</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
@@ -35,58 +42,87 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
+            <artifactId>javafx-web</artifactId>
             <version>21.0.2</version>
         </dependency>
-<!--stripe-->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>21.0.2</version>
+        </dependency>
+
+        <!-- Stripe API -->
         <dependency>
             <groupId>com.stripe</groupId>
             <artifactId>stripe-java</artifactId>
-            <version>24.17.0</version>
+            <version>25.4.0</version>
         </dependency>
-        <!--stripe-->
-        <!--googlecalendar-->
 
-            <dependency>
-                <groupId>com.google.api-client</groupId>
-                <artifactId>google-api-client</artifactId>
-                <version>1.31.5</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.oauth-client</groupId>
-                <artifactId>google-oauth-client-jetty</artifactId>
-                <version>1.31.5</version>
-            </dependency>
+        <!-- Google API Client -->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.31.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.31.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-calendar -->
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-calendar</artifactId>
-            <version>v3-rev20240328-2.0.0</version>
+            <version>v3-rev20211026-1.32.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-oauth2</artifactId>
+            <version>v2-rev157-1.25.0</version>
+        </dependency>
+
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
             <version>1.44.1</version>
         </dependency>
 
+        <!-- OkHttpClient -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+
+        <!-- JSON.org -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+
+        <!-- Giphy4j for GIF handling -->
+        <dependency>
+            <groupId>at.mukprojects</groupId>
+            <artifactId>giphy4j</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
     </dependencies>
 
-        <!--googlecalendar-->
-
-
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8 </version>
-                <configuration>
-                    <mainClass>edu.esprit.tests.MainFX</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
+            <plugins>
+                <plugin>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-maven-plugin</artifactId>
+                    <version>0.0.8 </version>
+                    <configuration>
+                        <mainClass>edu.esprit.tests.MainFX</mainClass>
 
-
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
 
 </project>

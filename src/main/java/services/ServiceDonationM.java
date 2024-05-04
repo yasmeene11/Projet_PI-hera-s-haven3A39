@@ -12,7 +12,7 @@ import java.sql.Date;
 public class ServiceDonationM implements IService<DonationM>{
     public Connection con;
     public Statement ste;
-
+    public static final int currentUserAccountKey =1;
 
     public ServiceDonationM(){
         con= MyBD.getInstance().getCon();
@@ -123,6 +123,27 @@ public class ServiceDonationM implements IService<DonationM>{
             }
         }
         return null;
+    }
+
+    public List<DonationM> getDonationHistoryForCurrentUser() throws SQLException {
+        List<DonationM> donationHistory = new ArrayList<>();
+        // Récupère l'Account_Key de l'utilisateur actuel à partir de ses informations d'identification
+
+        // Requête SQL pour récupérer l'historique des donations de l'utilisateur actuel
+        String query = "SELECT * FROM donation_m WHERE Account_Key = ?";
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setInt(1, currentUserAccountKey);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                //int id = resultSet.getInt("donationMId");
+                float amount = resultSet.getFloat("donation_amount");
+                Date date = resultSet.getDate("donation_m_date");
+                int accountKey = resultSet.getInt("Account_Key");
+                DonationM donation = new DonationM(amount, date, accountKey);
+                donationHistory.add(donation);
+            }
+        }
+        return donationHistory;
     }
 
 

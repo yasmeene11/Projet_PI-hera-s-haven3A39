@@ -100,6 +100,7 @@
             <!-- Donate Menu -->
             <Menu style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Donate">
                 <items>
+                    <MenuItem fx:id="btnShowHistory" onAction="#showDonationHistory" styleClass="menu-item" text="Show Donation History" />
                     <MenuItem fx:id="btndonationp" onAction="#NavigateToDisplayDonationP" styleClass="menu-item" text="Product donation" />
                     <MenuItem fx:id="btndonationm" onAction="#NavigateToDisplayDonationM" styleClass="menu-item" text="Financial contributions" />
                 </items>
