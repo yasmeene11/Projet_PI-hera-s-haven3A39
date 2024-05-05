@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front.Animal.AddBoardingF">
+    <children>
+        <AnchorPane prefHeight="34.0" prefWidth="1280.0" style="-fx-background-color: #38B6FF;" AnchorPane.bottomAnchor="691.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="61.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/address.png" />
+                    </image>
+                </ImageView>
+                <Label alignment="CENTER" layoutX="90.0" layoutY="6.0" prefHeight="20.0" prefWidth="139.0" text="Esprit,Ariana Soghra,Tunis" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI" size="12.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="275.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/mail.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="482.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/telephone.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="27.0" layoutX="1122.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/facebook.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="1154.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/twitter.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="20.0" fitWidth="28.0" layoutX="1188.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/instagram.png" />
+                    </image>
+                </ImageView>
+                <Label alignment="CENTER" layoutX="301.0" layoutY="7.0" prefHeight="20.0" prefWidth="149.0" text="unitedpets@gmail.com" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI" size="12.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" layoutX="466.0" layoutY="7.0" prefHeight="20.0" prefWidth="149.0" text="28082700" textFill="WHITE">
+                    <font>
+                        <Font name="Segoe UI" size="12.0" />
+                    </font>
+                </Label>
+            </children>
+
+
+        </AnchorPane>
+
+        <ImageView fitHeight="63.0" fitWidth="178.0" layoutX="66.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/logo.png" />
+            </image>
+        </ImageView>
+
+        <MenuBar fx:id="menuBar" layoutX="264.0" layoutY="49.0" prefHeight="46.0" prefWidth="987.0" styleClass="menu-bar" stylesheets="@../../styling/fullpackstyling.css">
+
+            <!-- Home Menu -->
+            <Menu styleClass="menu" text="Home">
+                <MenuItem fx:id="btnindexb" onAction="#NavigateToIndexBack" styleClass="menu-item" text="Home">
+                </MenuItem>
+            </Menu>
+
+            <Menu  styleClass="menu" text="Animals">
+                <MenuItem fx:id="btnanimal" onAction="#NavigateToDisplayAnimal" styleClass="menu-item" text="Animals">
+                </MenuItem>
+            </Menu>
+
+            <!-- Pet Boarding Menu -->
+            <Menu style="-fx-background-color: #38B6FF ;-fx-text-fill: #ffff; -fx-border-radius: 5px;" styleClass="menu" text="Pet Boarding">
+                <MenuItem fx:id="btnboarding" onAction="#NavigateToAddBoarding" styleClass="menu-item" text="Pet Boarding">
+                </MenuItem>
+            </Menu>
+
+            <!-- Products Menu -->
+            <Menu styleClass="menu" text="Products">
+                <MenuItem fx:id="btnproduct" onAction="#NavigateToDisplayProduct" styleClass="menu-item" text="Products">
+                </MenuItem>
+            </Menu>
+
+            <!-- Donate Menu -->
+            <Menu styleClass="menu" text="Donate">
+                <items>
+                    <MenuItem fx:id="btndonationp" onAction="#NavigateToDisplayDonationP" styleClass="menu-item" text="Product donation" />
+                    <MenuItem fx:id="btndonationm" onAction="#NavigateToDisplayDonationM" styleClass="menu-item" text="Financial contributions" />
+                </items>
+            </Menu>
+
+            <Menu styleClass="menu" text="About">
+            </Menu>
+        </MenuBar>
+        <Label alignment="CENTER" layoutX="212.0" layoutY="233.0" prefHeight="44.0" prefWidth="170.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Animal Name">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
+        <TextField fx:id="txtAnimalName" layoutX="376.0" layoutY="235.0" prefHeight="44.0" prefWidth="170.0" promptText="Animal Name" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+
+        <TextField fx:id="txtAge" layoutX="376.0" layoutY="434.0" prefHeight="44.0" prefWidth="170.0" promptText="Age" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+
+        <Button fx:id="btnconfirmadd" layoutX="561.0" layoutY="597.0" mnemonicParsing="false" onAction="#AddBoardingF" prefHeight="44.0" prefWidth="159.0" styleClass="custom-button2" stylesheets="@../../styling/fullpackstyling.css" text="Confirm Add" />
+
+        <Label alignment="CENTER" layoutX="498.0" layoutY="149.0" prefHeight="54.0" prefWidth="258.0" styleClass="custom-text" stylesheets="@../../styling/fullpackstyling.css" text="Animal Form">
+            <font>
+                <Font name="Segoe UI" size="18.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="218.0" layoutY="307.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Animal Type">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="218.0" layoutY="372.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Animal Breed">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="207.0" layoutY="439.0" prefHeight="35.0" prefWidth="125.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Age">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="226.0" layoutY="501.0" prefHeight="35.0" prefWidth="139.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Enrollement Date">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
+        <ComboBox id="animalbreed" fx:id="cmbBreed" layoutX="376.0" layoutY="372.0" prefHeight="34.0" prefWidth="170.0" styleClass="combo-box-custom" stylesheets="@../../styling/fullpackstyling.css">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Labrador Retriever" />
+                    <String fx:value="Persian" />
+                    <String fx:value="Guinea Pig" />
+                    <String fx:value="Cockatiel" />
+                    <String fx:value="Betta Fish" />
+                    <String fx:value="Bearded Dragon" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <ComboBox id="animaltype" fx:id="cmbtype" layoutX="377.0" layoutY="307.0" prefHeight="34.0" prefWidth="170.0" styleClass="combo-box-custom" stylesheets="@../../styling/fullpackstyling.css">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Dog" />
+                    <String fx:value="Cat" />
+                    <String fx:value="Rabbit" />
+                    <String fx:value="Fish" />
+                    <String fx:value="Reptile" />
+                    <String fx:value="Bird" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <DatePicker fx:id="enrollementdate" layoutX="382.0" layoutY="502.0" prefHeight="34.0" prefWidth="170.0" promptText="Enrollement Date" />
+
+        <Label alignment="CENTER" layoutX="627.0" layoutY="299.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Animal Description">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
+        <TextField fx:id="txtDescription" layoutX="805.0" layoutY="250.0" prefHeight="114.0" prefWidth="215.0" promptText="Animal Description" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+        <Label alignment="CENTER" layoutX="627.0" layoutY="400.0" prefHeight="35.0" prefWidth="159.0" styleClass="custom-text-add" stylesheets="@../../styling/fullpackstyling.css" text="Animal Image">
+            <font>
+                <Font name="Segoe UI" size="10.0" />
+            </font>
+        </Label>
+
+        <TextField fx:id="txtImage" layoutX="805.0" layoutY="395.0" prefHeight="44.0" prefWidth="215.0" promptText="Animal Image Path" styleClass="text-field-custom" stylesheets="@../../styling/fullpackstyling.css" />
+
+        <Button layoutX="810.0" layoutY="466.0" onAction="#handleSelectImage" prefHeight="43.0" prefWidth="205.0" text="Select Image" />
+
+    </children>
+</AnchorPane>
