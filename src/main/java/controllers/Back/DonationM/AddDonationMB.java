@@ -6,6 +6,7 @@ import entities.User;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import okhttp3.OkHttpClient;
@@ -25,12 +27,20 @@ import org.json.JSONObject;
 import services.ServiceDonationM;
 
 //import javax.swing.text.html.ImageView;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+
 import javafx.scene.image.ImageView;
 
 
@@ -88,7 +98,9 @@ public class AddDonationMB {
     @FXML
     private ComboBox<User> accountComboBox;
     private ServiceDonationM serviceDonationM;
-    public AddDonationMB(){serviceDonationM=new ServiceDonationM();}
+
+    public AddDonationMB(){serviceDonationM=new ServiceDonationM();
+    }
 
     @FXML
     public void initialize() {
@@ -180,15 +192,7 @@ public class AddDonationMB {
             alert.setHeaderText(null);
             alert.setContentText("Donation added successfully!");
             alert.showAndWait();
-            String donorName= serviceDonationM.getDonorNameById(accountId);
-            String thankYouMessage = generateThankYouMessage(donorName);
 
-
-            // Charger l'image GIF
-            Image gifImage = loadThankYouGif();
-
-// Afficher le message de remerciement avec la vidéo
-            displayThankYouDialog(thankYouMessage, gifImage);
             //loadThankYouGif();
 
             //displayThankYouMessage(thankYouMessage);
@@ -198,120 +202,6 @@ public class AddDonationMB {
             // Vous pouvez afficher un message d'erreur à l'utilisateur ici
         }}
 
-    }
-    //videp
-
-    //gif mahabesh yekhdem
-    /*private Image loadThankYouGif() {
-        OkHttpClient client = new OkHttpClient();
-        String apiKey = "BATFVvFWfiErz5jFuCVDfM3EkQfLW3Rk";
-        String keyword = "thank you";
-        Image gifImage = null;
-
-        Request request = new Request.Builder()
-                .url("https://api.giphy.com/v1/gifs/random?api_key=" + apiKey + "&tag=" + keyword)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            System.out.println("Code de réponse : " + response.code());
-            System.out.println("Message de réponse : " + response.message());
-            if (response.isSuccessful()) {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                JSONObject data = jsonObject.getJSONObject("data");
-                String gifUrl = data.getJSONObject("images").getJSONObject("original").getString("url");
-
-                System.out.println("URL de l'image : " + gifUrl);
-
-                // Charger le GIF à partir de l'URL
-                gifImage = new Image(gifUrl);
-
-                // Vérifier si l'image a été correctement chargée
-                if (gifImage.isError()) {
-                    System.err.println("Erreur lors du chargement de l'image : " + gifImage.getException().getMessage());
-                } else {
-                    System.out.println("Dimensions de l'image : " + gifImage.getWidth() + "x" + gifImage.getHeight());
-                }
-            } else {
-                System.err.println("Erreur lors de la requête : " + response.code() + " " + response.message());
-            }
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
-        }
-
-        return gifImage;
-    }
-
-*/
-    private Image loadThankYouGif() {
-        OkHttpClient client = new OkHttpClient();
-        String apiKey = "BATFVvFWfiErz5jFuCVDfM3EkQfLW3Rk";
-        String keyword = "thank you";
-        Image gifImage = null;
-
-        Request request = new Request.Builder()
-                .url("https://api.giphy.com/v1/gifs/random?api_key=" + apiKey + "&tag=" + keyword)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                JSONObject data = jsonObject.getJSONObject("data");
-                String gifUrl = data.getJSONObject("images").getJSONObject("original").getString("url");
-
-                // Charger le GIF à partir de l'URL
-                gifImage = new Image(gifUrl);
-
-                // Vérifier si l'image a été correctement chargée
-                if (gifImage.isError()) {
-                    System.err.println("Erreur lors du chargement de l'image : " + gifImage.getException().getMessage());
-                } else {
-                    System.out.println("Dimensions de l'image : " + gifImage.getWidth() + "x" + gifImage.getHeight());
-                }
-            } else {
-                System.err.println("Erreur lors de la requête : " + response.code() + " " + response.message());
-            }
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
-        }
-
-        return gifImage;
-    }
-
-/*
-    private void displayThankYouMessage(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Merci !");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }*/
-    private String generateThankYouMessage(String donorName) {
-
-        return "Thank you, " + donorName + ", for you generous donation ! We appreciate your support .";
-    }
-    private void displayThankYouDialog(String message, Image image) {
-        try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/DonationM/ThankYouDialog.fxml"));
-            Parent root = loader.load();
-
-            thankYouCardController controller = loader.getController();
-            controller.setMessage(message);
-
-            controller.setImage(image);
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Thank You!");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -324,6 +214,15 @@ public class AddDonationMB {
         stage.setTitle("United Pets");
         stage.show();
     }
+    private void deleteLocalGif(String filePath) {
+        try {
+            Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error deleting file: " + filePath);
+        }
+    }
+
     @FXML
     private void NavigateToDisplayAnimal() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Back/Animal/DisplayAnimal.fxml"));

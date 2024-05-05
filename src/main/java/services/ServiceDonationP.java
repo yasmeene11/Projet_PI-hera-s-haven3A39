@@ -88,4 +88,15 @@ public class ServiceDonationP implements IService<DonationP>{
         }
         return donations;
     }
+    public String getDonorNameById(int donorId) throws SQLException {
+        String query = "SELECT name FROM account WHERE accountId = ?";
+        try (PreparedStatement statement = con.prepareStatement(query)) {
+            statement.setInt(1, donorId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("name");
+            }
+        }
+        return null;
+    }
 }

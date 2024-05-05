@@ -47,8 +47,13 @@ public class AddDonationPF {
     @FXML
     private DatePicker datePickerExpirationDate;
     private final ServiceDonationP serviceDonationP;
+
+    private thankYouCardController thankYouController;
     public AddDonationPF() {
-        this.serviceDonationP = new ServiceDonationP(); // Initialize the ServiceUser
+        this.serviceDonationP = new ServiceDonationP();
+        // Initialize the ServiceUser
+        thankYouController = new thankYouCardController();
+
     }
 
     private boolean validateQuantity() {
@@ -151,6 +156,7 @@ public class AddDonationPF {
             String productType= cmbProductType.getValue().toString();
             int productQuantity= Integer.parseInt(txtProductQuantity.getText());
 
+
             LocalDate donationPDate= datePickerDonationP.getValue();
             Date donationPDatee= donationPDate!= null ? Date.valueOf(donationPDate) : null;
 
@@ -168,6 +174,10 @@ public class AddDonationPF {
                 alert.setHeaderText(null);
                 alert.setContentText("Donation added successfully!");
                 alert.showAndWait();
+                String donorName= serviceDonationP.getDonorNameById(1);
+                String thankYouMessage = thankYouController.generateThankYouMessage(donorName);
+                String gifPath = thankYouController.loadThankYouGif();
+                thankYouController.displayThankYouDialog(thankYouMessage, gifPath);
 
             } catch (Exception e) {
                 // Display an error message if adding fails

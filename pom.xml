@@ -107,6 +107,13 @@
             <artifactId>giphy4j</artifactId>
             <version>1.0.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.felipecsl/gifimageview -->
+        <dependency>
+            <groupId>com.felipecsl</groupId>
+            <artifactId>gifimageview</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
 
     </dependencies>
 
