@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import services.ServiceUser;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Register {
 
@@ -104,6 +105,18 @@ public class Register {
             return;
         }
 
+        // Check if the email already exists in the database
+        try {
+            if (userService.searchUserByEmail(email)) {
+                showAlert(Alert.AlertType.ERROR, "Registration Failed", "This email is already registered. Please use a different email.");
+                return;
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", "An error occurred while checking email availability. Please try again.");
+            e.printStackTrace();
+            return;
+        }
+
         // Set account status based on role
         if (role.equals("User")) {
             accountStatus = "Active";
@@ -130,6 +143,7 @@ public class Register {
 
             // Display an info message indicating successful registration
             showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "You have been successfully registered!");
+            NavigateToLogin();
 
         } catch (Exception e) {
             // Display an error message if registration fails

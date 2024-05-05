@@ -1,40 +1,30 @@
 /* Include your provided CSS styles here */
 .button {
-    -fx-background-color: #FFF;
-    -fx-border-color: #355ECE;
-    -fx-text-fill: #0C3988;
+    -fx-background-color: #38B6FF;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial Black";
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s;
+    -fx-border-color: #38B6FF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
 }
 
 .button:hover {
-    -fx-background-color: #355ECE;
-    -fx-text-fill: #FFF;
+    -fx-background-color: rgba(56, 182, 255, 0.7);
 }
 
 .button:pressed {
-    -fx-background-color: #0C39FF;
-    -fx-text-fill: #FFF;
-}
-
-.button2 {
-    -fx-background-color: #0C39FF;
-    -fx-border-color: #FFF;
-    -fx-text-fill: #FFF;
-}
-
-.button2:hover {
-    -fx-background-color: #0C3988;
-    -fx-text-fill: #FFF;
-}
-
-.button2:pressed {
-    -fx-background-color: #0C3400;
-    -fx-text-fill: #FFF;
+    -fx-background-color: rgba(56, 182, 255, 0.7);
 }
 
 .bold-label {
-    -fx-font-size: 32px;
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
+    -fx-text-fill: #38B6FF;
     -fx-font-family: "Arial Black";
 }
 
@@ -48,10 +38,26 @@
     -fx-border-width: 2px;
 }
 
-.custom-button {
-    /* Your custom button styles */
+.custom-button2 {
+    -fx-background-color: #38B6FF;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial Black";
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s;
+    -fx-border-color: #38B6FF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
 }
 
-.custom-button2 {
-    /* Your custom button styles */
+.custom-button2:hover {
+    -fx-background-color: rgba(56, 182, 255, 0.7);
 }
+
+.custom-button2:pressed {
+    -fx-background-color: rgba(56, 182, 255, 0.7);
+}
+
+

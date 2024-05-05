@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class User {
@@ -14,7 +15,7 @@ public class User {
     private String role;
     private String accountStatus;
     private String resetToken;
-    private Date resetTokenRequestedAt;
+    private Timestamp resetTokenRequestedAt;
     private String image; // New attribute for user image
 
     // Constructors
@@ -33,7 +34,7 @@ public class User {
         this.role = role;
         this.accountStatus = accountStatus;
         this.resetToken = resetToken;
-        this.resetTokenRequestedAt = resetTokenRequestedAt;
+        this.resetTokenRequestedAt = (Timestamp) resetTokenRequestedAt;
 
     }
 
@@ -49,7 +50,7 @@ public class User {
         this.role = role;
         this.accountStatus = accountStatus;
         this.resetToken = resetToken;
-        this.resetTokenRequestedAt = resetTokenRequestedAt;
+        this.resetTokenRequestedAt = (Timestamp) resetTokenRequestedAt;
         this.image = image;
     }
 
@@ -66,7 +67,7 @@ public class User {
         this.role = role;
         this.accountStatus = accountStatus;
         this.resetToken = resetToken;
-        this.resetTokenRequestedAt = resetTokenRequestedAt;
+        this.resetTokenRequestedAt = (Timestamp) resetTokenRequestedAt;
         this.image = image;
     }
 
@@ -159,11 +160,11 @@ public class User {
         this.resetToken = resetToken;
     }
 
-    public Date getResetTokenRequestedAt() {
+    public Timestamp getResetTokenRequestedAt() {
         return resetTokenRequestedAt;
     }
 
-    public void setResetTokenRequestedAt(Date resetTokenRequestedAt) {
+    public void setResetTokenRequestedAt(Timestamp resetTokenRequestedAt) {
         this.resetTokenRequestedAt = resetTokenRequestedAt;
     }
 

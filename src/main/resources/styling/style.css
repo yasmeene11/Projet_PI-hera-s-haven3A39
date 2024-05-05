@@ -71,3 +71,63 @@
     -fx-scale-y: 1.05; /* Hover scale effect */
 }
 
+.table_custom {
+    -fx-background-color: #f8f9fa; /* Light gray table background color */
+}
+
+.table_custom .table-column {
+    -fx-text-fill: #333; /* Dark gray text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-font-family: "Segoe UI", Arial, sans-serif; /* Font family */
+}
+
+.table_custom .column-header-background {
+    -fx-background-color: #007bff; /* Primary blue header background color */
+}
+
+.table_custom .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: white; /* White text color */
+}
+
+.table_custom .table-row-cell {
+    -fx-background-color: #ffffff; /* White row background color */
+    -fx-background-radius: 5px; /* Rounded corners for rows */
+}
+
+.table_custom .table-row-cell:even {
+    -fx-background-color: #f8f9fa; /* Alternate row background color */
+}
+
+.table_custom .table-row-cell:selected {
+    -fx-background-color: #007bff; /* Selected row background color */
+    -fx-text-fill: white; /* White text color for selected row */
+}
+
+.table_custom .table-row-cell:selected .table-cell {
+    -fx-background-color: transparent; /* Selected cell background color */
+}
+
+.table_custom .table-row-cell:hover {
+    -fx-background-color: #e9ecef; /* Hovered row background color */
+}
+
+
+/* Button style */
+.user-button {
+    -fx-background-color: #38B6FF;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect for button */
+.user-button:hover {
+    -fx-background-color: #4da8da;
+    -fx-border-color: #38B6FF;
+}

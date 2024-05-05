@@ -3,6 +3,7 @@ package controllers.Front.User;
 import com.jfoenix.controls.JFXButton;
 import controllers.Back.User.UpdateUserB;
 import controllers.CustomAlertController;
+import controllers.CustomAlertResetPass;
 import entities.Session;
 import entities.User;
 import javafx.fxml.FXML;
@@ -317,9 +318,59 @@ public class ProfileUser {
                 updateStage.initOwner(btnUpdateId.getScene().getWindow());
                 updateStage.initModality(Modality.WINDOW_MODAL);
                 updateStage.showAndWait();
+                reloadProfilePage();
             } catch (IOException e) {
                 e.printStackTrace(); // Handle IOException
             }
+        }
+    }
+
+    private void reloadProfilePage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/User/ProfileUser.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) btnUpdateId.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Profile");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while reloading the profile page.");
+        }
+    }
+
+
+
+    @FXML
+    private void openResetPasswordDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Front/User/CustomAlertResetPass.fxml"));
+            Parent root = loader.load();
+            CustomAlertResetPass controller = loader.getController();
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setTitle("Reset Password");
+
+            // Set the confirmation callback
+            controller.setConfirmationCallback((success) -> {
+                if (success) {
+                    // Password reset was successful, handle any necessary actions here
+                    // For example, you can close the dialog and show a success message
+                    dialogStage.close();
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Password reset successful.");
+                }
+            });
+
+            // Set the stage for the controller
+            controller.setStage(dialogStage);
+
+            // Show the dialog
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while opening the dialog.");
         }
     }
 

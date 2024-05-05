@@ -147,9 +147,9 @@
                         <Label fx:id="emailLabel" styleClass="profile-value" />
                     </HBox>
                     <HBox alignment="CENTER" spacing="20" stylesheets="@../../styling/style.css">
-                        <Button fx:id="btnUpdateId" stylesheets="@../../styling/style.css" onMousePressed="#handleUpdate" styleClass="update-button" text="Update Account" />
-                        <Button fx:id="btnReseeId" stylesheets="@../../styling/style.css" styleClass="reset-button" text="Reset Password" />
-                        <Button fx:id="btnDeleteId" stylesheets="@../../styling/style.css" onMousePressed="#DeleteAcc" styleClass="delete-account-button" text="Delete Account" />
+                        <Button fx:id="btnUpdateId" onMousePressed="#handleUpdate" styleClass="update-button" stylesheets="@../../styling/style.css" text="Update Account" />
+                        <Button fx:id="btnReseeId" onAction="#openResetPasswordDialog" styleClass="reset-button" stylesheets="@../../styling/style.css" text="Reset Password" />
+                        <Button fx:id="btnDeleteId" onMousePressed="#DeleteAcc" styleClass="delete-account-button" stylesheets="@../../styling/style.css" text="Delete Account" />
                     </HBox>
                 </VBox>
             </children>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="359.0" styleClass="back" prefWidth="449.0" stylesheets="@../../styling/UpdateUserSyling.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.User.UpdateBacktoBack">
+
+    <Label layoutX="33.0" layoutY="73.0" styleClass="bold-label" text="Account status" AnchorPane.leftAnchor="33.0" AnchorPane.topAnchor="73.0" />
+    <ComboBox fx:id="comboStatus" layoutX="33.0" layoutY="108.0" prefHeight="54.0" prefWidth="250.0" styleClass="comboStatus" AnchorPane.leftAnchor="33.0" AnchorPane.topAnchor="108.0">
+        <items>
+            <javafx.collections.FXCollections fx:factory="observableArrayList">
+                <String fx:value="Active" />
+                <String fx:value="Pending" />
+                <String fx:value="Blocked" />
+            </javafx.collections.FXCollections>
+        </items>
+    </ComboBox>
+
+
+
+    <Button layoutX="176.0" layoutY="292.0" onAction="#updateUser" styleClass="custom-button2" text="Update" AnchorPane.leftAnchor="176.0" AnchorPane.topAnchor="292.0" />
+    <Label layoutX="176.0" layoutY="21.0" prefHeight="44.0" prefWidth="98.0" styleClass="bold-label" text="Update User" />
+   <Label layoutX="33.0" layoutY="180.0" styleClass="bold-label" text="Account Role" />
+   <ComboBox fx:id="comboRole" layoutX="33.0" layoutY="214.0" prefHeight="54.0" prefWidth="250.0" styleClass="comboStatus">
+      <items>
+         <FXCollections fx:factory="observableArrayList">
+            <String fx:value="User" />
+            <String fx:value="Veterinary" />
+         </FXCollections>
+      </items>
+   </ComboBox>
+</AnchorPane>

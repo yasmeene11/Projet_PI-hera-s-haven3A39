@@ -14,7 +14,7 @@
         <!-- ListView -->
 
         <AnchorPane layoutX="39.0" layoutY="33.0" prefHeight="622.0" prefWidth="1120.0" stylesheets="@../../styling/style.css">
-            <ListView fx:id="LISTUSERS" layoutX="360.0" layoutY="159.0" prefHeight="463.0" prefWidth="799.0">
+            <ListView fx:id="LISTUSERS" layoutX="360.0" layoutY="159.0" prefHeight="463.0" prefWidth="799.0 " styleClass="table_custom" stylesheets="@../../styling/style.css">
                 <!-- Define custom cell factory for the ListView -->
                 <cellFactory>
                     <javafx.scene.control.cell.TextFieldListCell fx:factory="forListView" />
