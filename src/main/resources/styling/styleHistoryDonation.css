@@ -1,0 +1,22 @@
+.list-view {
+    -fx-background-color: #FFFFFF; /* Couleur de fond */
+    -fx-border-width: 2px;
+    -fx-border-color: #38B6FF;
+    -fx-padding: 10px;
+    -fx-alignment: center; /* Centrer le contenu */
+}
+
+.list-view .cell {
+    -fx-text-fill: #FF0000;
+    -fx-font-family: "Verdana"; /* Changer la police */
+    -fx-font-size: 14px; /* Changer la taille de la police */
+}
+
+.list-view .cell:odd {
+    -fx-background-color: #F0F0F0;
+}
+
+.list-view .cell:selected {
+    -fx-background-color: #38B6FF;
+    -fx-text-fill: #FF0000;
+}

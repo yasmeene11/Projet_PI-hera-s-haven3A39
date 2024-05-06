@@ -1,0 +1,366 @@
+.button
+{
+-fx-background-color : #FFF;
+-fx-border-color: #355ECE;
+-fx-text-fill:  #0C3988;
+}
+.button:hover
+{
+-fx-background-color : #355ECE ;
+-fx-text-fill:  #FFF;
+}
+.button:pressed
+{
+-fx-background-color : #0C39FF ;
+-fx-text-fill: #FFF;
+}
+
+.button2
+{
+-fx-background-color :  #0C39FF;
+-fx-border-color: #FFF;
+-fx-text-fill:  #FFF;
+}
+.button2:hover
+{
+-fx-background-color : #0C3988 ;
+-fx-text-fill:   #FFF;
+}
+.button2:pressed
+{
+-fx-background-color : #0C3400 ;
+-fx-text-fill: #FFF;
+}
+
+
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-cell-size : 20;
+    -fx-background-color:   #2D75E8;
+}
+.table-view .column-header .label{
+
+   -fx-text-fill: white;
+   -fx-font-weight: bold;
+   -fx-alignment: CENTER_LEFT;
+}
+.table-view .cell{
+   -fx-cell-size: 30;
+  -fx-alignment: center-left;
+  -fx-text-fill: #000000;
+  -fx-alignment: CENTER_LEFT;
+}
+
+.table-row-cell:selected {
+    -fx-background-color:  rgb(127, 172, 243);
+ }
+ .table-row-cell:selected .text {
+        -fx-fill : white ;
+ 
+ }
+/* scroll bar starts here */
+
+/* The increment and decrement button CSS class of scrollbar */
+.table-view .increment-button ,.table-view .decrement-button {
+    -fx-background-color:transparent;
+	-fx-background-radius: 2em;
+
+}
+
+/* The main scrollbar **track** CSS class  */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+	-fx-background-color: transparent;
+	-fx-border-color:derive(  #2D75E8,80%);
+	-fx-background-radius: 2em;
+	-fx-border-radius:2em;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color:derive( #2D75E8,90%);
+	-fx-background-insets: 2, 0, 0;
+	-fx-background-radius: 2em;
+
+}
+
+/* chart properties */
+
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+    -fx-legend-visible: false;
+}
+.chart-plot-background {
+    -fx-background-color:transparent;
+}
+
+.chart-pie {
+    -fx-border-color: derive(-fx-pie-color, 1%);
+    -fx-border-width: 0px;
+}
+
+ .custom-button {
+     -fx-background-color: #FFFFFF; /* White background */
+     -fx-text-fill: #38B6FF; /* Blue text */
+     -fx-font-size: 14px;
+     -fx-font-family: "Arial Black";
+     -fx-background-radius: 50px; /* Make it round */
+     -fx-padding: 10px 20px; /* Padding for better touch feedback */
+     -fx-cursor: hand; /* Cursor style */
+     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 4, 0, 0, 1); /* Shadow effect */
+     -fx-transition: all 0.3s; /* Smooth transition */
+     -fx-border-color: #38B6FF; /* Blue border color */
+     -fx-border-width: 0;
+ }
+
+.custom-button:hover {
+    -fx-background-color: #38B6FF; /* Blue background on hover */
+    -fx-text-fill: #FFFFFF; /* White text on hover */
+}
+
+.custom-button:pressed {
+    -fx-background-color: #38B6FF; /* Blue background on press */
+    -fx-text-fill: #FFFFFF; /* White text on press */
+}
+
+
+.custom-button1 {
+    -fx-background-color: #FFFFFF; /* White background */
+    -fx-text-fill: #38B6FF; /* Blue text */
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial Black";
+    -fx-background-radius: 50px; /* Make it round */
+    -fx-padding: 10px 20px; /* Padding for better touch feedback */
+    -fx-cursor: hand; /* Cursor style */
+    -fx-transition: all 0.3s; /* Smooth transition */
+    -fx-border-color: #38B6FF; /* Blue border color */
+    -fx-border-width: 1px; /* Border width */
+    -fx-border-radius: 20px; /* Border radius */
+}
+
+.custom-button1:hover {
+    -fx-background-color: #38B6FF; /* Blue background on hover */
+    -fx-text-fill: #FFFFFF; /* White text on hover */
+}
+
+.custom-button1:pressed {
+    -fx-background-color: #38B6FF; /* Blue background on press */
+    -fx-text-fill: #FFFFFF; /* White text on press */
+}
+
+.custom-button2 {
+    -fx-background-color: #38B6FF; /* White background */
+    -fx-text-fill: #FFFFFF; /* Blue text */
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial Black";
+    -fx-background-radius: 50px; /* Make it round */
+    -fx-padding: 10px 20px; /* Padding for better touch feedback */
+    -fx-cursor: hand; /* Cursor style */
+    -fx-transition: all 0.3s; /* Smooth transition */
+    -fx-border-color: #38B6FF; /* Blue border color */
+    -fx-border-width: 1px; /* Border width */
+    -fx-border-radius: 20px; /* Border radius */
+}
+
+.custom-button2:hover {
+    -fx-background-color: rgba(56, 182, 255, 0.7); /* Blue background on hover */
+    -fx-text-fill: #FFFFFF; /* White text on hover */
+}
+
+.custom-button2:pressed {
+    -fx-background-color: rgba(56, 182, 255, 0.7);; /* Blue background on press */
+    -fx-text-fill: #FFFFFF; /* White text on press */
+}
+
+
+
+
+.menu-bar {
+    -fx-background-color: #ffff; /* Dark blue background */
+    -fx-border-radius: 5px; /* Rounded corners */
+}
+
+.menu, .menu-item {
+    -fx-text-fill: #ecf0f1; /* White text color */
+    -fx-font-size: 13px; /* Font size */
+    -fx-padding: 10 40 10 40; /* Add padding to increase width */
+    -fx-font-family: "Arial Black";
+}
+
+.menu:hover, .menu-item:hover {
+    -fx-background-color: #38B6FF; /* Hover background color (blue) */
+    -fx-text-fill: #ffff; /* Text color on hover (light pink) */
+    -fx-background-radius: 5px; /* Rounded corners on hover */
+    -fx-border-radius: 5px; /* Rounded corners on hover */
+    -fx-border-color: #38B6FF; /* Border color on hover (blue) */
+    -fx-border-width: 0px; /* Border width on hover */
+    -fx-background-insets: 0; /* Remove background insets */
+}
+
+.menu:hover {
+    -fx-background-color: #38B6FF; /* Hover background color (blue) */
+    -fx-background-radius: 5px; /* Rounded corners on hover */
+    -fx-border-radius: 5px; /* Rounded corners on hover */
+    -fx-border-color: #38B6FF; /* Border color on hover (blue) */
+    -fx-border-width: 1px; /* Border width on hover */
+    -fx-background-insets: 0; /* Remove background insets */
+}
+
+
+
+
+
+
+.bold-label {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Black";
+
+}
+
+
+.btnlogo {
+    -fx-background-color: transparent; /* White background */
+    -fx-border-width: 0;
+}
+.btnlogo:hover {
+    -fx-background-color: transparent; /* White background */
+    -fx-border-width: 0;
+}
+
+.btnlogo:pressed {
+    -fx-background-color: transparent; /* White background */
+    -fx-border-width: 0;
+}
+
+.custom-text {
+    -fx-text-fill: #38a5ff;
+    -fx-font-size: 24; /* Font size without 'px' */
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial Black";
+}
+
+.text-field-custom {
+
+    -fx-prompt-text-fill: #e1dede; /* Prompt text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-font-family: "Arial";
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 20px; /* Rounded corners */
+    -fx-border-color: #e1dede; /* Border color */
+    -fx-border-width: 2px; /* Border width */
+}
+
+.text-field-custom:hover {
+    -fx-border-color: #e1dede; /* Border color on hover */
+}
+
+.text-field-custom:focused {
+    -fx-border-color: #e1dede; /* Border color when focused */
+}
+
+.custom-text-add {
+    -fx-text-fill: #7ebcf8;
+    -fx-font-size: 16; /* Font size without 'px' */
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial Black bold";
+}
+
+.combo-box-custom {
+
+    -fx-font-size: 12px; /* Font size */
+    -fx-font-family: "Arial ";
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-border-radius: 10px; /* Rounded corners */
+    -fx-border-color: #38B6FF; /* Border color */
+    -fx-border-width: 0px; /* Border width */
+    -fx-padding: 0 10 0 10; /* Add padding to adjust text position */
+}
+
+.combo-box-custom:hover {
+    -fx-border-color: #38B6FF; /* Border color on hover */
+}
+
+.combo-box-custom:focused {
+    -fx-border-color: #38B6FF; /* Border color when focused */
+}
+.date-picker-custom .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.date-picker-custom .arrow-button:hover {
+    -fx-background-color: transparent;
+}
+
+.date-picker-custom .arrow-button:pressed {
+    -fx-background-color: transparent;
+}
+
+.date-picker-custom .text-field {
+    -fx-background-color: #FFF; /* White background */
+    -fx-border-color: #355ECE; /* Border color */
+    -fx-text-fill:  #0C3988; /* Text color */
+    -fx-background-radius: 5px; /* Rounded corners */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-font-size: 14px; /* Font size */
+    -fx-font-family: "Arial";
+    -fx-padding: 5px 10px; /* Padding */
+}
+
+.date-picker-custom .text-field:hover {
+    -fx-background-color: #355ECE; /* Background color on hover */
+    -fx-text-fill:  #FFF; /* Text color on hover */
+}
+
+.date-picker-custom .text-field:focused {
+    -fx-background-color: #0C39FF; /* Background color when focused */
+    -fx-border-color: #0C39FF; /* Border color when focused */
+    -fx-text-fill:  #FFF; /* Text color when focused */
+}
+
+.date-picker-custom .date-picker-popup .month-year-pane {
+    -fx-background-color: #355ECE; /* Background color */
+}
+
+.date-picker-custom .date-picker-popup .calendar-grid {
+    -fx-background-color: #FFF; /* Background color */
+}
+
+.date-picker-custom .date-picker-popup .calendar-grid .day-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: #355ECE; /* Border color */
+}
+
+.date-picker-custom .date-picker-popup .calendar-grid .day-cell:hover {
+    -fx-background-color: #355ECE; /* Background color on hover */
+}
+
+.date-picker-custom .date-picker-popup .calendar-grid .day-cell:focused {
+    -fx-background-color: #0C39FF; /* Background color when focused */
+}
+
+.custom-list-view {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
+
+.custom-list-view .list-cell {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+}
+
+.custom-list-view .list-cell:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.custom-list-view .list-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.custom-list-view .list-cell:even {
+    -fx-background-color: #f2f2f2;
+}

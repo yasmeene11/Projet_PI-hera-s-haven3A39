@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="656.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front.DonationP.thankYouCardController">
+    <!-- Ajoutez une étiquette pour afficher le message -->
+    <Label fx:id="messageLabel" layoutX="50.0" layoutY="50.0" />
+
+    <!-- Ajoutez une vue d'image pour afficher le GIF -->
+    <ImageView fx:id="gifImageView" fitHeight="500.0" fitWidth="500.0" layoutX="50.0" layoutY="99.0" preserveRatio="true" />
+
+
+
+    <!-- Ajoutez un bouton pour fermer la fenêtre -->
+    <Button layoutX="278.0" layoutY="616.0" onAction="#closeDialog" text="Close" />
+
+</AnchorPane>
