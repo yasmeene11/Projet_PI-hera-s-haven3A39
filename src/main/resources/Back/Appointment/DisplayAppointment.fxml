@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,10 +10,11 @@
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Back.Appointment.DisplayAppointmentB">
 
     <children>
+      <Button fx:id="btnAppStats" layoutX="848.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayStat" prefHeight="44.0" prefWidth="208.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="Display Statistics" />
         <AnchorPane layoutX="-23.2" prefHeight="720.0" prefWidth="287.0" style="-fx-background-color: #fff; -fx-border-radius: 30; -fx-border-color: #38B6FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-23.0" AnchorPane.topAnchor="0.0">
             <children>
 
-                <Button fx:id="btnUser" layoutX="92.0" layoutY="119.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0"  onMouseClicked="#NavigateToDisplayUser" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Users" />
+                <Button fx:id="btnUser" layoutX="92.0" layoutY="119.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayUser" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Users" />
 
                 <Button fx:id="btnAnimal" layoutX="92.0" layoutY="174.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAnimal" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Animals" />
                 <Button fx:id="btnAdoption" layoutX="92.0" layoutY="234.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAdoption" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Adoptions" />
@@ -20,7 +23,7 @@
                 <Button fx:id="btnCategory" layoutX="92.0" layoutY="400.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayCategory" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Categories" />
                 <Button fx:id="btnDonation" layoutX="92.0" layoutY="455.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayDonation" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Donations" />
                 <Button fx:id="btnCash" layoutX="92.0" layoutY="512.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayCashRegister" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Cash Register" />
-                <Button fx:id="btnAppointment" style="-fx-background-color: #38B6FF; -fx-text-fill: #fff;" layoutX="92.0" layoutY="565.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Appointments" />
+                <Button fx:id="btnAppointment" layoutX="92.0" layoutY="565.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="40.0" prefWidth="170.0" style="-fx-background-color: #38B6FF; -fx-text-fill: #fff;" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Appointments" />
                 <Button fx:id="btnReport" layoutX="92.0" layoutY="620.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayReport" prefHeight="40.0" prefWidth="170.0" styleClass="custom-button" stylesheets="@../../styling/fullpackstyling.css" text="Reports" />
                 <ImageView fitHeight="34.0" fitWidth="28.0" layoutX="50.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -74,13 +77,13 @@
                 </ImageView>
             </children>
         </AnchorPane>
-        <Button fx:id="btnlistappointment"   onMouseClicked="#NavigateToDisplayAppointment" layoutX="371.0" layoutY="45.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="218.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     List of Appointment" />
-        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="380.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+        <Button fx:id="btnlistappointment" layoutX="380.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#NavigateToDisplayAppointment" prefHeight="44.0" prefWidth="218.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     List of Appointment" />
+        <ImageView fitHeight="35.0" fitWidth="28.0" layoutX="391.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../images/list.png" />
             </image>
         </ImageView>
-        <Button fx:id="btnaddappointment" onMouseClicked="#NavigateToAddAppointment" layoutX="617.0" layoutY="45.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="208.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     Add Appointment" />
+        <Button fx:id="btnaddappointment" layoutX="617.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#NavigateToAddAppointment" prefHeight="44.0" prefWidth="208.0" styleClass="custom-button1" stylesheets="@../../styling/fullpackstyling.css" text="     Add Appointment" />
         <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="634.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../images/add.png" />
@@ -92,5 +95,18 @@
             </image>
         </ImageView>
         <Button fx:id="btnIndex" layoutX="71.0" layoutY="23.0" mnemonicParsing="false" onMouseClicked="#NavigateToIndexBack" prefHeight="63.0" prefWidth="170.0" styleClass="btnlogo" stylesheets="@../../styling/fullpackstyling.css" />
+
+        <ListView fx:id="listAppointments" layoutX="339.0" layoutY="193.0" prefHeight="435.0" prefWidth="831.0" />
+      <ImageView fitHeight="28.0" fitWidth="22.0" layoutX="860.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../images/AppStats.png" />
+         </image>
+      </ImageView>
+
+      <TextField fx:id="searchField" layoutX="634.0" layoutY="148.0" />
+
+       
+
     </children>
+
 </AnchorPane>

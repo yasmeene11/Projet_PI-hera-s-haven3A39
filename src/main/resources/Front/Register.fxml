@@ -45,16 +45,15 @@
                 <PasswordField id="passwordID" fx:id="txtPassword" layoutX="25.0" layoutY="146.0" prefHeight="34.0" prefWidth="275.0" promptText="Password" stylesheets="@../styling/fullpackstyling.css" />
                 <TextField id="phoneID" fx:id="txtPhone" layoutX="25.0" layoutY="190.0" prefHeight="34.0" prefWidth="275.0" promptText="Phone Number" />
                 <TextField id="addressID" fx:id="txtAddress" layoutX="25.0" layoutY="234.0" prefHeight="34.0" prefWidth="275.0" promptText="Address" />
-                <ComboBox id="genderID" fx:id="cmbGender" layoutX="25.0" layoutY="278.0" prefHeight="34.0" prefWidth="275.0" stylesheets="@../styling/fullpackstyling.css">
+                <ComboBox id="genderID" fx:id="cmbGender" layoutX="25.0" layoutY="278.0" prefHeight="34.0" prefWidth="275.0">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-
                             <String fx:value="Female" />
                             <String fx:value="Male" />
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <ComboBox id="roleID" fx:id="cmbRole" layoutX="25.0" layoutY="322.0" prefHeight="34.0" prefWidth="275.0" stylesheets="@../styling/fullpackstyling.css">
+                <ComboBox id="roleID" fx:id="cmbRole" layoutX="25.0" layoutY="322.0" prefHeight="34.0" prefWidth="275.0">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="User" />

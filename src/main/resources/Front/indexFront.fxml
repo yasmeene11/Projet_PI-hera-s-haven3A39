@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.StackPane?>
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.IndexFront">
     <children>
         <AnchorPane prefHeight="34.0" prefWidth="1280.0" style="-fx-background-color: #38B6FF;" AnchorPane.bottomAnchor="691.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -121,8 +120,6 @@
             <Menu styleClass="menu" text="About">
             </Menu>
         </MenuBar>
-
-        <StackPane fx:id="avatarPane" layoutX="1150" layoutY="45" />
 
 
     </children>
