@@ -22,7 +22,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.security</groupId>
+            <groupId>org.springframewooork.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>5.3.10.RELEASE</version>
         </dependency>
